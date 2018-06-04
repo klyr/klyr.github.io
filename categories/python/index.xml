@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Python on ~klyr</title>
-    <link>http://klyr.quicheaters.org/blog/categories/python/</link>
+    <link>https://klyr.github.io/categories/python/</link>
     <description>Recent content in Python on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 16 Aug 2011 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://klyr.quicheaters.org/blog/categories/python/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://klyr.github.io/categories/python/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Standalone Python project/installation</title>
-      <link>http://klyr.quicheaters.org/blog/posts/standalone_python_project/</link>
+      <link>https://klyr.github.io/posts/standalone_python_project/</link>
       <pubDate>Tue, 16 Aug 2011 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/standalone_python_project/</guid>
+      <guid>https://klyr.github.io/posts/standalone_python_project/</guid>
       <description>Let&amp;rsquo;s take an example of installing Django without using Debian apt command. We will use virtualenv to make a self-contained python directory.
 First create your installation directory:
 $ mkdir -p project/django $ cd project/django Get the virtualenv tool:

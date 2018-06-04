@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on ~klyr</title>
-    <link>http://klyr.quicheaters.org/blog/tags/r/</link>
+    <link>https://klyr.github.io/tags/r/</link>
     <description>Recent content in R on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 02 Aug 2011 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://klyr.quicheaters.org/blog/tags/r/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://klyr.github.io/tags/r/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Manipulating data with R</title>
-      <link>http://klyr.quicheaters.org/blog/posts/manipulating_data_with_r/</link>
+      <link>https://klyr.github.io/posts/manipulating_data_with_r/</link>
       <pubDate>Tue, 02 Aug 2011 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/manipulating_data_with_r/</guid>
+      <guid>https://klyr.github.io/posts/manipulating_data_with_r/</guid>
       <description>Manipulating data with R Getting help about a command help(merge) merge package:base R Documentation Merge Two Data Frames Description: Merge two data frames by common columns or row names, or do other versions of database _join_ operations. Usage: merge(x, y, ...) ## Default S3 method:  merge(x, y, ...) [...] Variable names collisions To prevent variable collisions, create a namespaced-like variable. For example:
 my.a &amp;lt;- 1 my.b &amp;lt;- &amp;#34;test&amp;#34; Installing third-party libraries To install packages locally (in your HOME directory):</description>
     </item>

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Erlang on ~klyr</title>
-    <link>http://klyr.quicheaters.org/blog/tags/erlang/</link>
+    <link>https://klyr.github.io/tags/erlang/</link>
     <description>Recent content in Erlang on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 19 Dec 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://klyr.quicheaters.org/blog/tags/erlang/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://klyr.github.io/tags/erlang/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Playing with the Erlang Linc Switch</title>
-      <link>http://klyr.quicheaters.org/blog/posts/playing_with_linc_switch/</link>
+      <link>https://klyr.github.io/posts/playing_with_linc_switch/</link>
       <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/playing_with_linc_switch/</guid>
+      <guid>https://klyr.github.io/posts/playing_with_linc_switch/</guid>
       <description>Introduction Linc is a software switch in Erlang, which support Openflow 1.4.
 Here we will try to install it and make it run in a simple scenario. Later we will try to use it with an openflow compatible Controller (maybe Opendaylight or FlowER).
 Installation $ git clone https://github.com/FlowForwarding/LINC-Switch.git $ sudo apt-get install libpcap0.8-dev $ cd LINC-Switch $ cp rel/files/sys.config.orig rel/files/sys.config $ make Note that at some point during installation, root privileges are required to use the setcap utility.</description>
@@ -24,10 +24,10 @@ Installation $ git clone https://github.com/FlowForwarding/LINC-Switch.git $ sud
     
     <item>
       <title>Updating IP routes programmatically</title>
-      <link>http://klyr.quicheaters.org/blog/posts/updating_ip_routes_in_c/</link>
+      <link>https://klyr.github.io/posts/updating_ip_routes_in_c/</link>
       <pubDate>Mon, 10 Dec 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/updating_ip_routes_in_c/</guid>
+      <guid>https://klyr.github.io/posts/updating_ip_routes_in_c/</guid>
       <description>ioctl(2) is a special system call used when no other system call can handle a specific I/O operation. For exemple, the generic write(2) syscall is used for writing to a specified file descriptor but there is neither syscall to open the CD-tray nor syscall to manage routing tables: ioctl is here as a fit-all syscall.
 From the man page:
 NAME ioctl - control device SYNOPSIS #include &amp;lt;sys/ioctl.h&amp;gt; int ioctl(int d, int request, void *args); DESCRIPTION The ioctl() function manipulates the underlying device parameters of special files.</description>

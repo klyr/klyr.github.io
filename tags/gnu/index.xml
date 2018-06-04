@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Gnu on ~klyr</title>
-    <link>http://klyr.quicheaters.org/blog/tags/gnu/</link>
+    <link>https://klyr.github.io/tags/gnu/</link>
     <description>Recent content in Gnu on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 03 Dec 2012 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://klyr.quicheaters.org/blog/tags/gnu/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://klyr.github.io/tags/gnu/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Display backtrace when a program segfaults</title>
-      <link>http://klyr.quicheaters.org/blog/posts/gnu_backtrace_extension/</link>
+      <link>https://klyr.github.io/posts/gnu_backtrace_extension/</link>
       <pubDate>Mon, 03 Dec 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/gnu_backtrace_extension/</guid>
+      <guid>https://klyr.github.io/posts/gnu_backtrace_extension/</guid>
       <description>Display backtrace when a program segfaults When an application crashes, with a segfault for example it can be usefull have debugging help like a stacktrace of function calls.
 This can be achieved by trapping the SIGSEGV unix signal and by using the backtrace(3) and backtrace_symbols(3) GNU extensions functions.
 Intercept SIGSEGV signal (and others) This is done via the traditional use of sigaction:

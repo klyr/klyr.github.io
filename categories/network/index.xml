@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Network on ~klyr</title>
-    <link>http://klyr.quicheaters.org/blog/categories/network/</link>
+    <link>https://klyr.github.io/categories/network/</link>
     <description>Recent content in Network on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 19 Dec 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://klyr.quicheaters.org/blog/categories/network/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://klyr.github.io/categories/network/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Playing with the Erlang Linc Switch</title>
-      <link>http://klyr.quicheaters.org/blog/posts/playing_with_linc_switch/</link>
+      <link>https://klyr.github.io/posts/playing_with_linc_switch/</link>
       <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/playing_with_linc_switch/</guid>
+      <guid>https://klyr.github.io/posts/playing_with_linc_switch/</guid>
       <description>Introduction Linc is a software switch in Erlang, which support Openflow 1.4.
 Here we will try to install it and make it run in a simple scenario. Later we will try to use it with an openflow compatible Controller (maybe Opendaylight or FlowER).
 Installation $ git clone https://github.com/FlowForwarding/LINC-Switch.git $ sudo apt-get install libpcap0.8-dev $ cd LINC-Switch $ cp rel/files/sys.config.orig rel/files/sys.config $ make Note that at some point during installation, root privileges are required to use the setcap utility.</description>
@@ -24,10 +24,10 @@ Installation $ git clone https://github.com/FlowForwarding/LINC-Switch.git $ sud
     
     <item>
       <title>Ip routing based on destination port</title>
-      <link>http://klyr.quicheaters.org/blog/posts/ip_route_based_on_port/</link>
+      <link>https://klyr.github.io/posts/ip_route_based_on_port/</link>
       <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/ip_route_based_on_port/</guid>
+      <guid>https://klyr.github.io/posts/ip_route_based_on_port/</guid>
       <description>Ip routing based on destination port We have two connection providers P1 and P2 behind two IP 10.0.0.253 and 10.0.0.254. P1 has a high bandwidth but low latency, P2 is the oposite.
 We will use Netfilter and iproute2 to filter output packet to port 22 to provider P2. Everything else will go through provider P1.
 First we need to mark packets for TCP connections to port 22 with the iptables command:</description>
@@ -35,10 +35,10 @@ First we need to mark packets for TCP connections to port 22 with the iptables c
     
     <item>
       <title>Using a free CDN, Cloudflare</title>
-      <link>http://klyr.quicheaters.org/blog/posts/using_a_free_cdn/</link>
+      <link>https://klyr.github.io/posts/using_a_free_cdn/</link>
       <pubDate>Mon, 08 Aug 2011 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/using_a_free_cdn/</guid>
+      <guid>https://klyr.github.io/posts/using_a_free_cdn/</guid>
       <description>CDN: Content delivery network A CDN act as a cache for static ressources of your web server. One famous CDN is Akamai but is quite expensive.
 CDN architecture is quite complex with a set of multiple proxies located in multiple datacenters around the world. The goal is to reduce the distance to the minimum between the served ressource and the user asking for the ressource.
 A CDN not only saves the bandwith and load of your server but also global Internet peers involved between the client and the server.</description>

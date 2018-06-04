@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Emacs on ~klyr</title>
-    <link>http://klyr.quicheaters.org/blog/tags/emacs/</link>
+    <link>https://klyr.github.io/tags/emacs/</link>
     <description>Recent content in Emacs on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 28 Sep 2011 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://klyr.quicheaters.org/blog/tags/emacs/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://klyr.github.io/tags/emacs/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Commands &amp; key bindings reminders</title>
-      <link>http://klyr.quicheaters.org/blog/posts/commands_and_keys_reminders/</link>
+      <link>https://klyr.github.io/posts/commands_and_keys_reminders/</link>
       <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/commands_and_keys_reminders/</guid>
+      <guid>https://klyr.github.io/posts/commands_and_keys_reminders/</guid>
       <description>Commands &amp;amp; key bindings reminders Sysdig Record activity to file:
 $ sudo sysdig -w tracefile.scap Get top cpu usage from the trace file:
 $ sudo sysdig -r tracefile.scap -c topprocs_cpu Check open TCP port with bash and send data to TCP port $ man bash [ ... ] REDIRECTION [ ... ] Bash handles several filenames specially when they are used in redirections, as described in the following table: /dev/tcp/host/port If host is a valid hostname or Internet address, and port is an integer port number or service name, bash attempts to open a TCP connection to the corresponding socket.</description>

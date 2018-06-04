@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Linux on ~klyr</title>
-    <link>http://klyr.quicheaters.org/blog/tags/linux/</link>
+    <link>https://klyr.github.io/tags/linux/</link>
     <description>Recent content in Linux on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 19 Dec 2012 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://klyr.quicheaters.org/blog/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://klyr.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Playing with linux framebuffer</title>
-      <link>http://klyr.quicheaters.org/blog/posts/playing_with_linux_framebuffer/</link>
+      <link>https://klyr.github.io/posts/playing_with_linux_framebuffer/</link>
       <pubDate>Wed, 19 Dec 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/playing_with_linux_framebuffer/</guid>
+      <guid>https://klyr.github.io/posts/playing_with_linux_framebuffer/</guid>
       <description>What is framebuffer ? The Linux framebuffer is an abstraction layer, hardware independant, to display graphical elements in Linux console. Framebuffer is often used in embedded devices. Thanks to DirectFB, hadware acceleration can be used.
 How to program framebuffer ? Programming the Linux framebuffer is quite simple:
  ioctl commands and structs are located in /usr/include/linux/fb.h use open(2) to open /dev/fb0 use various ioctl(2) calls to get or set properties mmap(2) framebuffer device to memory write to the mmaped memory to display your graphics  Usefull structs are:</description>
@@ -24,10 +24,10 @@ How to program framebuffer ? Programming the Linux framebuffer is quite simple:
     
     <item>
       <title>Updating IP routes programmatically</title>
-      <link>http://klyr.quicheaters.org/blog/posts/updating_ip_routes_in_c/</link>
+      <link>https://klyr.github.io/posts/updating_ip_routes_in_c/</link>
       <pubDate>Mon, 10 Dec 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/updating_ip_routes_in_c/</guid>
+      <guid>https://klyr.github.io/posts/updating_ip_routes_in_c/</guid>
       <description>ioctl(2) is a special system call used when no other system call can handle a specific I/O operation. For exemple, the generic write(2) syscall is used for writing to a specified file descriptor but there is neither syscall to open the CD-tray nor syscall to manage routing tables: ioctl is here as a fit-all syscall.
 From the man page:
 NAME ioctl - control device SYNOPSIS #include &amp;lt;sys/ioctl.h&amp;gt; int ioctl(int d, int request, void *args); DESCRIPTION The ioctl() function manipulates the underlying device parameters of special files.</description>
@@ -35,10 +35,10 @@ NAME ioctl - control device SYNOPSIS #include &amp;lt;sys/ioctl.h&amp;gt; int io
     
     <item>
       <title>Display backtrace when a program segfaults</title>
-      <link>http://klyr.quicheaters.org/blog/posts/gnu_backtrace_extension/</link>
+      <link>https://klyr.github.io/posts/gnu_backtrace_extension/</link>
       <pubDate>Mon, 03 Dec 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/gnu_backtrace_extension/</guid>
+      <guid>https://klyr.github.io/posts/gnu_backtrace_extension/</guid>
       <description>Display backtrace when a program segfaults When an application crashes, with a segfault for example it can be usefull have debugging help like a stacktrace of function calls.
 This can be achieved by trapping the SIGSEGV unix signal and by using the backtrace(3) and backtrace_symbols(3) GNU extensions functions.
 Intercept SIGSEGV signal (and others) This is done via the traditional use of sigaction:
@@ -47,10 +47,10 @@ Intercept SIGSEGV signal (and others) This is done via the traditional use of si
     
     <item>
       <title>Trickle, lightweight userspace bandwidth shaper</title>
-      <link>http://klyr.quicheaters.org/blog/posts/trickle/</link>
+      <link>https://klyr.github.io/posts/trickle/</link>
       <pubDate>Tue, 10 Jul 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/trickle/</guid>
+      <guid>https://klyr.github.io/posts/trickle/</guid>
       <description>What &amp;ldquo;Trickle is a portable lightweight userspace bandwidth shaper. It can run in collaborative mode (together with trickled) or in stand alone mode.&amp;rdquo;
 Before, no limitation:
 $ wget &amp;#39;http://wwww.example.org/somefile&amp;#39; --2012-07-10 14:46:13-- http://wwww.example.org/somefile [ ... ] 2012-07-10 14:46:13 (866 KB/s) - `somefile&amp;#39; saved [12485] After, limited to 40 kbit/s:
@@ -59,19 +59,19 @@ $ trickle -v -s -d 40 wget &amp;#39;http://www.example.org/somefile&amp;#39; --2
     
     <item>
       <title>Playing with systemtap</title>
-      <link>http://klyr.quicheaters.org/blog/posts/playing_with_systemtap/</link>
+      <link>https://klyr.github.io/posts/playing_with_systemtap/</link>
       <pubDate>Fri, 06 Jul 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/playing_with_systemtap/</guid>
+      <guid>https://klyr.github.io/posts/playing_with_systemtap/</guid>
       <description>From official website  SystemTap is a tracing and probing tool that allows users to study and monitor the activities of the computer system (particularly, the kernel) in fine detail. It provides information similar to the output of tools like netstat, ps, top, and iostat; however, SystemTap is designed to provide more filtering and analysis options for collected information.  Install Simply install systemtap package and kernel debug packages for your currently running kernel.</description>
     </item>
     
     <item>
       <title>Ip routing based on destination port</title>
-      <link>http://klyr.quicheaters.org/blog/posts/ip_route_based_on_port/</link>
+      <link>https://klyr.github.io/posts/ip_route_based_on_port/</link>
       <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/ip_route_based_on_port/</guid>
+      <guid>https://klyr.github.io/posts/ip_route_based_on_port/</guid>
       <description>Ip routing based on destination port We have two connection providers P1 and P2 behind two IP 10.0.0.253 and 10.0.0.254. P1 has a high bandwidth but low latency, P2 is the oposite.
 We will use Netfilter and iproute2 to filter output packet to port 22 to provider P2. Everything else will go through provider P1.
 First we need to mark packets for TCP connections to port 22 with the iptables command:</description>

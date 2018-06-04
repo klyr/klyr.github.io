@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Unix on ~klyr</title>
-    <link>http://klyr.quicheaters.org/blog/tags/unix/</link>
+    <link>https://klyr.github.io/tags/unix/</link>
     <description>Recent content in Unix on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 25 May 2012 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://klyr.quicheaters.org/blog/tags/unix/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://klyr.github.io/tags/unix/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Pipe Viewer</title>
-      <link>http://klyr.quicheaters.org/blog/posts/pipe_viewer/</link>
+      <link>https://klyr.github.io/posts/pipe_viewer/</link>
       <pubDate>Fri, 25 May 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/pipe_viewer/</guid>
+      <guid>https://klyr.github.io/posts/pipe_viewer/</guid>
       <description> Pipe Viewer To visualize data throughput through a pipe use Pipe Viewer tool.
 $ sudo apt-get install pv For example just replace every pipe with | pv |:
 $ cat bigfile.txt | gzip -9 &amp;gt; /tmp/test.gz $ ```shell $ cat bigfile.txt | pv | gzip -9 &amp;gt; /tmp/test.gz 14MB 0:00:00 [22.6MB/s] [ &amp;lt;=&amp;gt; ] $</description>
@@ -24,10 +24,10 @@ $ cat bigfile.txt | gzip -9 &amp;gt; /tmp/test.gz $ ```shell $ cat bigfile.txt |
     
     <item>
       <title>Various reminders about OpenSSL and Certificates</title>
-      <link>http://klyr.quicheaters.org/blog/posts/various_reminders_about_openssl_and_certificates/</link>
+      <link>https://klyr.github.io/posts/various_reminders_about_openssl_and_certificates/</link>
       <pubDate>Fri, 29 Jul 2011 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/various_reminders_about_openssl_and_certificates/</guid>
+      <guid>https://klyr.github.io/posts/various_reminders_about_openssl_and_certificates/</guid>
       <description>Create a self-signed Certificate authority Create an RSA key Use the genrsa command to create the server private key with the following properties:
  The key is protected with the symetric AES256 algorithm. (protecting the key is not mandatory) The key is 2048 bits long.  Here is the command:
 $ openssl genrsa -aes256 -out private/server.key 2048 Generating RSA private key, 2048 bit long modulus ...............................................................................................+++ ..+++ unable to write &amp;#39;random state&amp;#39; e is 65537 (0x10001) Enter pass phrase for test.</description>
@@ -35,10 +35,10 @@ $ openssl genrsa -aes256 -out private/server.key 2048 Generating RSA private key
     
     <item>
       <title>Colored less output</title>
-      <link>http://klyr.quicheaters.org/blog/posts/colored_less_output/</link>
+      <link>https://klyr.github.io/posts/colored_less_output/</link>
       <pubDate>Tue, 26 Jul 2011 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/colored_less_output/</guid>
+      <guid>https://klyr.github.io/posts/colored_less_output/</guid>
       <description>To colorize the output of less, use the GNU Source-highlight tool.
 Install Debian package:
 $ sudo apt-get install source-highlight Add this to your shell configuration file:
@@ -47,10 +47,10 @@ export LESSOPEN=&amp;#34;| /usr/share/source-highlight/src-hilite-lesspipe.sh %s
     
     <item>
       <title>Preserving Buffer Cache State</title>
-      <link>http://klyr.quicheaters.org/blog/posts/preserving_buffer_cache/</link>
+      <link>https://klyr.github.io/posts/preserving_buffer_cache/</link>
       <pubDate>Mon, 25 Jul 2011 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/preserving_buffer_cache/</guid>
+      <guid>https://klyr.github.io/posts/preserving_buffer_cache/</guid>
       <description>When archiving big files (for example a big database) rsync feeds uselessly the disk cache. Thanks to the posix_fadvise linux system call we can tell the operating system that keeping archived data in cache is useless, leaving the disk cache for other applications (ie: the database).
 Tobi Oetiker explains this on his blog and made a patch for rsync. The patch does not work out of the box and needed little modifications.</description>
     </item>

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Security on ~klyr</title>
-    <link>http://klyr.quicheaters.org/blog/categories/security/</link>
+    <link>https://klyr.github.io/categories/security/</link>
     <description>Recent content in Security on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 29 Jul 2011 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://klyr.quicheaters.org/blog/categories/security/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://klyr.github.io/categories/security/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Various reminders about OpenSSL and Certificates</title>
-      <link>http://klyr.quicheaters.org/blog/posts/various_reminders_about_openssl_and_certificates/</link>
+      <link>https://klyr.github.io/posts/various_reminders_about_openssl_and_certificates/</link>
       <pubDate>Fri, 29 Jul 2011 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/various_reminders_about_openssl_and_certificates/</guid>
+      <guid>https://klyr.github.io/posts/various_reminders_about_openssl_and_certificates/</guid>
       <description>Create a self-signed Certificate authority Create an RSA key Use the genrsa command to create the server private key with the following properties:
  The key is protected with the symetric AES256 algorithm. (protecting the key is not mandatory) The key is 2048 bits long.  Here is the command:
 $ openssl genrsa -aes256 -out private/server.key 2048 Generating RSA private key, 2048 bit long modulus ...............................................................................................+++ ..+++ unable to write &amp;#39;random state&amp;#39; e is 65537 (0x10001) Enter pass phrase for test.</description>

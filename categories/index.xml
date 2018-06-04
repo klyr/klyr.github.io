@@ -2,66 +2,66 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on ~klyr</title>
-    <link>http://klyr.quicheaters.org/blog/categories/</link>
+    <link>https://klyr.github.io/categories/</link>
     <description>Recent content in Categories on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 10 Dec 2012 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://klyr.quicheaters.org/blog/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://klyr.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>C</title>
-      <link>http://klyr.quicheaters.org/blog/categories/c/</link>
+      <link>https://klyr.github.io/categories/c/</link>
       <pubDate>Mon, 10 Dec 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/categories/c/</guid>
+      <guid>https://klyr.github.io/categories/c/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Network</title>
-      <link>http://klyr.quicheaters.org/blog/categories/network/</link>
+      <link>https://klyr.github.io/categories/network/</link>
       <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/categories/network/</guid>
+      <guid>https://klyr.github.io/categories/network/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
-      <link>http://klyr.quicheaters.org/blog/categories/python/</link>
+      <link>https://klyr.github.io/categories/python/</link>
       <pubDate>Tue, 16 Aug 2011 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/categories/python/</guid>
+      <guid>https://klyr.github.io/categories/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R</title>
-      <link>http://klyr.quicheaters.org/blog/categories/r/</link>
+      <link>https://klyr.github.io/categories/r/</link>
       <pubDate>Tue, 02 Aug 2011 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/categories/r/</guid>
+      <guid>https://klyr.github.io/categories/r/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Security</title>
-      <link>http://klyr.quicheaters.org/blog/categories/security/</link>
+      <link>https://klyr.github.io/categories/security/</link>
       <pubDate>Fri, 29 Jul 2011 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/categories/security/</guid>
+      <guid>https://klyr.github.io/categories/security/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Unix</title>
-      <link>http://klyr.quicheaters.org/blog/categories/unix/</link>
+      <link>https://klyr.github.io/categories/unix/</link>
       <pubDate>Wed, 19 Dec 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/categories/unix/</guid>
+      <guid>https://klyr.github.io/categories/unix/</guid>
       <description></description>
     </item>
     

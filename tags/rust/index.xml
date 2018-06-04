@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Rust on ~klyr</title>
-    <link>http://klyr.quicheaters.org/blog/tags/rust/</link>
+    <link>https://klyr.github.io/tags/rust/</link>
     <description>Recent content in Rust on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 17 Dec 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://klyr.quicheaters.org/blog/tags/rust/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://klyr.github.io/tags/rust/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Linking Rust Library with C</title>
-      <link>http://klyr.quicheaters.org/blog/posts/linking_rust_lib_with_c/</link>
+      <link>https://klyr.github.io/posts/linking_rust_lib_with_c/</link>
       <pubDate>Wed, 17 Dec 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://klyr.quicheaters.org/blog/posts/linking_rust_lib_with_c/</guid>
+      <guid>https://klyr.github.io/posts/linking_rust_lib_with_c/</guid>
       <description>Introduction Rust is a system programming Language developed by Mozilla. For a C-like language, it features interesting paradigms:
  functional style, actors, object oriented, safe memory allocation and free  In this article we will link a Rust library with a C program.
 Tools used:
