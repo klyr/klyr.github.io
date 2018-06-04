@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="author" content="">
+
+<meta name="description" content="">
+
+<title>Display backtrace when a program segfaults</title>
+<meta name="generator" content="Hugo 0.41" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet" type="text/css">
+<link  href="http://klyr.quicheaters.org/blog//css/theme.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<div class="page-container container-fluid">
+<div class="col-md-3 menu">
+    <nav class="col-md-3">
+    <h3 class="home-link"><a href="http://klyr.quicheaters.org/blog/">Root</a></h3>
+    <div id="last-posts" class="open">
+        <h3 data-open="last-posts">~klyr - Most recent posts</h3>
+        <ul>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_linc_switch/">Playing with the Erlang Linc Switch</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/linking_rust_lib_with_c/">Linking Rust Library with C</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_linux_framebuffer/">Playing with linux framebuffer</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/updating_ip_routes_in_c/">Updating IP routes programmatically</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/gnu_backtrace_extension/">Display backtrace when a program segfaults</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/trickle/">Trickle, lightweight userspace bandwidth shaper</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_systemtap/">Playing with systemtap</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/pipe_viewer/">Pipe Viewer</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/ip_route_based_on_port/">Ip routing based on destination port</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/c_pointers_ksplice_challenge/">C pointers &amp; Ksplice challenge</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/commands_and_keys_reminders/">Commands &amp; key bindings reminders</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/standalone_python_project/">Standalone Python project/installation</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/using_a_free_cdn/">Using a free CDN, Cloudflare</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/manipulating_data_with_r/">Manipulating data with R</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/various_reminders_about_openssl_and_certificates/">Various reminders about OpenSSL and Certificates</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/colored_less_output/">Colored less output</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/preserving_buffer_cache/">Preserving Buffer Cache State</a></li>
+            
+        </ul>
+    </div>
+    
+    
+    <div id="categories" class="open">
+        <h3 data-open="categories">Categories</h3>
+        <ul class="categories">
+            
+            <li><a href="/categories/c">c</a></li>
+            
+            <li><a href="/categories/network">network</a></li>
+            
+            <li><a href="/categories/python">python</a></li>
+            
+            <li><a href="/categories/r">r</a></li>
+            
+            <li><a href="/categories/security">security</a></li>
+            
+            <li><a href="/categories/unix">unix</a></li>
+            
+        </ul>
+    </div>
+    
+</nav>
+
+</div>
+<div class="col-md-9 content">
+
+<h1>Display backtrace when a program segfaults</h1>
+<h4>Published 12-03-2012 00:00:00</h4>
+<article>
+    
+
+<h1 id="display-backtrace-when-a-program-segfaults">Display backtrace when a program segfaults</h1>
+
+<p>When an application crashes, with a segfault for example it can be usefull
+have debugging help like a stacktrace of function calls.</p>
+
+<p>This can be achieved by trapping the <code>SIGSEGV</code> unix signal and by using the
+<code>backtrace(3)</code> and <code>backtrace_symbols(3)</code> GNU extensions functions.</p>
+
+<h1 id="intercept-sigsegv-signal-and-others">Intercept SIGSEGV signal (and others)</h1>
+
+<p>This is done via the traditional use of <code>sigaction</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;signal.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">struct</span> sigaction handler;
+
+sigemptyset(<span style="color:#f92672">&amp;</span>handler.sa_mask);
+handler.sa_flags <span style="color:#f92672">=</span> SA_NODEFER <span style="color:#f92672">|</span> SA_RESETHAND;
+handler.sa_handler <span style="color:#f92672">=</span> sigsegv_handler;
+
+sigaction(SIGSEGV, <span style="color:#f92672">&amp;</span>handler, NULL);
+sigaction(SIGBUS, <span style="color:#f92672">&amp;</span>handler, NULL);
+sigaction(SIGFPE, <span style="color:#f92672">&amp;</span>handler, NULL);
+sigaction(SIGKILL, <span style="color:#f92672">&amp;</span>handler, NULL);</code></pre></div>
+<h1 id="display-backtrace-of-functions-calls">Display backtrace of functions calls</h1>
+
+<p>Next, implement the <code>sigsegv_handler</code> function to display the stacktrace:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#define BACKTRACE_SIZE 100
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sigsegv_handler</span>(<span style="color:#66d9ef">int</span> sig) {
+    <span style="color:#66d9ef">struct</span> sigaction act;
+    <span style="color:#66d9ef">int</span> nptrs, i;
+    <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>buffer[BACKTRACE_SIZE];
+    <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>strings;
+    
+    fprintf(stderr, <span style="color:#e6db74">&#34;This program crashed with signal %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, sig);
+    
+    fprintf(stderr, <span style="color:#e6db74">&#34;-- STACK TRACE START</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    nptrs <span style="color:#f92672">=</span> backtrace(buffer, BACKTRACE_SIZE);
+    
+    strings <span style="color:#f92672">=</span> backtrace_symbols(buffer, nptrs);
+    <span style="color:#66d9ef">if</span> (strings <span style="color:#f92672">==</span> NULL) {
+        <span style="color:#66d9ef">return</span>;
+    }
+    
+    <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> nptrs; <span style="color:#f92672">++</span>i) {
+        fprintf(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, i, strings[i]);
+    }
+    
+    free(strings);
+    
+    fprintf(stderr, <span style="color:#e6db74">&#34;-- STACK TRACE END</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    
+    <span style="color:#75715e">/* Restore the default behavior for the traped signal */</span>
+    sigemptyset(<span style="color:#f92672">&amp;</span>act.sa_mask);
+    act.sa_flags <span style="color:#f92672">=</span> SA_NODEFER <span style="color:#f92672">|</span> SA_ONSTACK <span style="color:#f92672">|</span> SA_RESETHAND;
+    act.sa_handler <span style="color:#f92672">=</span> SIG_DFL;
+    sigaction(sig, <span style="color:#f92672">&amp;</span>act, NULL);
+    kill(getpid(), sig);
+}</code></pre></div>
+<h1 id="links">Links</h1>
+
+<ul>
+<li><a href="http://antirez.com/news/43">Antirez blog</a></li>
+</ul>
+
+</article>
+
+</div>
+</div>
+<script src="http://klyr.quicheaters.org/blog//js/theme.min.js" type="text/javascript"></script>
+
+
+</body>
+</html>
+

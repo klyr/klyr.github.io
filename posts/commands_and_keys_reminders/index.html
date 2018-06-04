@@ -1,0 +1,229 @@
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="author" content="">
+
+<meta name="description" content="">
+
+<title>Commands &amp; key bindings reminders</title>
+<meta name="generator" content="Hugo 0.41" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet" type="text/css">
+<link  href="http://klyr.quicheaters.org/blog//css/theme.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<div class="page-container container-fluid">
+<div class="col-md-3 menu">
+    <nav class="col-md-3">
+    <h3 class="home-link"><a href="http://klyr.quicheaters.org/blog/">Root</a></h3>
+    <div id="last-posts" class="open">
+        <h3 data-open="last-posts">~klyr - Most recent posts</h3>
+        <ul>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_linc_switch/">Playing with the Erlang Linc Switch</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/linking_rust_lib_with_c/">Linking Rust Library with C</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_linux_framebuffer/">Playing with linux framebuffer</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/updating_ip_routes_in_c/">Updating IP routes programmatically</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/gnu_backtrace_extension/">Display backtrace when a program segfaults</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/trickle/">Trickle, lightweight userspace bandwidth shaper</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_systemtap/">Playing with systemtap</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/pipe_viewer/">Pipe Viewer</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/ip_route_based_on_port/">Ip routing based on destination port</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/c_pointers_ksplice_challenge/">C pointers &amp; Ksplice challenge</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/commands_and_keys_reminders/">Commands &amp; key bindings reminders</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/standalone_python_project/">Standalone Python project/installation</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/using_a_free_cdn/">Using a free CDN, Cloudflare</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/manipulating_data_with_r/">Manipulating data with R</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/various_reminders_about_openssl_and_certificates/">Various reminders about OpenSSL and Certificates</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/colored_less_output/">Colored less output</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/preserving_buffer_cache/">Preserving Buffer Cache State</a></li>
+            
+        </ul>
+    </div>
+    
+    
+    <div id="categories" class="open">
+        <h3 data-open="categories">Categories</h3>
+        <ul class="categories">
+            
+            <li><a href="/categories/c">c</a></li>
+            
+            <li><a href="/categories/network">network</a></li>
+            
+            <li><a href="/categories/python">python</a></li>
+            
+            <li><a href="/categories/r">r</a></li>
+            
+            <li><a href="/categories/security">security</a></li>
+            
+            <li><a href="/categories/unix">unix</a></li>
+            
+        </ul>
+    </div>
+    
+</nav>
+
+</div>
+<div class="col-md-9 content">
+
+<h1>Commands &amp; key bindings reminders</h1>
+<h4>Published 09-28-2011 00:00:00</h4>
+<article>
+    
+
+<h2 id="commands-key-bindings-reminders">Commands &amp; key bindings reminders</h2>
+
+<h3 id="sysdig">Sysdig</h3>
+
+<p>Record activity to file:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo sysdig -w tracefile.scap</code></pre></div>
+<p>Get top cpu usage from the trace file:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo sysdig -r tracefile.scap -c topprocs_cpu</code></pre></div>
+<h3 id="check-open-tcp-port-with-bash-and-send-data-to-tcp-port">Check open TCP port with bash and send data to TCP port</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-man" data-lang="man">$ man bash
+
+[ ... ]
+
+REDIRECTION
+[ ... ]
+
+Bash handles several filenames specially when they are used in redirections,
+as described in the following table:
+   /dev/tcp/host/port
+          If host is a valid hostname or Internet address, and port is an
+          integer port number or service name, bash attempts to open a
+          TCP  connection to the corresponding socket.</code></pre></div>
+<h4 id="port-scan">Port scan</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ &gt; /dev/tcp/google.com/1234
+<span style="color:#75715e"># Wait tcp connection timeout
+</span><span style="color:#75715e"></span>bash: connect: Network is unreachable
+bash: /dev/tcp/google.com/1234: Network is unreachable
+$ echo $?
+<span style="color:#ae81ff">1</span> <span style="color:#75715e"># Port is closed
+</span><span style="color:#75715e"></span>
+$ &gt; /dev/tcp/google.com/80
+$ echo $?
+<span style="color:#ae81ff">0</span> # Port is open</code></pre></div>
+<h4 id="send-data">Send data</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">                                                | $ nc -l -p <span style="color:#ae81ff">4123</span>
+$ echo <span style="color:#e6db74">&#34;stop whining&#34;</span> &gt; /dev/tcp/localhost/4123 |
+$                                               | stop whining
+                                                | $</code></pre></div>
+<h3 id="tcpdump-http-danielmiessler-com-study-tcpdump">tcpdump (<a href="http://danielmiessler.com/study/tcpdump/">http://danielmiessler.com/study/tcpdump/</a>)</h3>
+
+<h4 id="usefull-parameters">Usefull parameters</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">-i any : Listen on all interfaces just to see <span style="color:#66d9ef">if</span> you<span style="color:#e6db74">&#39;re seeing any traffic.
+</span><span style="color:#e6db74">-n : Don&#39;</span>t resolve hostnames.
+-nn : Don<span style="color:#e6db74">&#39;t resolve hostnames or port names.
+</span><span style="color:#e6db74">-X : Show the packet&#39;</span>s contents in both hex and ASCII.
+-XX : Same as -X, but also shows the ethernet header.
+-v, -vv, -vvv : Increase the amount of packet information you get back.
+-c : Only get x number of packets and <span style="color:#66d9ef">then</span> stop.
+-s : Define the snaplength <span style="color:#f92672">(</span>size<span style="color:#f92672">)</span> of the capture in bytes. Use -s0 to get everything, unless you are intentionally capturing less.
+-S : Print absolute sequence numbers.
+-e : Get the ethernet header as well.
+-q : Show less protocol information.
+-E : Decrypt IPSEC traffic by providing an encryption key.</code></pre></div>
+<h4 id="example">Example</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"># tcpdump -i eth0 -nnvvXSs <span style="color:#ae81ff">0</span> tcp and host host.example.com and <span style="color:#f92672">(</span>dst port <span style="color:#ae81ff">80</span> or <span style="color:#ae81ff">443</span><span style="color:#f92672">)</span></code></pre></div>
+<h3 id="lsof">lsof</h3>
+
+<h4 id="basic-which-file-is-using-a-process">Basic, which file is using a process ?</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ lsof -p <span style="color:#ae81ff">41256</span>
+
+COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF    NODE NAME
+<span style="color:#f92672">[</span>...<span style="color:#f92672">]</span> 
+tail    <span style="color:#ae81ff">41256</span> root    3r   REG    <span style="color:#ae81ff">8</span>,2      <span style="color:#ae81ff">336</span> <span style="color:#ae81ff">1974899</span> /var/log/messages
+<span style="color:#f92672">[</span>...<span style="color:#f92672">]</span></code></pre></div>
+<h4 id="usefull-information-about-internet-connections">Usefull information about internet connections</h4>
+
+<p>Use <code>-i [46][protocol][@hostname|hostaddr][:service|port]</code> switch</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ lsof -i4TCP@www.google.fr:80
+
+COMMAND   PID   USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME
+nc      <span style="color:#ae81ff">10924</span>   klyr    3u  IPv4 <span style="color:#ae81ff">12514117</span>      0t0  TCP <span style="color:#ae81ff">192</span>.168.2.17:47553-&gt;fx-in-f99.1e100.net:www <span style="color:#f92672">(</span>ESTABLISHED<span style="color:#f92672">)</span></code></pre></div>
+<h4 id="which-process-is-using-a-file">Which process is using a file ?</h4>
+
+<p>Simply point to the file.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ lsof /var/log/messages
+
+COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF    NODE NAME
+tail    <span style="color:#ae81ff">11248</span> root    3r   REG    <span style="color:#ae81ff">8</span>,2      <span style="color:#ae81ff">336</span> <span style="color:#ae81ff">1974899</span> /var/log/messages</code></pre></div>
+<h3 id="text-manipulation">Text manipulation</h3>
+
+<p>column - columnate lists
+join - join lines of two files on a common field
+comm - compare two sorted files line by line
+paste - merge lines of files
+tac - concatenate and print files in reverse</p>
+
+<h3 id="editors">Editors</h3>
+
+<h4 id="zap-to-char">Zap to char</h4>
+
+<p>Deletes all characters to the next occurence of “)”.</p>
+
+<ul>
+<li>Emacs: M-z )</li>
+<li>Vim  : dt)</li>
+</ul>
+
+<p>Kill balanced expression forward.</p>
+
+<ul>
+<li>Emacs: C-M-k</li>
+</ul>
+
+<h4 id="rectangles">Rectangles</h4>
+
+<p>Emacs:</p>
+
+<ul>
+<li>C-x r
+
+<ul>
+<li>k: Kill the rectangle</li>
+<li>y: Yank the rectangle</li>
+<li>o: Insert space into the rectangle</li>
+<li>t: Replace text of the rectangle</li>
+<li>c: Clear rectangle (replace with space)</li>
+</ul></li>
+</ul>
+
+<h3 id="less">Less</h3>
+
+<p>Use <code>&amp;pattern</code> to display only lines which match the pattern, same as <code>grep | less</code>.</p>
+
+</article>
+
+</div>
+</div>
+<script src="http://klyr.quicheaters.org/blog//js/theme.min.js" type="text/javascript"></script>
+
+
+</body>
+</html>
+

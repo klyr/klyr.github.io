@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Debian on ~klyr</title>
+    <link>http://klyr.quicheaters.org/blog/tags/debian/</link>
+    <description>Recent content in Debian on ~klyr</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 26 Jul 2011 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://klyr.quicheaters.org/blog/tags/debian/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Colored less output</title>
+      <link>http://klyr.quicheaters.org/blog/posts/colored_less_output/</link>
+      <pubDate>Tue, 26 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/colored_less_output/</guid>
+      <description>To colorize the output of less, use the GNU Source-highlight tool.
+Install Debian package:
+$ sudo apt-get install source-highlight Add this to your shell configuration file:
+export LESSOPEN=&amp;#34;| /usr/share/source-highlight/src-hilite-lesspipe.sh %s&amp;#34; export LESS=&amp;#39; -R &amp;#39;</description>
+    </item>
+    
+  </channel>
+</rss>

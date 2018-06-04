@@ -1,0 +1,283 @@
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="author" content="">
+
+<meta name="description" content="">
+
+<title>Manipulating data with R</title>
+<meta name="generator" content="Hugo 0.41" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet" type="text/css">
+<link  href="http://klyr.quicheaters.org/blog//css/theme.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<div class="page-container container-fluid">
+<div class="col-md-3 menu">
+    <nav class="col-md-3">
+    <h3 class="home-link"><a href="http://klyr.quicheaters.org/blog/">Root</a></h3>
+    <div id="last-posts" class="open">
+        <h3 data-open="last-posts">~klyr - Most recent posts</h3>
+        <ul>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_linc_switch/">Playing with the Erlang Linc Switch</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/linking_rust_lib_with_c/">Linking Rust Library with C</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_linux_framebuffer/">Playing with linux framebuffer</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/updating_ip_routes_in_c/">Updating IP routes programmatically</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/gnu_backtrace_extension/">Display backtrace when a program segfaults</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/trickle/">Trickle, lightweight userspace bandwidth shaper</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_systemtap/">Playing with systemtap</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/pipe_viewer/">Pipe Viewer</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/ip_route_based_on_port/">Ip routing based on destination port</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/c_pointers_ksplice_challenge/">C pointers &amp; Ksplice challenge</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/commands_and_keys_reminders/">Commands &amp; key bindings reminders</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/standalone_python_project/">Standalone Python project/installation</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/using_a_free_cdn/">Using a free CDN, Cloudflare</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/manipulating_data_with_r/">Manipulating data with R</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/various_reminders_about_openssl_and_certificates/">Various reminders about OpenSSL and Certificates</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/colored_less_output/">Colored less output</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/preserving_buffer_cache/">Preserving Buffer Cache State</a></li>
+            
+        </ul>
+    </div>
+    
+    
+    <div id="categories" class="open">
+        <h3 data-open="categories">Categories</h3>
+        <ul class="categories">
+            
+            <li><a href="/categories/c">c</a></li>
+            
+            <li><a href="/categories/network">network</a></li>
+            
+            <li><a href="/categories/python">python</a></li>
+            
+            <li><a href="/categories/r">r</a></li>
+            
+            <li><a href="/categories/security">security</a></li>
+            
+            <li><a href="/categories/unix">unix</a></li>
+            
+        </ul>
+    </div>
+    
+</nav>
+
+</div>
+<div class="col-md-9 content">
+
+<h1>Manipulating data with R</h1>
+<h4>Published 08-02-2011 00:00:00</h4>
+<article>
+    
+
+<h1 id="manipulating-data-with-r">Manipulating data with R</h1>
+
+<h2 id="getting-help-about-a-command">Getting help about a command</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">help<span style="color:#f92672">(</span>merge<span style="color:#f92672">)</span>
+
+merge                   package:base                   R Documentation
+
+Merge Two Data Frames
+
+Description:
+
+     Merge two data frames by common columns or row names, or <span style="color:#66d9ef">do</span> other
+     versions of database _join_ operations.
+
+Usage:
+
+     merge<span style="color:#f92672">(</span>x, y, ...<span style="color:#f92672">)</span>
+     
+     <span style="color:#75715e">## Default S3 method:
+</span><span style="color:#75715e"></span>     merge<span style="color:#f92672">(</span>x, y, ...<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>...<span style="color:#f92672">]</span></code></pre></div>
+<h2 id="variable-names-collisions">Variable names collisions</h2>
+
+<hr />
+
+<p>To prevent variable collisions, create a namespaced-like variable.
+For example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R">my.a <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">1</span>
+my.b <span style="color:#f92672">&lt;-</span> <span style="color:#e6db74">&#34;test&#34;</span></code></pre></div>
+<h2 id="installing-third-party-libraries">Installing third-party libraries</h2>
+
+<hr />
+
+<p>To install packages locally (in your HOME directory):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R">install.packages(<span style="color:#e6db74">&#34;psych&#34;</span>)</code></pre></div>
+<h2 id="using-a-specific-library">Using a specific library</h2>
+
+<hr />
+
+<p>The <code>psych</code> package provides function about sample data.
+At the moment I only use the <code>describe</code> function.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#f92672">&gt;</span> <span style="color:#f92672">library</span>(psych)
+<span style="color:#f92672">&gt;</span> describe(my.data)</code></pre></div>
+<h2 id="read-a-csv-file-into-a-variable">Read a CSV file into a variable</h2>
+
+<hr />
+
+<p>A CSV file example (<code>person.csv</code>):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csv" data-lang="csv">&#34;name&#34;,&#34;age&#34;
+John,25
+Jack,50
+Paul,12</code></pre></div>
+<p>Assign it to a variable called <code>persons</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#f92672">&gt;</span> my.person <span style="color:#f92672">&lt;-</span> read.csv(file<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;person.csv&#34;</span>, head<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;,&#34;</span>)</code></pre></div>
+<p>We can access each row with <code>$row_name</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#f92672">&gt;</span> my.person<span style="color:#f92672">$</span>name
+[<span style="color:#ae81ff">1</span>] John Jack Paul
+Levels<span style="color:#f92672">:</span> Jack John Paul</code></pre></div>
+<p>Usefull information about the data (<code>summary</code>):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">summary</span>(my.person)
+   name        age      
+ Jack<span style="color:#f92672">:</span><span style="color:#ae81ff">1</span>   Min.   <span style="color:#f92672">:</span><span style="color:#ae81ff">12.0</span>  
+ John<span style="color:#f92672">:</span><span style="color:#ae81ff">1</span>   <span style="color:#ae81ff">1</span>st Qu.<span style="color:#f92672">:</span><span style="color:#ae81ff">18.5</span>  
+ Paul<span style="color:#f92672">:</span><span style="color:#ae81ff">1</span>   Median <span style="color:#f92672">:</span><span style="color:#ae81ff">25.0</span>  
+          Mean   <span style="color:#f92672">:</span><span style="color:#ae81ff">29.0</span>  
+          <span style="color:#ae81ff">3</span>rd Qu.<span style="color:#f92672">:</span><span style="color:#ae81ff">37.5</span>  
+          Max.   <span style="color:#f92672">:</span><span style="color:#ae81ff">50.0</span>  </code></pre></div>
+<h2 id="filter-some-data-help">Filter some data <em>help(&rdquo;[&ldquo;)</em></h2>
+
+<hr />
+
+<p>Remove all people older than 20:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#f92672">&gt;</span> my.older <span style="color:#f92672">&lt;-</span> my.person[my.person<span style="color:#f92672">$</span>name, my.person<span style="color:#f92672">$</span>age <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">20</span>]
+  name age
+<span style="color:#ae81ff">1</span> John  <span style="color:#ae81ff">25</span>
+<span style="color:#ae81ff">2</span> Jack  <span style="color:#ae81ff">50</span></code></pre></div>
+<p>This can be written more easily by (do not forget the last comma):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#f92672">&gt;</span> my.older <span style="color:#f92672">&lt;-</span> my.person[my.person<span style="color:#f92672">$</span>age <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">20</span>,]
+  name age    
+<span style="color:#ae81ff">1</span> John  <span style="color:#ae81ff">25</span>
+<span style="color:#ae81ff">2</span> Jack  <span style="color:#ae81ff">50</span></code></pre></div>
+<h2 id="merging-two-data-frames-merge">Merging two data frames (<em>merge</em>)</h2>
+
+<hr />
+
+<p>Merging is like doing a <code>join</code> in SQL:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csv" data-lang="csv">&#34;First name&#34;,&#34;country&#34;
+Paul,France
+Jack,&#34;United States&#34;
+John,&#34;Spain&#34;</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#f92672">&gt;</span> my.country <span style="color:#f92672">&lt;-</span> read.csv(file<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;country.csv&#34;</span>, head<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;,&#34;</span>)
+
+<span style="color:#f92672">&gt;</span> my.person_country <span style="color:#f92672">&lt;-</span> <span style="color:#66d9ef">merge</span>(my.person, country, by.x<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;name&#34;</span>, by.y<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;First.name&#34;</span>)
+
+<span style="color:#f92672">&gt;</span> my.person_country
+  name age       country
+<span style="color:#ae81ff">1</span> Jack  <span style="color:#ae81ff">50</span> United States
+<span style="color:#ae81ff">2</span> John  <span style="color:#ae81ff">25</span>         Spain
+<span style="color:#ae81ff">3</span> Paul  <span style="color:#ae81ff">12</span>        France</code></pre></div>
+<h2 id="plotting-a-simple-coordinate-file">Plotting a simple coordinate file</h2>
+
+<hr />
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cat simple_plot.txt
+x,y
+<span style="color:#ae81ff">1</span>,1
+<span style="color:#ae81ff">10</span>,-3
+<span style="color:#ae81ff">25</span>,6
+<span style="color:#ae81ff">8</span>,14</code></pre></div>
+<p>Read the file:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#f92672">&gt;</span> my.simple <span style="color:#f92672">&lt;-</span> read.table(<span style="color:#e6db74">&#39;simple_plot.txt&#39;</span>, header<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>, sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;,&#39;</span>)</code></pre></div>
+<p>Plot the file:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#f92672">&gt;</span> plot(my.simple<span style="color:#f92672">$</span>x, simple<span style="color:#f92672">$</span>y)</code></pre></div>
+<h2 id="plotting-the-number-of-occurence">Plotting the number of occurence</h2>
+
+<hr />
+
+<p>An example of durations (for example a session duration):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cat durations.csv
+duration
+<span style="color:#ae81ff">2</span>
+<span style="color:#ae81ff">15</span>
+<span style="color:#ae81ff">2</span>
+<span style="color:#ae81ff">2</span>
+<span style="color:#ae81ff">2</span>
+<span style="color:#ae81ff">14</span>
+<span style="color:#ae81ff">18</span>
+<span style="color:#ae81ff">2</span>
+<span style="color:#ae81ff">19</span>
+<span style="color:#ae81ff">15</span>
+<span style="color:#ae81ff">19</span>
+<span style="color:#ae81ff">2</span>
+<span style="color:#ae81ff">19</span>
+<span style="color:#ae81ff">50</span></code></pre></div>
+<p>Read the file:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#f92672">&gt;</span> my.duration <span style="color:#f92672">=</span> read.csv(file<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;durations.csv&#34;</span>, head<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)
+<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">summary</span>(my.duration<span style="color:#f92672">$</span>duration)
+   Min. <span style="color:#ae81ff">1</span>st Qu.  Median    Mean <span style="color:#ae81ff">3</span>rd Qu.    Max.
+   <span style="color:#ae81ff">2.00</span>    <span style="color:#ae81ff">2.00</span>   <span style="color:#ae81ff">14.50</span>   <span style="color:#ae81ff">12.93</span>   <span style="color:#ae81ff">18.75</span>   <span style="color:#ae81ff">50.00</span></code></pre></div>
+<p>Dispay the histogram, in 5 part (breaks=5):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#f92672">&gt;</span> hist(my.duration<span style="color:#f92672">$</span>duration, breaks<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>)</code></pre></div>
+<ul>
+<li>6 durations are between 0 and 10 seconds,</li>
+<li>7 between 10 and 20,</li>
+<li>1 between 40 and 50.</li>
+</ul>
+
+<h2 id="percentile-help-quantile">Percentile (<em>help(quantile)</em>)</h2>
+
+<hr />
+
+<p>With the previous data:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#f92672">&gt;</span> quantile(my.duration<span style="color:#f92672">$</span>duration)
+   <span style="color:#ae81ff">0</span><span style="color:#f92672">%   25%</span>   <span style="color:#ae81ff">50</span><span style="color:#f92672">%   75%</span>  <span style="color:#ae81ff">100</span>%
+ <span style="color:#ae81ff">2.00</span>  <span style="color:#ae81ff">2.00</span> <span style="color:#ae81ff">14.50</span> <span style="color:#ae81ff">18.75</span> <span style="color:#ae81ff">50.00</span></code></pre></div>
+<ul>
+<li>0% of sessions are below 2 seconds</li>
+<li>25% are below 2 seconds</li>
+<li>50% are below 14.5 seconds</li>
+<li>75% are below 18.75 seconds</li>
+<li>100% are below 50 seconds</li>
+</ul>
+
+<p>This also can be read as: &ldquo;If you take a random session you have 75%
+chance to find a duration below 18.75 seconds&rdquo;.</p>
+
+<p>You can specify your own percentiles with the probs parameter:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#f92672">&gt;</span> quantile(my.duration<span style="color:#f92672">$</span>duration, probs<span style="color:#f92672">=</span><span style="color:#66d9ef">c</span>(<span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">0.9</span>, <span style="color:#ae81ff">0.95</span>, <span style="color:#ae81ff">0.99</span>))
+  <span style="color:#ae81ff">50</span><span style="color:#f92672">%   90%</span>   <span style="color:#ae81ff">95</span><span style="color:#f92672">%   99%</span> 
+<span style="color:#ae81ff">14.50</span> <span style="color:#ae81ff">19.00</span> <span style="color:#ae81ff">29.85</span> <span style="color:#ae81ff">45.97</span> </code></pre></div>
+<h2 id="links">Links</h2>
+
+<ul>
+<li><a href="http://www.cyclismo.org/tutorial/R/">http://www.cyclismo.org/tutorial/R/</a></li>
+<li><a href="https://secure.wikimedia.org/wikibooks/en/wiki/R_Programming">https://secure.wikimedia.org/wikibooks/en/wiki/R_Programming</a></li>
+<li><a href="http://www.r-bloggers.com/">http://www.r-bloggers.com/</a></li>
+<li><a href="http://www.r-statistics.com/2009/10/free-statistics-e-books-for-download/">http://www.r-statistics.com/2009/10/free-statistics-e-books-for-download/</a></li>
+</ul>
+
+</article>
+
+</div>
+</div>
+<script src="http://klyr.quicheaters.org/blog//js/theme.min.js" type="text/javascript"></script>
+
+
+</body>
+</html>
+

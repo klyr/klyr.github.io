@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on ~klyr</title>
+    <link>http://klyr.quicheaters.org/blog/tags/python/</link>
+    <description>Recent content in Python on ~klyr</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 16 Aug 2011 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://klyr.quicheaters.org/blog/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Standalone Python project/installation</title>
+      <link>http://klyr.quicheaters.org/blog/posts/standalone_python_project/</link>
+      <pubDate>Tue, 16 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/standalone_python_project/</guid>
+      <description>Let&amp;rsquo;s take an example of installing Django without using Debian apt command. We will use virtualenv to make a self-contained python directory.
+First create your installation directory:
+$ mkdir -p project/django $ cd project/django Get the virtualenv tool:
+$ wget --no-check-certificate &amp;#39;https://raw.github.com/pypa/virtualenv/develop/virtualenv.py&amp;#39; Create the virtual environment:
+$ python virtualenv.py --no-site-packages --distribute python_django_env Note interesting parameters::
+--no-site-packages Don&amp;#39;t give access to the global site-packages dir to the virtual environment --distribute Use Distribute instead of Setuptools.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="author" content="">
+
+<meta name="description" content="">
+
+<title>Playing with linux framebuffer</title>
+<meta name="generator" content="Hugo 0.41" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet" type="text/css">
+<link  href="http://klyr.quicheaters.org/blog//css/theme.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<div class="page-container container-fluid">
+<div class="col-md-3 menu">
+    <nav class="col-md-3">
+    <h3 class="home-link"><a href="http://klyr.quicheaters.org/blog/">Root</a></h3>
+    <div id="last-posts" class="open">
+        <h3 data-open="last-posts">~klyr - Most recent posts</h3>
+        <ul>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_linc_switch/">Playing with the Erlang Linc Switch</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/linking_rust_lib_with_c/">Linking Rust Library with C</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_linux_framebuffer/">Playing with linux framebuffer</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/updating_ip_routes_in_c/">Updating IP routes programmatically</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/gnu_backtrace_extension/">Display backtrace when a program segfaults</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/trickle/">Trickle, lightweight userspace bandwidth shaper</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_systemtap/">Playing with systemtap</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/pipe_viewer/">Pipe Viewer</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/ip_route_based_on_port/">Ip routing based on destination port</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/c_pointers_ksplice_challenge/">C pointers &amp; Ksplice challenge</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/commands_and_keys_reminders/">Commands &amp; key bindings reminders</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/standalone_python_project/">Standalone Python project/installation</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/using_a_free_cdn/">Using a free CDN, Cloudflare</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/manipulating_data_with_r/">Manipulating data with R</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/various_reminders_about_openssl_and_certificates/">Various reminders about OpenSSL and Certificates</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/colored_less_output/">Colored less output</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/preserving_buffer_cache/">Preserving Buffer Cache State</a></li>
+            
+        </ul>
+    </div>
+    
+    
+    <div id="categories" class="open">
+        <h3 data-open="categories">Categories</h3>
+        <ul class="categories">
+            
+            <li><a href="/categories/c">c</a></li>
+            
+            <li><a href="/categories/network">network</a></li>
+            
+            <li><a href="/categories/python">python</a></li>
+            
+            <li><a href="/categories/r">r</a></li>
+            
+            <li><a href="/categories/security">security</a></li>
+            
+            <li><a href="/categories/unix">unix</a></li>
+            
+        </ul>
+    </div>
+    
+</nav>
+
+</div>
+<div class="col-md-9 content">
+
+<h1>Playing with linux framebuffer</h1>
+<h4>Published 12-19-2012 00:00:00</h4>
+<article>
+    
+
+<h2 id="what-is-framebuffer">What is framebuffer ?</h2>
+
+<p>The Linux framebuffer is an abstraction layer, hardware independant, to display
+graphical elements in Linux console. Framebuffer is often used in embedded
+devices. Thanks to <code>DirectFB</code>, hadware acceleration can be used.</p>
+
+<h2 id="how-to-program-framebuffer">How to program framebuffer ?</h2>
+
+<p>Programming the Linux framebuffer is quite simple:</p>
+
+<ul>
+<li><code>ioctl</code> commands and structs are located in <code>/usr/include/linux/fb.h</code></li>
+<li>use <code>open(2)</code> to open <code>/dev/fb0</code></li>
+<li>use various <code>ioctl(2)</code> calls to get or set properties</li>
+<li><code>mmap(2)</code> framebuffer device to memory</li>
+<li>write to the mmaped memory to display your graphics</li>
+</ul>
+
+<p>Usefull structs are:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> fb_var_screeninfo; <span style="color:#75715e">/* Get variable screen informations with FBIOGET_VSCREENINFO */</span>
+<span style="color:#66d9ef">struct</span> fb_fix_screeninfo; <span style="color:#75715e">/* Get fixed screen informations with FBIOGET_FSCREENINFO */</span></code></pre></div>
+<h2 id="a-simple-program">A simple program</h2>
+
+<p>Return codes are not checked for simplicity.</p>
+
+<p>Includes:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/mman.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/ioctl.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/fb.h&gt;</span></code></pre></div>
+<p>First, open the framebuffer device,</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> fbfd;
+fbfd <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;/dev/fb0&#34;</span>, O_RDWR);</code></pre></div>
+<p>Get various screen informations with <code>ioctl</code>,</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">struct</span> fb_fix_screeninfo finfo;
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">struct</span> fb_var_screeninfo vinfo;
+
+ioctl(fbfd, FBIOGET_FSCREENINFO, <span style="color:#f92672">&amp;</span>finfo);
+ioctl(fbfd, FBIOGET_VSCREENINFO, <span style="color:#f92672">&amp;</span>vinfo);
+
+fprintf(stdout, <span style="color:#e6db74">&#34;Fixed screen informations</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                <span style="color:#e6db74">&#34;-------------------------</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                <span style="color:#e6db74">&#34;Id string: %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                <span style="color:#e6db74">&#34;FB start memory: %p</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+                finfo.id, (<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>)finfo.smem_start);
+
+fprintf(stdout, <span style="color:#e6db74">&#34;Variable screen informations</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                <span style="color:#e6db74">&#34;----------------------------</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                <span style="color:#e6db74">&#34;xres: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                <span style="color:#e6db74">&#34;yres: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                <span style="color:#e6db74">&#34;xres_virtual: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                <span style="color:#e6db74">&#34;yres_virtual: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                <span style="color:#e6db74">&#34;bits_per_pixel: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+                vinfo.xres, vinfo.yres, vinfo.xres_virtual,
+                vinfo.yres_virtual, vinfo.bits_per_pixel);</code></pre></div>
+<p>Mmap framebuffer device,</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">screen_size <span style="color:#f92672">=</span> vinfo.xres <span style="color:#f92672">*</span> vinfo.yres <span style="color:#f92672">*</span> vinfo.bits_per_pixel <span style="color:#f92672">/</span> <span style="color:#ae81ff">8</span>;
+fbp <span style="color:#f92672">=</span> mmap(NULL, screen_size, PROT_READ <span style="color:#f92672">|</span> PROT_WRITE, MAP_SHARED, fbfd, <span style="color:#ae81ff">0</span>);</code></pre></div>
+<p>Yon can now draw a green rectangle in console mode</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>; <span style="color:#66d9ef">int</span> y <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>; <span style="color:#75715e">/* Upper left corner */</span>
+<span style="color:#66d9ef">int</span> w <span style="color:#f92672">=</span> <span style="color:#ae81ff">40</span>; <span style="color:#66d9ef">int</span> h <span style="color:#f92672">=</span> <span style="color:#ae81ff">60</span>; <span style="color:#75715e">/* Width and height */</span>
+
+<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> h; <span style="color:#f92672">++</span>j) {
+    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> w; <span style="color:#f92672">++</span>i) {
+        <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>p;
+
+        p <span style="color:#f92672">=</span> fbp <span style="color:#f92672">+</span> ((y <span style="color:#f92672">+</span> j) <span style="color:#f92672">*</span> vinfo.xres <span style="color:#f92672">+</span> (x <span style="color:#f92672">+</span> i)) <span style="color:#f92672">*</span> vinfo.bits_per_pixel<span style="color:#f92672">/</span><span style="color:#ae81ff">8</span>;
+
+        <span style="color:#75715e">/* We consider a 32 bits per pixels */</span>
+        p[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;   <span style="color:#75715e">/* blue */</span>
+        p[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">255</span>; <span style="color:#75715e">/* green */</span>
+        p[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;   <span style="color:#75715e">/* red */</span>
+        p[<span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;   <span style="color:#75715e">/* alpha */</span>
+    }
+}</code></pre></div>
+<p>Do not forget to release allocated resources,</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">munmap(fbp, <span style="color:#ae81ff">0</span>);
+close(fbfd);</code></pre></div>
+<h2 id="links">Links</h2>
+
+<ul>
+<li><a href="http://tldp.org/HOWTO/Framebuffer-HOWTO/">Framebuffer HOWTO</a></li>
+<li><a href="http://docs.cs.up.ac.za/programming/cplusplus/qt/emb-framebuffer-howto.html">Enabling the Linux Framebuffer</a></li>
+</ul>
+
+</article>
+
+</div>
+</div>
+<script src="http://klyr.quicheaters.org/blog//js/theme.min.js" type="text/javascript"></script>
+
+
+</body>
+</html>
+

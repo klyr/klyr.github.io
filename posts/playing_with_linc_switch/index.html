@@ -1,0 +1,278 @@
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="author" content="">
+
+<meta name="description" content="">
+
+<title>Playing with the Erlang Linc Switch</title>
+<meta name="generator" content="Hugo 0.41" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet" type="text/css">
+<link  href="http://klyr.quicheaters.org/blog//css/theme.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<div class="page-container container-fluid">
+<div class="col-md-3 menu">
+    <nav class="col-md-3">
+    <h3 class="home-link"><a href="http://klyr.quicheaters.org/blog/">Root</a></h3>
+    <div id="last-posts" class="open">
+        <h3 data-open="last-posts">~klyr - Most recent posts</h3>
+        <ul>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_linc_switch/">Playing with the Erlang Linc Switch</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/linking_rust_lib_with_c/">Linking Rust Library with C</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_linux_framebuffer/">Playing with linux framebuffer</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/updating_ip_routes_in_c/">Updating IP routes programmatically</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/gnu_backtrace_extension/">Display backtrace when a program segfaults</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/trickle/">Trickle, lightweight userspace bandwidth shaper</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_systemtap/">Playing with systemtap</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/pipe_viewer/">Pipe Viewer</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/ip_route_based_on_port/">Ip routing based on destination port</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/c_pointers_ksplice_challenge/">C pointers &amp; Ksplice challenge</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/commands_and_keys_reminders/">Commands &amp; key bindings reminders</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/standalone_python_project/">Standalone Python project/installation</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/using_a_free_cdn/">Using a free CDN, Cloudflare</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/manipulating_data_with_r/">Manipulating data with R</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/various_reminders_about_openssl_and_certificates/">Various reminders about OpenSSL and Certificates</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/colored_less_output/">Colored less output</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/preserving_buffer_cache/">Preserving Buffer Cache State</a></li>
+            
+        </ul>
+    </div>
+    
+    
+    <div id="categories" class="open">
+        <h3 data-open="categories">Categories</h3>
+        <ul class="categories">
+            
+            <li><a href="/categories/c">c</a></li>
+            
+            <li><a href="/categories/network">network</a></li>
+            
+            <li><a href="/categories/python">python</a></li>
+            
+            <li><a href="/categories/r">r</a></li>
+            
+            <li><a href="/categories/security">security</a></li>
+            
+            <li><a href="/categories/unix">unix</a></li>
+            
+        </ul>
+    </div>
+    
+</nav>
+
+</div>
+<div class="col-md-9 content">
+
+<h1>Playing with the Erlang Linc Switch</h1>
+<h4>Published 12-19-2014 00:00:00</h4>
+<article>
+    
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Linc is a software switch in Erlang, which support Openflow 1.4.</p>
+
+<p>Here we will try to install it and make it run in a simple scenario. Later we will try to use it with an openflow compatible Controller (maybe Opendaylight or FlowER).</p>
+
+<h2 id="installation">Installation</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git clone https://github.com/FlowForwarding/LINC-Switch.git
+$ sudo apt-get install libpcap0.8-dev
+$ cd LINC-Switch
+$ cp rel/files/sys.config.orig rel/files/sys.config
+$ make</code></pre></div>
+<p>Note that at some point during installation, <code>root</code> privileges are required to use the <code>setcap</code> utility. This is needed to give the <code>admin_net</code> capability to the erlang binary.</p>
+
+<p>We can notice that Erlang dependencies are:</p>
+
+<ul>
+<li>enetconf: <code>enetconf is a NETCONF 1.0/1.1 server implemented in Erlang.</code>. NETCONF is a new XML-based protocol aimed at replacing the old SNMP protocol</li>
+<li>of_protocol: <code>This is an OpenFlow Protocol library implemented in Erlang.</code></li>
+<li>pkt: <code>An Erlang network protocol library.</code></li>
+</ul>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>Edit the <code>rel/linc/releases/1.0/sys.config</code> file to configure 2 ports.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-erlang" data-lang="erlang">{capable_switch_ports,
+  [
+    {port, <span style="color:#ae81ff">1</span>, [{interface, <span style="color:#e6db74">&#34;tap0&#34;</span>}, {type, tap}]},
+    {port, <span style="color:#ae81ff">2</span>, [{interface, <span style="color:#e6db74">&#34;tap1&#34;</span>}, {type, tap}]}
+  ]}</code></pre></div>
+<p>Enable connection to the simple controller and assign port to the logical switch:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-erlang" data-lang="erlang">{controllers,
+  [
+         {<span style="color:#e6db74">&#34;Switch0-DefaultController&#34;</span>, <span style="color:#e6db74">&#34;localhost&#34;</span>, <span style="color:#ae81ff">6633</span>, tcp}
+  ]}
+
+:::erlang
+{ports, [
+         {port, <span style="color:#ae81ff">1</span>, [{queues, []}]},
+         {port, <span style="color:#ae81ff">2</span>, [{queues, []}]}
+        ]}</code></pre></div>
+<h2 id="first-launch">First launch</h2>
+
+<p>First, launch a simple OpenFlow controller:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ erl -pa apps/*/ebin deps/*/ebin</code></pre></div>
+<p>Compile it</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-erlang" data-lang="erlang"><span style="color:#ae81ff">1</span><span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;scripts/of_controller_v4.erl&#34;</span>).</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-erlang" data-lang="erlang"><span style="color:#ae81ff">2</span><span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">rr</span>(of_protocol), <span style="color:#a6e22e">rr</span>(ofp_v4).
+[...]
+<span style="color:#ae81ff">3</span><span style="color:#f92672">&gt;</span> {ok, CtrlPid} <span style="color:#f92672">=</span> of_controller_v4:<span style="color:#a6e22e">start</span>(<span style="color:#ae81ff">6633</span>).</code></pre></div>
+<p>We now have a simple OpenFlow controller running.</p>
+
+<p>Now, we can launch the switch</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ./rel/linc/bin/linc console</code></pre></div>
+<p>You should see messages between the switch and the controller.</p>
+
+<p>Even if the <code>cap_net_admin</code> capability is set on the <code>beam.smp</code> binary, on my current installation, I have to launch the switch as root to create TAP interfaces.</p>
+
+<h2 id="clean-flow-tables">Clean Flow tables</h2>
+
+<p>By default, the simple controller send multiple message to the switch. For example a flow table called <code>flow_table_0</code> is populated with some entries:</p>
+
+<p>To see the rules on the switch:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-erlang" data-lang="erlang"><span style="color:#f92672">&gt;</span> ets:<span style="color:#a6e22e">tab2list</span>(linc:<span style="color:#a6e22e">lookup</span>(<span style="color:#ae81ff">0</span>, flow_table_0)).</code></pre></div>
+<p>From the controller, create an OpenFlow message to delete all entries from all tables.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-erlang" data-lang="erlang"><span style="color:#75715e">%% Get the switch connection
+</span><span style="color:#75715e"></span><span style="color:#f92672">&gt;</span> {ok, [Conn|_]} <span style="color:#f92672">=</span> of_controller_v4:<span style="color:#a6e22e">get_connections</span>(CtrlPid).
+<span style="color:#f92672">&gt;</span> RemoveAllMsg <span style="color:#f92672">=</span> of_controller_v4:<span style="color:#a6e22e">remove_all_flows</span>().
+<span style="color:#f92672">&gt;</span> of_controller_v4:send(CtrlPid, Conn, RemoveAllMsg).</code></pre></div>
+<h2 id="let-use-scapy-to-send-packets-on-tap-interfaces">Let use scapy to send packets on TAP interfaces</h2>
+
+<p>Installation:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo apt-get install scapy</code></pre></div>
+<p>Here we create a new ethernet frame encapsulating our new protocol (type 0xAAAA). The new protocol has a fixed size of 10 bytes enclosed by brackets for the destination.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> etherType <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x4141</span>
+
+<span style="color:#f92672">&gt;&gt;&gt;</span> eAlice <span style="color:#f92672">=</span> Ether()
+<span style="color:#f92672">&gt;&gt;&gt;</span> eAlice<span style="color:#f92672">.</span>type <span style="color:#f92672">=</span> etherType
+<span style="color:#f92672">&gt;&gt;&gt;</span> eAlice<span style="color:#f92672">.</span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;[BOB     ]Hello BOB&#34;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> sendp(eAlice, iface<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tap0&#34;</span>)</code></pre></div>
+<p>Use <code>tcpdump</code> to check that this ethernet frame is sent to the <code>tap0</code> interface:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo tcpdump -i tap0
+tcpdump: verbose output suppressed, use -v or -vv <span style="color:#66d9ef">for</span> full protocol decode
+listening on tap0, link-type EN10MB <span style="color:#f92672">(</span>Ethernet<span style="color:#f92672">)</span>, capture size <span style="color:#ae81ff">262144</span> bytes
+<span style="color:#ae81ff">11</span>:20:41.154103 <span style="color:#ae81ff">00</span>:00:00:00:00:00 <span style="color:#f92672">(</span>oui Ethernet<span style="color:#f92672">)</span> &gt; Broadcast, ethertype Unknown <span style="color:#f92672">(</span>0x4141<span style="color:#f92672">)</span>, length <span style="color:#ae81ff">33</span>: 
+    0x0000:  5b42 4f42 <span style="color:#ae81ff">2020</span> <span style="color:#ae81ff">2020</span> 205d <span style="color:#ae81ff">4865</span> 6c6c 6f20  <span style="color:#f92672">[</span>BOB.....<span style="color:#f92672">]</span>Hello.
+    0x0010:  424f <span style="color:#ae81ff">42</span>                                  BOB</code></pre></div>
+<h2 id="first-openflow-rule">First OpenFlow rule</h2>
+
+<p>Alice is on the <code>tap0</code> interface side and Bob on <code>tap1</code> interface side. We want the switch to forward ethernet frames from Alice to Bob based on the identifier of the destination.</p>
+
+<p>We want the rule to be:
+* If a packet is on <code>tap0</code> and first 10 bytes are <code>[BOB     ]</code> then forward this packet to <code>tap1</code>
+* If a packet is on <code>tap1</code> and first 10 bytes are <code>[ALICE   ]</code> then forward this packet to <code>tap0</code></p>
+
+<p>To create a rule, we need to create a <a href="http://flowgrammable.org/sdn/openflow/message-layer/flowmod/"><code>FlowMod</code></a> message.</p>
+
+<p>The <code>#ofp_*</code> records are defined in <a href="https://github.com/FlowForwarding/of_protocol/blob/master/include/ofp_v4.hrl"><code>ofp_v4.hrl</code></a> file of the <code>of_protocol</code> project.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-erlang" data-lang="erlang"><span style="color:#75715e">%% Match on the ethernet_type field
+</span><span style="color:#75715e"></span>EtherTypeMatch <span style="color:#f92672">=</span> #ofp_field{
+    class <span style="color:#f92672">=</span> openflow_basic,
+    name <span style="color:#f92672">=</span> eth_type,
+    value <span style="color:#f92672">=</span> <span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">16#41</span>,<span style="color:#ae81ff">16#41</span><span style="color:#f92672">&gt;&gt;</span>,
+    mask <span style="color:#f92672">=</span> undefined
+}.
+
+<span style="color:#75715e">%% Match on packet coming from port 1
+</span><span style="color:#75715e"></span>SrcMatchPort1 <span style="color:#f92672">=</span> #ofp_field{
+    class <span style="color:#f92672">=</span> openflow_basic,
+    name <span style="color:#f92672">=</span> in_port,
+    value <span style="color:#f92672">=</span> <span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">1</span><span style="color:#f92672">&gt;&gt;</span>,
+    mask <span style="color:#f92672">=</span> <span style="color:#f92672">&lt;&lt;</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">&gt;&gt;</span>
+}.
+
+<span style="color:#75715e">%% Send packet to port 2
+</span><span style="color:#75715e"></span>SendToPort2 <span style="color:#f92672">=</span> #ofp_action_output{
+    port <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>,
+    max_len <span style="color:#f92672">=</span> <span style="color:#ae81ff">64</span>
+}
+
+<span style="color:#75715e">%% Add rule to table 0
+</span><span style="color:#75715e">%% Send all packets with ethernet type 0x4141 to port 2
+</span><span style="color:#75715e"></span>Rule1 <span style="color:#f92672">=</span> #ofp_flow_mod{
+    cookie <span style="color:#f92672">=</span> <span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">64</span><span style="color:#f92672">&gt;&gt;</span>,
+    cookie_mask <span style="color:#f92672">=</span> <span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">64</span><span style="color:#f92672">&gt;&gt;</span>,
+    table_id <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+    command <span style="color:#f92672">=</span> add,
+    idle_timeout <span style="color:#f92672">=</span> <span style="color:#ae81ff">30000</span>,
+    hard_timeout <span style="color:#f92672">=</span> <span style="color:#ae81ff">60000</span>,
+    match <span style="color:#f92672">=</span> #ofp_match{fields <span style="color:#f92672">=</span> [SrcMatchPort1, EtherTypeMatch]},
+    instructions <span style="color:#f92672">=</span> [#ofp_instruction_write_actions{actions <span style="color:#f92672">=</span> [SendToPort2]}]
+}.
+
+Message <span style="color:#f92672">=</span> #ofp_message{
+    version <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>,
+    xid <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>,
+    body <span style="color:#f92672">=</span> Rule1
+}.
+
+of_controller_v4:send(CtrlPid, Conn, Message).</code></pre></div>
+<p>Here, we create and send a message from the controller to the switch:</p>
+
+<ul>
+<li>the message is of type <code>flow_mod</code> which modifies the state of the switch,</li>
+<li>the command is <code>add</code>, to add a new rule to the table,</li>
+<li>there is 2 match rules, one to match on packets coming on port 1, and the other is to match on ethernet frames with type 0x4141 both rules have to match for this rule to apply,</li>
+<li>there is one action to forward matching packet to port 2.</li>
+</ul>
+
+<p>We are now ready to make our first check:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo tcpdump -i tap1 # Listen on Bob<span style="color:#960050;background-color:#1e0010">&#39;</span>s side</code></pre></div>
+<p>Then send the packet with scapy:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> sendp(eAlice, iface<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tap0&#34;</span>)</code></pre></div>
+<p>The message is coming on the <code>tap1</code> interface:</p>
+
+<pre><code>17:04:01.834366 00:00:00:00:00:00 (oui Ethernet) &gt; Broadcast, ethertype Unknown (0x4141), length 33: 
+    0x0000:  5b42 4f42 2020 2020 205d 4865 6c6c 6f20  [BOB.....]Hello.
+    0x0010:  424f 42                                  BOB
+</code></pre>
+
+<p>Now we need to find a way to match on the first ten bytes to get the destination.</p>
+
+<p>By looking at the <a href="https://www.opennetworking.org/images/stories/downloads/sdn-resources/onf-specifications/openflow/openflow-switch-v1.3.4.pdf">OpenFlow 1.3.4 Specification</a>, section 7.2.3.8 Headers Match Fields, we can read that we can match only on a set of pre-defined headers. For example, on a VLAN ID, an IPv6 destination address or a label in a MPLS header.</p>
+
+<p>So, the journey ends here. To achieve our use case (matching bytes on a non standard protocol) maybe we need to look at <a href="http://p4.org/">P4</a></p>
+
+<h2 id="links">Links</h2>
+
+<ul>
+<li><a href="https://github.com/FlowForwarding/LINC-Switch.git">https://github.com/FlowForwarding/LINC-Switch.git</a></li>
+<li><a href="http://flowgrammable.org/sdn/openflow/">http://flowgrammable.org/sdn/openflow/</a></li>
+</ul>
+
+</article>
+
+</div>
+</div>
+<script src="http://klyr.quicheaters.org/blog//js/theme.min.js" type="text/javascript"></script>
+
+
+</body>
+</html>
+

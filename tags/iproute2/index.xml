@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Iproute2 on ~klyr</title>
+    <link>http://klyr.quicheaters.org/blog/tags/iproute2/</link>
+    <description>Recent content in Iproute2 on ~klyr</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 18 Apr 2012 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://klyr.quicheaters.org/blog/tags/iproute2/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Ip routing based on destination port</title>
+      <link>http://klyr.quicheaters.org/blog/posts/ip_route_based_on_port/</link>
+      <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/ip_route_based_on_port/</guid>
+      <description>Ip routing based on destination port We have two connection providers P1 and P2 behind two IP 10.0.0.253 and 10.0.0.254. P1 has a high bandwidth but low latency, P2 is the oposite.
+We will use Netfilter and iproute2 to filter output packet to port 22 to provider P2. Everything else will go through provider P1.
+First we need to mark packets for TCP connections to port 22 with the iptables command:</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,402 @@
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="author" content="">
+
+<meta name="description" content="">
+
+<title>Various reminders about OpenSSL and Certificates</title>
+<meta name="generator" content="Hugo 0.41" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet" type="text/css">
+<link  href="http://klyr.quicheaters.org/blog//css/theme.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<div class="page-container container-fluid">
+<div class="col-md-3 menu">
+    <nav class="col-md-3">
+    <h3 class="home-link"><a href="http://klyr.quicheaters.org/blog/">Root</a></h3>
+    <div id="last-posts" class="open">
+        <h3 data-open="last-posts">~klyr - Most recent posts</h3>
+        <ul>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_linc_switch/">Playing with the Erlang Linc Switch</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/linking_rust_lib_with_c/">Linking Rust Library with C</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_linux_framebuffer/">Playing with linux framebuffer</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/updating_ip_routes_in_c/">Updating IP routes programmatically</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/gnu_backtrace_extension/">Display backtrace when a program segfaults</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/trickle/">Trickle, lightweight userspace bandwidth shaper</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_systemtap/">Playing with systemtap</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/pipe_viewer/">Pipe Viewer</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/ip_route_based_on_port/">Ip routing based on destination port</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/c_pointers_ksplice_challenge/">C pointers &amp; Ksplice challenge</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/commands_and_keys_reminders/">Commands &amp; key bindings reminders</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/standalone_python_project/">Standalone Python project/installation</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/using_a_free_cdn/">Using a free CDN, Cloudflare</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/manipulating_data_with_r/">Manipulating data with R</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/various_reminders_about_openssl_and_certificates/">Various reminders about OpenSSL and Certificates</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/colored_less_output/">Colored less output</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/preserving_buffer_cache/">Preserving Buffer Cache State</a></li>
+            
+        </ul>
+    </div>
+    
+    
+    <div id="categories" class="open">
+        <h3 data-open="categories">Categories</h3>
+        <ul class="categories">
+            
+            <li><a href="/categories/c">c</a></li>
+            
+            <li><a href="/categories/network">network</a></li>
+            
+            <li><a href="/categories/python">python</a></li>
+            
+            <li><a href="/categories/r">r</a></li>
+            
+            <li><a href="/categories/security">security</a></li>
+            
+            <li><a href="/categories/unix">unix</a></li>
+            
+        </ul>
+    </div>
+    
+</nav>
+
+</div>
+<div class="col-md-9 content">
+
+<h1>Various reminders about OpenSSL and Certificates</h1>
+<h4>Published 07-29-2011 00:00:00</h4>
+<article>
+    
+
+<h2 id="create-a-self-signed-certificate-authority">Create a self-signed Certificate authority</h2>
+
+<h2 id="create-an-rsa-key">Create an RSA key</h2>
+
+<p>Use the <code>genrsa</code> command to create the server private key with the following properties:</p>
+
+<ul>
+<li>The key is protected with the symetric AES256 algorithm. (protecting the key is not mandatory)</li>
+<li>The key is <code>2048</code> bits long.</li>
+</ul>
+
+<p>Here is the command:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl genrsa -aes256 -out private/server.key <span style="color:#ae81ff">2048</span>
+
+Generating RSA private key, <span style="color:#ae81ff">2048</span> bit long modulus
+...............................................................................................+++
+..+++
+unable to write <span style="color:#e6db74">&#39;random state&#39;</span>
+e is <span style="color:#ae81ff">65537</span> <span style="color:#f92672">(</span>0x10001<span style="color:#f92672">)</span>
+Enter pass phrase <span style="color:#66d9ef">for</span> test.key: ********
+Verifying - Enter pass phrase <span style="color:#66d9ef">for</span> test.key: ********</code></pre></div>
+<p>This create <code>server.key</code> file. We can view informations about the generated key with the <code>rsa</code> command:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl rsa -in private/server.key -text -noout
+
+Enter pass phrase <span style="color:#66d9ef">for</span> test.key:
+Private-Key: <span style="color:#f92672">(</span><span style="color:#ae81ff">2048</span> bit<span style="color:#f92672">)</span>
+modulus:
+    <span style="color:#ae81ff">00</span>:c5:01:57:03:b1:11:5a:b8:3e:38:5e:ac:4e:27:
+    3f:40:79:f6:34:06:74:b5:4d:ad:48:4c:f3:02:22:
+    e2:f6:74:21:c0:72:63:ad:b6:f4:61:46:16:06:ef:
+    <span style="color:#ae81ff">40</span>:e3:80:5b:e8:d7:4e:44:d8:22:7c:51:ca:4c:e3:
+    f0:00:19:e1:a1:60:8e:18:e6:4d:14:96:91:58:5e:
+    4c:a6:4f:76:4e:98:d2:c2:4a:92:90:fc:be:73:d8:
+    <span style="color:#ae81ff">49</span>:4a:fb:35:c7:ba:38:8e:9f:65:8f:48:b9:d0:04:
+    <span style="color:#ae81ff">00</span>:c6:9a:44:9a:c2:6b:82:5e:d7:21:e9:da:86:1d:
+    1e:83:d0:4a:8e:20:93:90:d6:dc:d0:c2:96:a4:e9:
+    <span style="color:#ae81ff">16</span>:66:08:25:30:47:d5:4f:e9:14:a6:5f:94:c1:9f:
+    <span style="color:#ae81ff">24</span>:01:af:6d:f9:7c:54:98:11:62:2d:e6:e9:3b:8c:
+    b5:78:1f:26:96:bf:de:63:ed:d4:9d:52:7f:91:e4:
+    d7:9e:57:43:0b:29:ea:8b:e3:10:33:f2:4b:c0:b3:
+    e4:61:f7:5b:90:e8:9c:9c:fe:97:19:6e:5c:e8:90:
+    <span style="color:#ae81ff">98</span>:d7:d9:19:23:94:19:52:88:ca:3b:9c:70:92:a5:
+    8c:ba:cf:5d:54:2c:0f:fc:98:2a:ab:fb:c5:4f:88:
+    7f:a2:e1:39:72:da:b9:0d:2d:11:f3:03:9f:22:9c:
+    5f:1b
+publicExponent: <span style="color:#ae81ff">65537</span> <span style="color:#f92672">(</span>0x10001<span style="color:#f92672">)</span>
+privateExponent:
+    <span style="color:#ae81ff">47</span>:2b:a0:bf:d8:ac:28:55:ff:44:66:0f:61:7c:94:
+    <span style="color:#ae81ff">41</span>:3a:ce:53:25:31:ec:7d:cf:68:1b:44:7f:35:13:
+    <span style="color:#ae81ff">41</span>:6d:da:f3:a7:5f:93:56:51:1b:03:32:d9:f6:7d:
+    3e:b3:14:81:1d:a7:4c:ff:b8:15:a9:86:a8:18:80:
+<span style="color:#f92672">[</span> ... <span style="color:#f92672">]</span></code></pre></div>
+<p>Add the <code>-pubout</code> parameter to output the public key:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl rsa -in private/server.key -pubout -out server.key.pub</code></pre></div>
+<p>It is also possible to create the key when creating a certificate signing request.</p>
+
+<h2 id="create-a-server-certificate-signing-request-csr">Create a server certificate signing request (<code>csr</code>)</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl req -new -key private/server.key -out server.csr</code></pre></div>
+<p>The signing request embbeds the public key:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl req -in server.csr -pubkey</code></pre></div>
+<p>and</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl rsa -in private/server.key -pubout</code></pre></div>
+<p>give the same public key.</p>
+
+<h2 id="create-a-csr-and-the-private-key-at-the-same-time">Create a <code>csr</code> and the private key at the same time</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl req -new -newkey rsa:2048 -nodes -keyout private_key.pem -out csr.pem -subj <span style="color:#e6db74">&#34;/C=GB/ST=Yorks/L=York/O=MyCompany Ltd./OU=IT/CN=mysubdomain.mydomain.com&#34;</span></code></pre></div>
+<ul>
+<li>the private key is in <code>private_key.pem</code></li>
+<li>the private key is <em>NOT</em> encrypted (<code>nodes</code>)</li>
+<li>the private key is a 2048bits rsa key</li>
+<li>the <code>csr</code> is in <code>csr.pem</code></li>
+<li>the <code>csr</code> has the subject: <code>/C=GB/ST=Yorks/L=York/O=MyCompany Ltd./OU=IT/CN=mysubdomain.mydomain.com</code></li>
+</ul>
+
+<h2 id="create-a-self-signed-certificate-generaly-for-root-ca">Create a self-signed certificate (generaly for Root-CA)</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl req -new -x509 -extensions v3_ca -days <span style="color:#ae81ff">365</span> -newkey rsa:2048 -keyout ca_private_key.pem -out root_ca.pem</code></pre></div>
+<ul>
+<li><code>-x509</code> parameter is to output a self signed certificate instead of a certificate request</li>
+<li><code>-extensions v3_ca</code> use v3_ca extension as specified in your openssl.conf file</li>
+<li><code>-days</code> specify the number of days the certificate will be valid (365 days)</li>
+</ul>
+
+<h2 id="display-certificate-extentions">Display certificate extentions</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl x509 -purpose -in root_ca.pem
+
+Certificate purposes:
+SSL client : Yes
+SSL client CA : Yes
+SSL server : Yes
+SSL server CA : Yes
+Netscape SSL server : Yes
+Netscape SSL server CA : Yes
+S/MIME signing : Yes
+S/MIME signing CA : Yes
+S/MIME encryption : Yes
+S/MIME encryption CA : Yes
+CRL signing : Yes
+CRL signing CA : Yes
+Any Purpose : Yes
+Any Purpose CA : Yes
+OCSP helper : Yes
+OCSP helper CA : Yes</code></pre></div>
+<h2 id="sign-a-certificate-request-with-the-self-signed-ca">Sign a certificate request with the self signed CA</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl x509 -req -in req.csr -extensions v3_usr -CA root_ca.pem -CAkey ca_private_key.pem -CAcreateserial</code></pre></div>
+<h2 id="viewing-certificate-information">Viewing certificate information</h2>
+
+<p>This is done using the <code>x509</code> command:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl x509 -in RapidSSLCA.pem -noout -text
+
+Certificate:
+    Data:
+        Version: <span style="color:#ae81ff">3</span> <span style="color:#f92672">(</span>0x2<span style="color:#f92672">)</span>
+        Serial Number: <span style="color:#ae81ff">145105</span> <span style="color:#f92672">(</span>0x236d1<span style="color:#f92672">)</span>
+        Signature Algorithm: sha1WithRSAEncryption
+        Issuer: C<span style="color:#f92672">=</span>US, O<span style="color:#f92672">=</span>GeoTrust Inc., CN<span style="color:#f92672">=</span>GeoTrust Global CA
+        Validity
+            Not Before: Feb <span style="color:#ae81ff">19</span> <span style="color:#ae81ff">22</span>:45:05 <span style="color:#ae81ff">2010</span> GMT
+            Not After : Feb <span style="color:#ae81ff">18</span> <span style="color:#ae81ff">22</span>:45:05 <span style="color:#ae81ff">2020</span> GMT
+        Subject: C<span style="color:#f92672">=</span>US, O<span style="color:#f92672">=</span>GeoTrust, Inc., CN<span style="color:#f92672">=</span>RapidSSL CA
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+            RSA Public Key: <span style="color:#f92672">(</span><span style="color:#ae81ff">2048</span> bit<span style="color:#f92672">)</span>
+                Modulus <span style="color:#f92672">(</span><span style="color:#ae81ff">2048</span> bit<span style="color:#f92672">)</span>:
+                    <span style="color:#ae81ff">00</span>:c7:71:f8:56:c7:1e:d9:cc:b5:ad:f6:b4:97:a3:
+                    fb:a1:e6:0b:50:5f:50:aa:3a:da:0f:fc:3d:29:24:
+                    <span style="color:#ae81ff">43</span>:c6:10:29:c1:fc:55:40:72:ee:bd:ea:df:9f:b6:
+                    <span style="color:#ae81ff">41</span>:f4:48:4b:c8:6e:fe:4f:57:12:8b:5b:fa:92:dd:
+                    5e:e8:ad:f3:f0:1b:b1:7b:4d:fb:cf:fd:d1:e5:f8:
+                    e3:dc:e7:f5:73:7f:df:01:49:cf:8c:56:c1:bd:37:
+                    e3:5b:be:b5:4f:8b:8b:f0:da:4f:c7:e3:dd:55:47:
+                    <span style="color:#ae81ff">69</span>:df:f2:5b:7b:07:4f:3d:e5:ac:21:c1:c8:1d:7a:
+                    e8:e7:f6:0f:a1:aa:f5:6f:de:a8:65:4f:10:89:9c:
+                    <span style="color:#ae81ff">03</span>:f3:89:7a:a5:5e:01:72:33:ed:a9:e9:5a:1e:79:
+                    f3:87:c8:df:c8:c5:fc:37:c8:9a:9a:d7:b8:76:cc:
+                    b0:3e:e7:fd:e6:54:ea:df:5f:52:41:78:59:57:ad:
+                    f1:12:d6:7f:bc:d5:9f:70:d3:05:6c:fa:a3:7d:67:
+                    <span style="color:#ae81ff">58</span>:dd:26:62:1d:31:92:0c:79:79:1c:8e:cf:ca:7b:
+                    c1:66:af:a8:74:48:fb:8e:82:c2:9e:2c:99:5c:7b:
+                    2d:5d:9b:bc:5b:57:9e:7c:3a:7a:13:ad:f2:a3:18:
+                    5b:2b:59:0f:cd:5c:3a:eb:68:33:c6:28:1d:82:d1:
+                    <span style="color:#ae81ff">50</span>:8b
+                Exponent: <span style="color:#ae81ff">65537</span> <span style="color:#f92672">(</span>0x10001<span style="color:#f92672">)</span>
+        X509v3 extensions:
+            X509v3 Key Usage: critical
+                Certificate Sign, CRL Sign
+            X509v3 Subject Key Identifier: 
+                6B:69:3D:6A:18:42:4A:DD:8F:02:65:39:FD:35:24:86:78:91:16:30
+            X509v3 Authority Key Identifier: 
+                keyid:C0:7A:98:68:8D:89:FB:AB:05:64:0C:11:7D:AA:7D:65:B8:CA:CC:4E
+
+            X509v3 Basic Constraints: critical
+                CA:TRUE, pathlen:0
+            X509v3 CRL Distribution Points: 
+                URI:http://crl.geotrust.com/crls/gtglobal.crl
+
+            Authority Information Access: 
+                OCSP - URI:http://ocsp.geotrust.com
+
+    Signature Algorithm: sha1WithRSAEncryption
+        ab:bc:bc:0a:5d:18:94:e3:c1:b1:c3:a8:4c:55:d6:be:b4:98:
+        f1:ee:3c:1c:cd:cf:f3:24:24:5c:96:03:27:58:fc:36:ae:a2:
+        2f:8f:f1:fe:da:2b:02:c3:33:bd:c8:dd:48:22:2b:60:0f:a5:
+        <span style="color:#ae81ff">03</span>:10:fd:77:f8:d0:ed:96:67:4f:fd:ea:47:20:70:54:dc:a9:
+        0c:55:7e:e1:96:25:8a:d9:b5:da:57:4a:be:8d:8e:49:43:63:
+        a5:6c:4e:27:87:25:eb:5b:6d:fe:a2:7f:38:28:e0:36:ab:ad:
+        <span style="color:#ae81ff">39</span>:a5:a5:62:c4:b7:5c:58:2c:aa:5d:01:60:a6:62:67:a3:c0:
+        c7:62:23:f4:e7:6c:46:ee:b5:d3:80:6a:22:13:d2:2d:3f:74:
+        4f:ea:af:8c:5f:b4:38:9c:db:ae:ce:af:84:1e:a6:f6:34:51:
+        <span style="color:#ae81ff">59</span>:79:d3:e3:75:dc:bc:d7:f3:73:df:92:ec:d2:20:59:6f:9c:
+        fb:95:f8:92:76:18:0a:7c:0f:2c:a6:ca:de:8a:62:7b:d8:f3:
+        ce:5f:68:bd:8f:3e:c1:74:bb:15:72:3a:16:83:a9:0b:e6:4d:
+        <span style="color:#ae81ff">99</span>:9c:d8:57:ec:a8:01:51:c7:6f:57:34:5e:ab:4a:2c:42:f6:
+        4f:1c:89:78:de:26:4e:f5:6f:93:4c:15:6b:27:56:4d:00:54:
+        6c:7a:b7:b7</code></pre></div>
+<h2 id="checking-server-certificate">Checking server certificate</h2>
+
+<p>This is done using the <code>s_client</code> command:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl s_client -connect www.google.com:443
+
+CONNECTED<span style="color:#f92672">(</span><span style="color:#ae81ff">00000003</span><span style="color:#f92672">)</span>
+depth<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> /C<span style="color:#f92672">=</span>ZA/O<span style="color:#f92672">=</span>Thawte Consulting <span style="color:#f92672">(</span>Pty<span style="color:#f92672">)</span> Ltd./CN<span style="color:#f92672">=</span>Thawte SGC CA
+verify error:num<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>:unable to get local issuer certificate
+verify <span style="color:#66d9ef">return</span>:0
+---
+Certificate chain
+ <span style="color:#ae81ff">0</span> s:/C<span style="color:#f92672">=</span>US/ST<span style="color:#f92672">=</span>California/L<span style="color:#f92672">=</span>Mountain View/O<span style="color:#f92672">=</span>Google Inc/CN<span style="color:#f92672">=</span>www.google.com
+   i:/C<span style="color:#f92672">=</span>ZA/O<span style="color:#f92672">=</span>Thawte Consulting <span style="color:#f92672">(</span>Pty<span style="color:#f92672">)</span> Ltd./CN<span style="color:#f92672">=</span>Thawte SGC CA
+ <span style="color:#ae81ff">1</span> s:/C<span style="color:#f92672">=</span>ZA/O<span style="color:#f92672">=</span>Thawte Consulting <span style="color:#f92672">(</span>Pty<span style="color:#f92672">)</span> Ltd./CN<span style="color:#f92672">=</span>Thawte SGC CA
+   i:/C<span style="color:#f92672">=</span>US/O<span style="color:#f92672">=</span>VeriSign, Inc./OU<span style="color:#f92672">=</span>Class <span style="color:#ae81ff">3</span> Public Primary Certification Authority
+---
+Server certificate
+-----BEGIN CERTIFICATE-----
+MIIDITCCAoqgAwIBAgIQL9+89q6RUm0PmqPfQDQ+mjANBgkqhkiG9w0BAQUFADBM
+MQswCQYDVQQGEwJaQTElMCMGA1UEChMcVGhhd3RlIENvbnN1bHRpbmcgKFB0eSkg
+THRkLjEWMBQGA1UEAxMNVGhhd3RlIFNHQyBDQTAeFw0wOTEyMTgwMDAwMDBaFw0x
+MTEyMTgyMzU5NTlaMGgxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlh
+MRYwFAYDVQQHFA1Nb3VudGFpbiBWaWV3MRMwEQYDVQQKFApHb29nbGUgSW5jMRcw
+FQYDVQQDFA53d3cuZ29vZ2xlLmNvbTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkC
+gYEA6PmGD5D6htffvXImttdEAoN4c9kCKO+IRTn7EOh8rqk41XXGOOsKFQebg+jN
+gtXj9xVoRaELGYW84u+E593y17iYwqG7tcFR39SDAqc9BkJb4SLD3muFXxzW2k6L
+05vuuWciKh0R73mkszeK9P4Y/bz5RiNQl/Os/CRGK1w7t0UCAwEAAaOB5zCB5DAM
+BgNVHRMBAf8EAjAAMDYGA1UdHwQvMC0wK6ApoCeGJWh0dHA6Ly9jcmwudGhhd3Rl
+LmNvbS9UaGF3dGVTR0NDQS5jcmwwKAYDVR0lBCEwHwYIKwYBBQUHAwEGCCsGAQUF
+BwMCBglghkgBhvhCBAEwcgYIKwYBBQUHAQEEZjBkMCIGCCsGAQUFBzABhhZodHRw
+Oi8vb2NzcC50aGF3dGUuY29tMD4GCCsGAQUFBzAChjJodHRwOi8vd3d3LnRoYXd0
+ZS5jb20vcmVwb3NpdG9yeS9UaGF3dGVfU0dDX0NBLmNydDANBgkqhkiG9w0BAQUF
+AAOBgQCfQ89bxFApsb/isJr/aiEdLRLDLE5a+RLizrmCUi3nHX4adpaQedEkUjh5
+u2ONgJd8IyAPkU0Wueru9G2Jysa9zCRo1kNbzipYvzwY4OA8Ys+WAi0oR1A04Se6
+z5nRUP8pJcA2NhUzUnC+MY+f6H/nEQyNv4SgQhqAibAxWEEHXw<span style="color:#f92672">==</span>
+-----END CERTIFICATE-----
+subject<span style="color:#f92672">=</span>/C<span style="color:#f92672">=</span>US/ST<span style="color:#f92672">=</span>California/L<span style="color:#f92672">=</span>Mountain View/O<span style="color:#f92672">=</span>Google Inc/CN<span style="color:#f92672">=</span>www.google.com
+issuer<span style="color:#f92672">=</span>/C<span style="color:#f92672">=</span>ZA/O<span style="color:#f92672">=</span>Thawte Consulting <span style="color:#f92672">(</span>Pty<span style="color:#f92672">)</span> Ltd./CN<span style="color:#f92672">=</span>Thawte SGC CA
+---
+No client certificate CA names sent
+---
+SSL handshake has read <span style="color:#ae81ff">1772</span> bytes and written <span style="color:#ae81ff">307</span> bytes
+---
+New, TLSv1/SSLv3, Cipher is RC4-SHA
+Server public key is <span style="color:#ae81ff">1024</span> bit
+Secure Renegotiation IS supported
+Compression: NONE
+Expansion: NONE
+SSL-Session:
+    Protocol  : TLSv1
+    Cipher    : RC4-SHA
+    Session-ID: BDE08AD29E65CA4007711610FDD69165F9EB47065716D9AB469DAD9882E6E207
+    Session-ID-ctx: 
+    Master-Key: 6FE2F273ABAAACF8E99180AAB9D540708F6A392DE1285787121B8A438E68FB3D01C127B31CC39146741D3A8396E0FA79
+    Key-Arg   : None
+    Start Time: <span style="color:#ae81ff">1311928772</span>
+    Timeout   : <span style="color:#ae81ff">300</span> <span style="color:#f92672">(</span>sec<span style="color:#f92672">)</span>
+    Verify <span style="color:#66d9ef">return</span> code: <span style="color:#ae81ff">20</span> <span style="color:#f92672">(</span>unable to get local issuer certificate<span style="color:#f92672">)</span>
+---</code></pre></div>
+<p>Things to note:</p>
+
+<ul>
+<li>The server&rsquo;s certificate is enclosed by <code>-----BEGIN CERTIFICATE-----</code> and <code>-----END CERTIFICATE-----</code>, this can be saved in a separate file for later reuse.</li>
+<li>The Certificate name, the <code>Subject</code> is <code>/C=US/ST=California/L=Mountain View/O=Google Inc/CN=www.google.com.</code></li>
+<li>The Issuer of the certificate, ie the one who signed the certificate, is <code>/C=ZA/O=Thawte Consulting (Pty) Ltd./CN=Thawte SGC CA</code>.</li>
+<li>We were unable to check the validity of this certificate (<code>unable to get local issuer certificate</code>) because we do not have the <code>Issuer</code> certifcate.</li>
+</ul>
+
+<p>By giving the <code>-CAfile</code> parameter we can give the CA certificate file of the CA who issued the server certificate. Here I guessed the CA certificate file from the <code>Issuer</code> name:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl s_client -connect www.google.com:443 -CAfile /etc/ssl/certs/Verisign_Class_3_Public_Primary_Certification_Authority.pem
+
+CONNECTED<span style="color:#f92672">(</span><span style="color:#ae81ff">00000003</span><span style="color:#f92672">)</span>
+depth<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span> /C<span style="color:#f92672">=</span>US/O<span style="color:#f92672">=</span>VeriSign, Inc./OU<span style="color:#f92672">=</span>Class <span style="color:#ae81ff">3</span> Public Primary Certification Authority
+verify <span style="color:#66d9ef">return</span>:1
+depth<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> /C<span style="color:#f92672">=</span>ZA/O<span style="color:#f92672">=</span>Thawte Consulting <span style="color:#f92672">(</span>Pty<span style="color:#f92672">)</span> Ltd./CN<span style="color:#f92672">=</span>Thawte SGC CA
+verify <span style="color:#66d9ef">return</span>:1
+depth<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> /C<span style="color:#f92672">=</span>US/ST<span style="color:#f92672">=</span>California/L<span style="color:#f92672">=</span>Mountain View/O<span style="color:#f92672">=</span>Google Inc/CN<span style="color:#f92672">=</span>www.google.com
+verify <span style="color:#66d9ef">return</span>:1
+
+---
+Certificate chain
+ <span style="color:#ae81ff">0</span> s:/C<span style="color:#f92672">=</span>US/ST<span style="color:#f92672">=</span>California/L<span style="color:#f92672">=</span>Mountain View/O<span style="color:#f92672">=</span>Google Inc/CN<span style="color:#f92672">=</span>www.google.com
+   i:/C<span style="color:#f92672">=</span>ZA/O<span style="color:#f92672">=</span>Thawte Consulting <span style="color:#f92672">(</span>Pty<span style="color:#f92672">)</span> Ltd./CN<span style="color:#f92672">=</span>Thawte SGC CA
+ <span style="color:#ae81ff">1</span> s:/C<span style="color:#f92672">=</span>ZA/O<span style="color:#f92672">=</span>Thawte Consulting <span style="color:#f92672">(</span>Pty<span style="color:#f92672">)</span> Ltd./CN<span style="color:#f92672">=</span>Thawte SGC CA
+   i:/C<span style="color:#f92672">=</span>US/O<span style="color:#f92672">=</span>VeriSign, Inc./OU<span style="color:#f92672">=</span>Class <span style="color:#ae81ff">3</span> Public Primary Certification Authority
+---
+Server certificate
+-----BEGIN CERTIFICATE-----
+MIIDITCCAoqgAwIBAgIQL9+89q6RUm0PmqPfQDQ+mjANBgkqhkiG9w0BAQUFADBM
+<span style="color:#f92672">[</span> ... <span style="color:#f92672">]</span>
+SSL-Session:
+    Protocol  : TLSv1
+    Cipher    : RC4-SHA
+    Session-ID: 222E7CFF6DE8425B1B3635F706CDD65083F2758C87095D70E448E27C8272E377
+    Session-ID-ctx: 
+    Master-Key: B04EBA908A928D7EF7B9432771A0C95A78BA060FBB75383AA081DDF8F8AD31A2F95CD0EF63AC09827A3220E7856EFE28
+    Key-Arg   : None
+    Start Time: <span style="color:#ae81ff">1311929265</span>
+    Timeout   : <span style="color:#ae81ff">300</span> <span style="color:#f92672">(</span>sec<span style="color:#f92672">)</span>
+    Verify <span style="color:#66d9ef">return</span> code: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>ok<span style="color:#f92672">)</span>
+---</code></pre></div>
+<p>The server certificate is now considered as valid.</p>
+
+<p>It is not always possible to guess the CA certificate filename, instead use the <code>-CApath</code> to give the directory where resides all the known CA certificates of your system:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl s_client -connect www.google.com:443 -CApath /etc/ssl/certs/
+
+
+<span style="color:#f92672">[</span> ... <span style="color:#f92672">]</span>
+   Verify <span style="color:#66d9ef">return</span> code: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>ok<span style="color:#f92672">)</span>
+---</code></pre></div>
+<h2 id="how-to-create-a-certificate-chain">How to create a certificate chain ?</h2>
+
+<p>A certificate chain is just a file where multiple <code>PEM</code> files are concatened. <code>PEM</code> files must be ordered from the last certificate (for example server certificate or client certificate)
+to the top Root CA..</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cat server_crt.pem operational_ca.pem intermetiade_ca.pem root_ca.pem &gt; certificate_chain.pem</code></pre></div>
+<h2 id="links">Links</h2>
+
+<ul>
+<li><a href="http://tools.ietf.org/html/rfc5280">http://tools.ietf.org/html/rfc5280</a></li>
+<li><a href="http://www.madboa.com/geek/openssl/">http://www.madboa.com/geek/openssl/</a></li>
+</ul>
+
+</article>
+
+</div>
+</div>
+<script src="http://klyr.quicheaters.org/blog//js/theme.min.js" type="text/javascript"></script>
+
+
+</body>
+</html>
+

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Unix on ~klyr</title>
+    <link>http://klyr.quicheaters.org/blog/categories/unix/</link>
+    <description>Recent content in Unix on ~klyr</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 19 Dec 2012 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://klyr.quicheaters.org/blog/categories/unix/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Playing with linux framebuffer</title>
+      <link>http://klyr.quicheaters.org/blog/posts/playing_with_linux_framebuffer/</link>
+      <pubDate>Wed, 19 Dec 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/playing_with_linux_framebuffer/</guid>
+      <description>What is framebuffer ? The Linux framebuffer is an abstraction layer, hardware independant, to display graphical elements in Linux console. Framebuffer is often used in embedded devices. Thanks to DirectFB, hadware acceleration can be used.
+How to program framebuffer ? Programming the Linux framebuffer is quite simple:
+ ioctl commands and structs are located in /usr/include/linux/fb.h use open(2) to open /dev/fb0 use various ioctl(2) calls to get or set properties mmap(2) framebuffer device to memory write to the mmaped memory to display your graphics  Usefull structs are:</description>
+    </item>
+    
+    <item>
+      <title>Trickle, lightweight userspace bandwidth shaper</title>
+      <link>http://klyr.quicheaters.org/blog/posts/trickle/</link>
+      <pubDate>Tue, 10 Jul 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/trickle/</guid>
+      <description>What &amp;ldquo;Trickle is a portable lightweight userspace bandwidth shaper. It can run in collaborative mode (together with trickled) or in stand alone mode.&amp;rdquo;
+Before, no limitation:
+$ wget &amp;#39;http://wwww.example.org/somefile&amp;#39; --2012-07-10 14:46:13-- http://wwww.example.org/somefile [ ... ] 2012-07-10 14:46:13 (866 KB/s) - `somefile&amp;#39; saved [12485] After, limited to 40 kbit/s:
+$ trickle -v -s -d 40 wget &amp;#39;http://www.example.org/somefile&amp;#39; --2012-07-10 14:50:27-- http://wwww.example.org/somefile [ ... ] wget: [trickle] avg: 20.8 KB/s; win: 20.8 KB/s wget: [trickle] avg: 40.</description>
+    </item>
+    
+    <item>
+      <title>Playing with systemtap</title>
+      <link>http://klyr.quicheaters.org/blog/posts/playing_with_systemtap/</link>
+      <pubDate>Fri, 06 Jul 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/playing_with_systemtap/</guid>
+      <description>From official website  SystemTap is a tracing and probing tool that allows users to study and monitor the activities of the computer system (particularly, the kernel) in fine detail. It provides information similar to the output of tools like netstat, ps, top, and iostat; however, SystemTap is designed to provide more filtering and analysis options for collected information.  Install Simply install systemtap package and kernel debug packages for your currently running kernel.</description>
+    </item>
+    
+    <item>
+      <title>Pipe Viewer</title>
+      <link>http://klyr.quicheaters.org/blog/posts/pipe_viewer/</link>
+      <pubDate>Fri, 25 May 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/pipe_viewer/</guid>
+      <description> Pipe Viewer To visualize data throughput through a pipe use Pipe Viewer tool.
+$ sudo apt-get install pv For example just replace every pipe with | pv |:
+$ cat bigfile.txt | gzip -9 &amp;gt; /tmp/test.gz $ ```shell $ cat bigfile.txt | pv | gzip -9 &amp;gt; /tmp/test.gz 14MB 0:00:00 [22.6MB/s] [ &amp;lt;=&amp;gt; ] $</description>
+    </item>
+    
+    <item>
+      <title>Commands &amp; key bindings reminders</title>
+      <link>http://klyr.quicheaters.org/blog/posts/commands_and_keys_reminders/</link>
+      <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/commands_and_keys_reminders/</guid>
+      <description>Commands &amp;amp; key bindings reminders Sysdig Record activity to file:
+$ sudo sysdig -w tracefile.scap Get top cpu usage from the trace file:
+$ sudo sysdig -r tracefile.scap -c topprocs_cpu Check open TCP port with bash and send data to TCP port $ man bash [ ... ] REDIRECTION [ ... ] Bash handles several filenames specially when they are used in redirections, as described in the following table: /dev/tcp/host/port If host is a valid hostname or Internet address, and port is an integer port number or service name, bash attempts to open a TCP connection to the corresponding socket.</description>
+    </item>
+    
+    <item>
+      <title>Colored less output</title>
+      <link>http://klyr.quicheaters.org/blog/posts/colored_less_output/</link>
+      <pubDate>Tue, 26 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/colored_less_output/</guid>
+      <description>To colorize the output of less, use the GNU Source-highlight tool.
+Install Debian package:
+$ sudo apt-get install source-highlight Add this to your shell configuration file:
+export LESSOPEN=&amp;#34;| /usr/share/source-highlight/src-hilite-lesspipe.sh %s&amp;#34; export LESS=&amp;#39; -R &amp;#39;</description>
+    </item>
+    
+    <item>
+      <title>Preserving Buffer Cache State</title>
+      <link>http://klyr.quicheaters.org/blog/posts/preserving_buffer_cache/</link>
+      <pubDate>Mon, 25 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/preserving_buffer_cache/</guid>
+      <description>When archiving big files (for example a big database) rsync feeds uselessly the disk cache. Thanks to the posix_fadvise linux system call we can tell the operating system that keeping archived data in cache is useless, leaving the disk cache for other applications (ie: the database).
+Tobi Oetiker explains this on his blog and made a patch for rsync. The patch does not work out of the box and needed little modifications.</description>
+    </item>
+    
+  </channel>
+</rss>

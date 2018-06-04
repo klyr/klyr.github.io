@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on ~klyr</title>
+    <link>http://klyr.quicheaters.org/blog/tags/</link>
+    <description>Recent content in Tags on ~klyr</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 17 Dec 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://klyr.quicheaters.org/blog/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>C</title>
+      <link>http://klyr.quicheaters.org/blog/tags/c/</link>
+      <pubDate>Wed, 17 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/c/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cdn</title>
+      <link>http://klyr.quicheaters.org/blog/tags/cdn/</link>
+      <pubDate>Mon, 08 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/cdn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Certificate</title>
+      <link>http://klyr.quicheaters.org/blog/tags/certificate/</link>
+      <pubDate>Fri, 29 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/certificate/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Debian</title>
+      <link>http://klyr.quicheaters.org/blog/tags/debian/</link>
+      <pubDate>Tue, 26 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/debian/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Emacs</title>
+      <link>http://klyr.quicheaters.org/blog/tags/emacs/</link>
+      <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/emacs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Erlang</title>
+      <link>http://klyr.quicheaters.org/blog/tags/erlang/</link>
+      <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/erlang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Framebuffer</title>
+      <link>http://klyr.quicheaters.org/blog/tags/framebuffer/</link>
+      <pubDate>Wed, 19 Dec 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/framebuffer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gnu</title>
+      <link>http://klyr.quicheaters.org/blog/tags/gnu/</link>
+      <pubDate>Mon, 03 Dec 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/gnu/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Iproute2</title>
+      <link>http://klyr.quicheaters.org/blog/tags/iproute2/</link>
+      <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/iproute2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Iptable</title>
+      <link>http://klyr.quicheaters.org/blog/tags/iptable/</link>
+      <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/iptable/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux</title>
+      <link>http://klyr.quicheaters.org/blog/tags/linux/</link>
+      <pubDate>Wed, 19 Dec 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Lsof</title>
+      <link>http://klyr.quicheaters.org/blog/tags/lsof/</link>
+      <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/lsof/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Netfilter</title>
+      <link>http://klyr.quicheaters.org/blog/tags/netfilter/</link>
+      <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/netfilter/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Network</title>
+      <link>http://klyr.quicheaters.org/blog/tags/network/</link>
+      <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Openflow</title>
+      <link>http://klyr.quicheaters.org/blog/tags/openflow/</link>
+      <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/openflow/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Openssl</title>
+      <link>http://klyr.quicheaters.org/blog/tags/openssl/</link>
+      <pubDate>Fri, 29 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/openssl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Packaging</title>
+      <link>http://klyr.quicheaters.org/blog/tags/packaging/</link>
+      <pubDate>Tue, 16 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/packaging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Pointer</title>
+      <link>http://klyr.quicheaters.org/blog/tags/pointer/</link>
+      <pubDate>Wed, 19 Oct 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/pointer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python</title>
+      <link>http://klyr.quicheaters.org/blog/tags/python/</link>
+      <pubDate>Tue, 16 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>R</title>
+      <link>http://klyr.quicheaters.org/blog/tags/r/</link>
+      <pubDate>Tue, 02 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Rust</title>
+      <link>http://klyr.quicheaters.org/blog/tags/rust/</link>
+      <pubDate>Wed, 17 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/rust/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sdn</title>
+      <link>http://klyr.quicheaters.org/blog/tags/sdn/</link>
+      <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/sdn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tcpdump</title>
+      <link>http://klyr.quicheaters.org/blog/tags/tcpdump/</link>
+      <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/tcpdump/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Unix</title>
+      <link>http://klyr.quicheaters.org/blog/tags/unix/</link>
+      <pubDate>Fri, 25 May 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/unix/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vim</title>
+      <link>http://klyr.quicheaters.org/blog/tags/vim/</link>
+      <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/vim/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Virtualenv</title>
+      <link>http://klyr.quicheaters.org/blog/tags/virtualenv/</link>
+      <pubDate>Tue, 16 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/tags/virtualenv/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

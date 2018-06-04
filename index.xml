@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>~klyr</title>
+    <link>http://klyr.quicheaters.org/blog/</link>
+    <description>Recent content on ~klyr</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 19 Dec 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://klyr.quicheaters.org/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Playing with the Erlang Linc Switch</title>
+      <link>http://klyr.quicheaters.org/blog/posts/playing_with_linc_switch/</link>
+      <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/playing_with_linc_switch/</guid>
+      <description>Introduction Linc is a software switch in Erlang, which support Openflow 1.4.
+Here we will try to install it and make it run in a simple scenario. Later we will try to use it with an openflow compatible Controller (maybe Opendaylight or FlowER).
+Installation $ git clone https://github.com/FlowForwarding/LINC-Switch.git $ sudo apt-get install libpcap0.8-dev $ cd LINC-Switch $ cp rel/files/sys.config.orig rel/files/sys.config $ make Note that at some point during installation, root privileges are required to use the setcap utility.</description>
+    </item>
+    
+    <item>
+      <title>Linking Rust Library with C</title>
+      <link>http://klyr.quicheaters.org/blog/posts/linking_rust_lib_with_c/</link>
+      <pubDate>Wed, 17 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/linking_rust_lib_with_c/</guid>
+      <description>Introduction Rust is a system programming Language developed by Mozilla. For a C-like language, it features interesting paradigms:
+ functional style, actors, object oriented, safe memory allocation and free  In this article we will link a Rust library with a C program.
+Tools used:
+ rustc 0.13.0-nightly (5484d6f6d 2014-12-02) gcc (Debian 4.9.1-19) 4.9.1 docker  Installation Compiling the Rust compiler takes quite some time, so I decided to use a nightly built container of the compiler:</description>
+    </item>
+    
+    <item>
+      <title>Playing with linux framebuffer</title>
+      <link>http://klyr.quicheaters.org/blog/posts/playing_with_linux_framebuffer/</link>
+      <pubDate>Wed, 19 Dec 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/playing_with_linux_framebuffer/</guid>
+      <description>What is framebuffer ? The Linux framebuffer is an abstraction layer, hardware independant, to display graphical elements in Linux console. Framebuffer is often used in embedded devices. Thanks to DirectFB, hadware acceleration can be used.
+How to program framebuffer ? Programming the Linux framebuffer is quite simple:
+ ioctl commands and structs are located in /usr/include/linux/fb.h use open(2) to open /dev/fb0 use various ioctl(2) calls to get or set properties mmap(2) framebuffer device to memory write to the mmaped memory to display your graphics  Usefull structs are:</description>
+    </item>
+    
+    <item>
+      <title>Updating IP routes programmatically</title>
+      <link>http://klyr.quicheaters.org/blog/posts/updating_ip_routes_in_c/</link>
+      <pubDate>Mon, 10 Dec 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/updating_ip_routes_in_c/</guid>
+      <description>ioctl(2) is a special system call used when no other system call can handle a specific I/O operation. For exemple, the generic write(2) syscall is used for writing to a specified file descriptor but there is neither syscall to open the CD-tray nor syscall to manage routing tables: ioctl is here as a fit-all syscall.
+From the man page:
+NAME ioctl - control device SYNOPSIS #include &amp;lt;sys/ioctl.h&amp;gt; int ioctl(int d, int request, void *args); DESCRIPTION The ioctl() function manipulates the underlying device parameters of special files.</description>
+    </item>
+    
+    <item>
+      <title>Display backtrace when a program segfaults</title>
+      <link>http://klyr.quicheaters.org/blog/posts/gnu_backtrace_extension/</link>
+      <pubDate>Mon, 03 Dec 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/gnu_backtrace_extension/</guid>
+      <description>Display backtrace when a program segfaults When an application crashes, with a segfault for example it can be usefull have debugging help like a stacktrace of function calls.
+This can be achieved by trapping the SIGSEGV unix signal and by using the backtrace(3) and backtrace_symbols(3) GNU extensions functions.
+Intercept SIGSEGV signal (and others) This is done via the traditional use of sigaction:
+#include &amp;lt;signal.h&amp;gt; struct sigaction handler; sigemptyset(&amp;amp;handler.sa_mask); handler.sa_flags = SA_NODEFER | SA_RESETHAND; handler.</description>
+    </item>
+    
+    <item>
+      <title>Trickle, lightweight userspace bandwidth shaper</title>
+      <link>http://klyr.quicheaters.org/blog/posts/trickle/</link>
+      <pubDate>Tue, 10 Jul 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/trickle/</guid>
+      <description>What &amp;ldquo;Trickle is a portable lightweight userspace bandwidth shaper. It can run in collaborative mode (together with trickled) or in stand alone mode.&amp;rdquo;
+Before, no limitation:
+$ wget &amp;#39;http://wwww.example.org/somefile&amp;#39; --2012-07-10 14:46:13-- http://wwww.example.org/somefile [ ... ] 2012-07-10 14:46:13 (866 KB/s) - `somefile&amp;#39; saved [12485] After, limited to 40 kbit/s:
+$ trickle -v -s -d 40 wget &amp;#39;http://www.example.org/somefile&amp;#39; --2012-07-10 14:50:27-- http://wwww.example.org/somefile [ ... ] wget: [trickle] avg: 20.8 KB/s; win: 20.8 KB/s wget: [trickle] avg: 40.</description>
+    </item>
+    
+    <item>
+      <title>Playing with systemtap</title>
+      <link>http://klyr.quicheaters.org/blog/posts/playing_with_systemtap/</link>
+      <pubDate>Fri, 06 Jul 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/playing_with_systemtap/</guid>
+      <description>From official website  SystemTap is a tracing and probing tool that allows users to study and monitor the activities of the computer system (particularly, the kernel) in fine detail. It provides information similar to the output of tools like netstat, ps, top, and iostat; however, SystemTap is designed to provide more filtering and analysis options for collected information.  Install Simply install systemtap package and kernel debug packages for your currently running kernel.</description>
+    </item>
+    
+    <item>
+      <title>Pipe Viewer</title>
+      <link>http://klyr.quicheaters.org/blog/posts/pipe_viewer/</link>
+      <pubDate>Fri, 25 May 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/pipe_viewer/</guid>
+      <description> Pipe Viewer To visualize data throughput through a pipe use Pipe Viewer tool.
+$ sudo apt-get install pv For example just replace every pipe with | pv |:
+$ cat bigfile.txt | gzip -9 &amp;gt; /tmp/test.gz $ ```shell $ cat bigfile.txt | pv | gzip -9 &amp;gt; /tmp/test.gz 14MB 0:00:00 [22.6MB/s] [ &amp;lt;=&amp;gt; ] $</description>
+    </item>
+    
+    <item>
+      <title>Ip routing based on destination port</title>
+      <link>http://klyr.quicheaters.org/blog/posts/ip_route_based_on_port/</link>
+      <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/ip_route_based_on_port/</guid>
+      <description>Ip routing based on destination port We have two connection providers P1 and P2 behind two IP 10.0.0.253 and 10.0.0.254. P1 has a high bandwidth but low latency, P2 is the oposite.
+We will use Netfilter and iproute2 to filter output packet to port 22 to provider P2. Everything else will go through provider P1.
+First we need to mark packets for TCP connections to port 22 with the iptables command:</description>
+    </item>
+    
+    <item>
+      <title>C pointers &amp; Ksplice challenge</title>
+      <link>http://klyr.quicheaters.org/blog/posts/c_pointers_ksplice_challenge/</link>
+      <pubDate>Wed, 19 Oct 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/c_pointers_ksplice_challenge/</guid>
+      <description> C pointers &amp;amp; Ksplice challenge The Ksplice Pointer Challenge.
+#include &amp;lt;stdio.h&amp;gt; int main() { int x[5]; printf(&amp;#34;%p\n&amp;#34;, x); printf(&amp;#34;%p\n&amp;#34;, x+1); printf(&amp;#34;%p\n&amp;#34;, &amp;amp;x); printf(&amp;#34;%p\n&amp;#34;, &amp;amp;x+1); return 0; } On a 64bits architecture:
+0x7fffe4a594d0 0x7fffe4a594d4 0x7fffe4a594d0 0x7fffe4a594e4</description>
+    </item>
+    
+    <item>
+      <title>Commands &amp; key bindings reminders</title>
+      <link>http://klyr.quicheaters.org/blog/posts/commands_and_keys_reminders/</link>
+      <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/commands_and_keys_reminders/</guid>
+      <description>Commands &amp;amp; key bindings reminders Sysdig Record activity to file:
+$ sudo sysdig -w tracefile.scap Get top cpu usage from the trace file:
+$ sudo sysdig -r tracefile.scap -c topprocs_cpu Check open TCP port with bash and send data to TCP port $ man bash [ ... ] REDIRECTION [ ... ] Bash handles several filenames specially when they are used in redirections, as described in the following table: /dev/tcp/host/port If host is a valid hostname or Internet address, and port is an integer port number or service name, bash attempts to open a TCP connection to the corresponding socket.</description>
+    </item>
+    
+    <item>
+      <title>Standalone Python project/installation</title>
+      <link>http://klyr.quicheaters.org/blog/posts/standalone_python_project/</link>
+      <pubDate>Tue, 16 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/standalone_python_project/</guid>
+      <description>Let&amp;rsquo;s take an example of installing Django without using Debian apt command. We will use virtualenv to make a self-contained python directory.
+First create your installation directory:
+$ mkdir -p project/django $ cd project/django Get the virtualenv tool:
+$ wget --no-check-certificate &amp;#39;https://raw.github.com/pypa/virtualenv/develop/virtualenv.py&amp;#39; Create the virtual environment:
+$ python virtualenv.py --no-site-packages --distribute python_django_env Note interesting parameters::
+--no-site-packages Don&amp;#39;t give access to the global site-packages dir to the virtual environment --distribute Use Distribute instead of Setuptools.</description>
+    </item>
+    
+    <item>
+      <title>Using a free CDN, Cloudflare</title>
+      <link>http://klyr.quicheaters.org/blog/posts/using_a_free_cdn/</link>
+      <pubDate>Mon, 08 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/using_a_free_cdn/</guid>
+      <description>CDN: Content delivery network A CDN act as a cache for static ressources of your web server. One famous CDN is Akamai but is quite expensive.
+CDN architecture is quite complex with a set of multiple proxies located in multiple datacenters around the world. The goal is to reduce the distance to the minimum between the served ressource and the user asking for the ressource.
+A CDN not only saves the bandwith and load of your server but also global Internet peers involved between the client and the server.</description>
+    </item>
+    
+    <item>
+      <title>Manipulating data with R</title>
+      <link>http://klyr.quicheaters.org/blog/posts/manipulating_data_with_r/</link>
+      <pubDate>Tue, 02 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/manipulating_data_with_r/</guid>
+      <description>Manipulating data with R Getting help about a command help(merge) merge package:base R Documentation Merge Two Data Frames Description: Merge two data frames by common columns or row names, or do other versions of database _join_ operations. Usage: merge(x, y, ...) ## Default S3 method:  merge(x, y, ...) [...] Variable names collisions To prevent variable collisions, create a namespaced-like variable. For example:
+my.a &amp;lt;- 1 my.b &amp;lt;- &amp;#34;test&amp;#34; Installing third-party libraries To install packages locally (in your HOME directory):</description>
+    </item>
+    
+    <item>
+      <title>Various reminders about OpenSSL and Certificates</title>
+      <link>http://klyr.quicheaters.org/blog/posts/various_reminders_about_openssl_and_certificates/</link>
+      <pubDate>Fri, 29 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/various_reminders_about_openssl_and_certificates/</guid>
+      <description>Create a self-signed Certificate authority Create an RSA key Use the genrsa command to create the server private key with the following properties:
+ The key is protected with the symetric AES256 algorithm. (protecting the key is not mandatory) The key is 2048 bits long.  Here is the command:
+$ openssl genrsa -aes256 -out private/server.key 2048 Generating RSA private key, 2048 bit long modulus ...............................................................................................+++ ..+++ unable to write &amp;#39;random state&amp;#39; e is 65537 (0x10001) Enter pass phrase for test.</description>
+    </item>
+    
+    <item>
+      <title>Colored less output</title>
+      <link>http://klyr.quicheaters.org/blog/posts/colored_less_output/</link>
+      <pubDate>Tue, 26 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/colored_less_output/</guid>
+      <description>To colorize the output of less, use the GNU Source-highlight tool.
+Install Debian package:
+$ sudo apt-get install source-highlight Add this to your shell configuration file:
+export LESSOPEN=&amp;#34;| /usr/share/source-highlight/src-hilite-lesspipe.sh %s&amp;#34; export LESS=&amp;#39; -R &amp;#39;</description>
+    </item>
+    
+    <item>
+      <title>Preserving Buffer Cache State</title>
+      <link>http://klyr.quicheaters.org/blog/posts/preserving_buffer_cache/</link>
+      <pubDate>Mon, 25 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/preserving_buffer_cache/</guid>
+      <description>When archiving big files (for example a big database) rsync feeds uselessly the disk cache. Thanks to the posix_fadvise linux system call we can tell the operating system that keeping archived data in cache is useless, leaving the disk cache for other applications (ie: the database).
+Tobi Oetiker explains this on his blog and made a patch for rsync. The patch does not work out of the box and needed little modifications.</description>
+    </item>
+    
+  </channel>
+</rss>

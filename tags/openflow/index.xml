@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Openflow on ~klyr</title>
+    <link>http://klyr.quicheaters.org/blog/tags/openflow/</link>
+    <description>Recent content in Openflow on ~klyr</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 19 Dec 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://klyr.quicheaters.org/blog/tags/openflow/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Playing with the Erlang Linc Switch</title>
+      <link>http://klyr.quicheaters.org/blog/posts/playing_with_linc_switch/</link>
+      <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://klyr.quicheaters.org/blog/posts/playing_with_linc_switch/</guid>
+      <description>Introduction Linc is a software switch in Erlang, which support Openflow 1.4.
+Here we will try to install it and make it run in a simple scenario. Later we will try to use it with an openflow compatible Controller (maybe Opendaylight or FlowER).
+Installation $ git clone https://github.com/FlowForwarding/LINC-Switch.git $ sudo apt-get install libpcap0.8-dev $ cd LINC-Switch $ cp rel/files/sys.config.orig rel/files/sys.config $ make Note that at some point during installation, root privileges are required to use the setcap utility.</description>
+    </item>
+    
+  </channel>
+</rss>

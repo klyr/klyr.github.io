@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="author" content="">
+
+<meta name="description" content="">
+
+<title>Playing with systemtap</title>
+<meta name="generator" content="Hugo 0.41" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet" type="text/css">
+<link  href="http://klyr.quicheaters.org/blog//css/theme.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<div class="page-container container-fluid">
+<div class="col-md-3 menu">
+    <nav class="col-md-3">
+    <h3 class="home-link"><a href="http://klyr.quicheaters.org/blog/">Root</a></h3>
+    <div id="last-posts" class="open">
+        <h3 data-open="last-posts">~klyr - Most recent posts</h3>
+        <ul>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_linc_switch/">Playing with the Erlang Linc Switch</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/linking_rust_lib_with_c/">Linking Rust Library with C</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_linux_framebuffer/">Playing with linux framebuffer</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/updating_ip_routes_in_c/">Updating IP routes programmatically</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/gnu_backtrace_extension/">Display backtrace when a program segfaults</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/trickle/">Trickle, lightweight userspace bandwidth shaper</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_systemtap/">Playing with systemtap</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/pipe_viewer/">Pipe Viewer</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/ip_route_based_on_port/">Ip routing based on destination port</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/c_pointers_ksplice_challenge/">C pointers &amp; Ksplice challenge</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/commands_and_keys_reminders/">Commands &amp; key bindings reminders</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/standalone_python_project/">Standalone Python project/installation</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/using_a_free_cdn/">Using a free CDN, Cloudflare</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/manipulating_data_with_r/">Manipulating data with R</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/various_reminders_about_openssl_and_certificates/">Various reminders about OpenSSL and Certificates</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/colored_less_output/">Colored less output</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/preserving_buffer_cache/">Preserving Buffer Cache State</a></li>
+            
+        </ul>
+    </div>
+    
+    
+    <div id="categories" class="open">
+        <h3 data-open="categories">Categories</h3>
+        <ul class="categories">
+            
+            <li><a href="/categories/c">c</a></li>
+            
+            <li><a href="/categories/network">network</a></li>
+            
+            <li><a href="/categories/python">python</a></li>
+            
+            <li><a href="/categories/r">r</a></li>
+            
+            <li><a href="/categories/security">security</a></li>
+            
+            <li><a href="/categories/unix">unix</a></li>
+            
+        </ul>
+    </div>
+    
+</nav>
+
+</div>
+<div class="col-md-9 content">
+
+<h1>Playing with systemtap</h1>
+<h4>Published 07-06-2012 00:00:00</h4>
+<article>
+    
+
+<h2 id="from-official-website">From official website</h2>
+
+<pre><code>   SystemTap is a tracing and probing tool that allows users to study and monitor the activities of the
+   computer system (particularly, the kernel) in fine detail. It provides information similar to the output of
+   tools like netstat, ps, top, and iostat; however, SystemTap is designed to provide more filtering
+   and analysis options for collected information.
+</code></pre>
+
+<h2 id="install">Install</h2>
+
+<p>Simply install <code>systemtap</code> package and kernel debug packages for your currently running kernel.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo apt-get install systemtap linux-image-<span style="color:#e6db74">`</span>uname -r<span style="color:#e6db74">`</span>-dbg linux-headers-<span style="color:#e6db74">`</span>uname -r<span style="color:#e6db74">`</span></code></pre></div>
+<p>To check installation:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo stap -v -e <span style="color:#e6db74">&#39;probe vfs.read {printf(&#34;read performed\n&#34;); exit()}&#39;</span>
+Pass <span style="color:#ae81ff">1</span>: parsed user script and <span style="color:#ae81ff">81</span> library script<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> using 78600virt/22436res/2512shr kb, in 100usr/0sys/125real ms.
+Pass <span style="color:#ae81ff">2</span>: analyzed script: <span style="color:#ae81ff">1</span> probe<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">function</span><span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">3</span> embed<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">0</span> global<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> using 276868virt/117456res/7792shr kb, in 1190usr/220sys/7225real ms.
+Pass <span style="color:#ae81ff">3</span>: translated to C into <span style="color:#e6db74">&#34;/tmp/stapQvI4gP/stap_347bddcb57970a4c3f9ee4e0705f0f68_1473_src.c&#34;</span> using 267024virt/112808res/5676shr kb, in 10usr/20sys/31real ms.
+Pass <span style="color:#ae81ff">4</span>: compiled C into <span style="color:#e6db74">&#34;stap_347bddcb57970a4c3f9ee4e0705f0f68_1473.ko&#34;</span> in 5410usr/840sys/12991real ms.
+Pass <span style="color:#ae81ff">5</span>: starting run.
+read performed
+Pass <span style="color:#ae81ff">5</span>: run completed in 0usr/20sys/499real ms.</code></pre></div>
+<h2 id="how-it-works">How it works</h2>
+
+<ol>
+<li>read script file written in &ldquo;System Tap&rdquo; language</li>
+<li>convert it to C source code</li>
+<li>compile code as a linux kernel module</li>
+<li>load it and execute it</li>
+<li>unload kernel module</li>
+</ol>
+
+<p>All these steps are done thanks to the <code>stap</code> command.</p>
+
+<h2 id="scripts">Scripts</h2>
+
+<p>A SystemTap script is of the following form:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">function <span style="color:#a6e22e">function_name</span>(arguments) {statements}
+ 
+probe event1, event2, ..., eventn {
+    function_name(args)
+}</code></pre></div>
+<p>To be read: if one eventn occurs, execute the corresponding statements ie : function_name(args)</p>
+
+<h2 id="first-example">First example</h2>
+
+<p>Let&rsquo;s print when the mkdir system call is called:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">function <span style="color:#a6e22e">fancy_print</span>(text) {
+    printf(<span style="color:#e6db74">&#34;**** %s ****</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, text);
+}
+
+probe syscall.mkdir {
+    fancy_print(<span style="color:#e6db74">&#34;mkdir syscall called with pathname: &#34;</span> . pathname);
+    exit();
+}</code></pre></div>
+<p>Run the script:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo stap -v mkdir_probe.stp
+Pass <span style="color:#ae81ff">1</span>: parsed user script and <span style="color:#ae81ff">81</span> library script<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> using 78596virt/22424res/2508shr kb, in 100usr/10sys/104real ms.
+Pass <span style="color:#ae81ff">2</span>: analyzed script: <span style="color:#ae81ff">1</span> probe<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">2</span> <span style="color:#66d9ef">function</span><span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">1</span> embed<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">0</span> global<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> using 205108virt/118440res/75184shr kb, in 310usr/50sys/399real ms.
+Pass <span style="color:#ae81ff">3</span>: translated to C into <span style="color:#e6db74">&#34;/tmp/stappLnq6v/stap_0de87453a9617d4db8e5f589bf21474f_1770_src.c&#34;</span> using 205108virt/118548res/75292shr kb, in 0usr/0sys/3real ms.
+Pass <span style="color:#ae81ff">4</span>: compiled C into <span style="color:#e6db74">&#34;stap_0de87453a9617d4db8e5f589bf21474f_1770.ko&#34;</span> in 1170usr/150sys/1407real ms.
+Pass <span style="color:#ae81ff">5</span>: starting run.</code></pre></div>
+<p>Then issue an <code>mkdir</code> command to trigger the probe, the SystemTap script should end:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">**** mkdir syscall called ! ****
+Pass <span style="color:#ae81ff">5</span>: run completed in 10usr/20sys/14869real ms.</code></pre></div>
+<p>Where does the pathname variable comes from ? SystemTap defines a set of
+predefined functions and probes typically in <code>/usr/share/systemtap/tapset/</code>. By looking at the
+<code>/usr/share/systemtap/tapset/syscalls.stp</code> file we can see the following mkdir section:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">    <span style="color:#75715e"># mkdir ______________________________________________________
+</span><span style="color:#75715e"></span>    <span style="color:#75715e"># long sys_mkdir(const char __user * pathname, int mode)
+</span><span style="color:#75715e"></span>    probe syscall.mkdir <span style="color:#f92672">=</span> kernel.function(<span style="color:#e6db74">&#34;sys_mkdir&#34;</span>).call
+    {
+            name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mkdir&#34;</span>
+            pathname_uaddr <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">$</span>pathname
+            pathname <span style="color:#f92672">=</span> user_string(<span style="color:#960050;background-color:#1e0010">$</span>pathname)
+            mode <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">$</span>mode
+            argstr <span style="color:#f92672">=</span> sprintf(<span style="color:#e6db74">&#34;%s, %#o&#34;</span>, user_string_quoted(<span style="color:#960050;background-color:#1e0010">$</span>pathname), <span style="color:#960050;background-color:#1e0010">$</span>mode)
+    }</code></pre></div>
+<p>where the <code>pathname</code> variable is defined.</p>
+
+<h2 id="iotop-with-systemtap-taken-from-http-sourceware-org-systemtap-examples-io-iotop-stp">iotop with systemtap (taken from <code>&lt;http://sourceware.org/systemtap/examples/io/iotop.stp&gt;</code>_)</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">global reads, writes, total_io
+
+probe vfs.read.<span style="color:#66d9ef">return</span> {
+    reads[execname()] <span style="color:#f92672">+=</span> bytes_read
+}
+
+probe vfs.write.<span style="color:#66d9ef">return</span> {
+    writes[execname()] <span style="color:#f92672">+=</span> bytes_written
+}
+
+<span style="color:#75715e"># print top 10 IO processes every 5 seconds
+</span><span style="color:#75715e"></span>probe timer.s(<span style="color:#ae81ff">5</span>) {
+    foreach (name in writes)
+        total_io[name] <span style="color:#f92672">+=</span> writes[name]
+    foreach (name in reads)
+        total_io[name] <span style="color:#f92672">+=</span> reads[name]
+    printf (<span style="color:#e6db74">&#34;%16s</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">%10s</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">%10s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#e6db74">&#34;Process&#34;</span>, <span style="color:#e6db74">&#34;KB Read&#34;</span>, <span style="color:#e6db74">&#34;KB Written&#34;</span>)
+    foreach (name in total_io<span style="color:#f92672">-</span> limit <span style="color:#ae81ff">10</span>)
+        printf(<span style="color:#e6db74">&#34;%16s</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">%10d</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">%10d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, name,
+               reads[name]<span style="color:#f92672">/</span><span style="color:#ae81ff">1024</span>, writes[name]<span style="color:#f92672">/</span><span style="color:#ae81ff">1024</span>)
+    delete reads
+    delete writes
+    delete total_io
+    print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
+}</code></pre></div>
+<ul>
+<li><code>.return</code> suffixes to probes means probes are triggered when the syscall returns,</li>
+<li><code>bytes_read</code> and <code>bytes_written</code> are predefined variables,</li>
+<li><code>timer.s</code> is a probe that executes periodically, in our case, every 5 seconds,</li>
+<li>note the minus sign in the <code>foreach</code> statement meaning sort by descending order and limited to the first 10 entries (<code>limit 10</code>).</li>
+</ul>
+
+<p>Running the script will periodically print the iotop-like output::</p>
+
+<pre><code>         Process	   KB Read	KB Written
+            mocp	       199	         0
+            Xorg	       161	         0
+         firefox	         2	         5
+             psi	         1	         0
+          stapio	         0	         0
+           urxvt	         0	         0
+      parcellite	         0	         0
+            tmux	         0	         0
+        beam.smp	         0	         0
+ plugin-containe	         0	         0
+</code></pre>
+
+<h2 id="links">Links</h2>
+
+<hr />
+
+<ul>
+<li><a href="http://http://sourceware.org/systemtap/wiki">SystemTap wiki</a></li>
+<li><a href="http://sourceware.org/systemtap/langref/Probe_points.html">Probes reference</a></li>
+<li><a href="http://sourceware.org/systemtap//SystemTap_Beginners_Guide.pdf">Beginner&rsquo;s guide</a></li>
+</ul>
+
+</article>
+
+</div>
+</div>
+<script src="http://klyr.quicheaters.org/blog//js/theme.min.js" type="text/javascript"></script>
+
+
+</body>
+</html>
+

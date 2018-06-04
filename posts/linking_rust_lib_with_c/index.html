@@ -1,0 +1,290 @@
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="author" content="">
+
+<meta name="description" content="">
+
+<title>Linking Rust Library with C</title>
+<meta name="generator" content="Hugo 0.41" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet" type="text/css">
+<link  href="http://klyr.quicheaters.org/blog//css/theme.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<div class="page-container container-fluid">
+<div class="col-md-3 menu">
+    <nav class="col-md-3">
+    <h3 class="home-link"><a href="http://klyr.quicheaters.org/blog/">Root</a></h3>
+    <div id="last-posts" class="open">
+        <h3 data-open="last-posts">~klyr - Most recent posts</h3>
+        <ul>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_linc_switch/">Playing with the Erlang Linc Switch</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/linking_rust_lib_with_c/">Linking Rust Library with C</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_linux_framebuffer/">Playing with linux framebuffer</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/updating_ip_routes_in_c/">Updating IP routes programmatically</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/gnu_backtrace_extension/">Display backtrace when a program segfaults</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/trickle/">Trickle, lightweight userspace bandwidth shaper</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/playing_with_systemtap/">Playing with systemtap</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/pipe_viewer/">Pipe Viewer</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/ip_route_based_on_port/">Ip routing based on destination port</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/c_pointers_ksplice_challenge/">C pointers &amp; Ksplice challenge</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/commands_and_keys_reminders/">Commands &amp; key bindings reminders</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/standalone_python_project/">Standalone Python project/installation</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/using_a_free_cdn/">Using a free CDN, Cloudflare</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/manipulating_data_with_r/">Manipulating data with R</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/various_reminders_about_openssl_and_certificates/">Various reminders about OpenSSL and Certificates</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/colored_less_output/">Colored less output</a></li>
+            
+            <li><a href="http://klyr.quicheaters.org/blog/posts/preserving_buffer_cache/">Preserving Buffer Cache State</a></li>
+            
+        </ul>
+    </div>
+    
+    
+    <div id="categories" class="open">
+        <h3 data-open="categories">Categories</h3>
+        <ul class="categories">
+            
+            <li><a href="/categories/c">c</a></li>
+            
+            <li><a href="/categories/network">network</a></li>
+            
+            <li><a href="/categories/python">python</a></li>
+            
+            <li><a href="/categories/r">r</a></li>
+            
+            <li><a href="/categories/security">security</a></li>
+            
+            <li><a href="/categories/unix">unix</a></li>
+            
+        </ul>
+    </div>
+    
+</nav>
+
+</div>
+<div class="col-md-9 content">
+
+<h1>Linking Rust Library with C</h1>
+<h4>Published 12-17-2014 00:00:00</h4>
+<article>
+    
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Rust is a system programming Language developed by Mozilla. For a C-like language, it features interesting paradigms:</p>
+
+<ul>
+<li>functional style,</li>
+<li>actors,</li>
+<li>object oriented,</li>
+<li>safe memory allocation and free</li>
+</ul>
+
+<p>In this article we will link a Rust library with a C program.</p>
+
+<p>Tools used:</p>
+
+<ul>
+<li>rustc 0.13.0-nightly (5484d6f6d 2014-12-02)</li>
+<li>gcc (Debian 4.9.1-19) 4.9.1</li>
+<li>docker</li>
+</ul>
+
+<h2 id="installation">Installation</h2>
+
+<p>Compiling the Rust compiler takes quite some time, so I decided to use a nightly built container of the compiler:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo docker run --rm -it -v <span style="color:#66d9ef">$(</span>pwd<span style="color:#66d9ef">)</span>/play_rust:/source schickling/rust</code></pre></div>
+<h2 id="the-rust-library">The Rust library</h2>
+
+<p>Here is a simple Rust library called <code>rust_test</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#![crate_type = </span><span style="color:#e6db74">&#34;lib&#34;</span><span style="color:#75715e">]</span>
+<span style="color:#75715e">#![crate_name = </span><span style="color:#e6db74">&#34;rust_test&#34;</span><span style="color:#75715e">]</span>
+
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">add</span>(a: <span style="color:#a6e22e">int</span>, b: <span style="color:#a6e22e">int</span>) -&gt; <span style="color:#a6e22e">int</span> {
+    a <span style="color:#f92672">+</span> b
+}
+
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">mult2</span>(a: <span style="color:#a6e22e">int</span>) -&gt; <span style="color:#a6e22e">int</span> {
+    a <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>
+}</code></pre></div>
+<p>The <code>create_type</code> is <code>rlib</code> which means it&rsquo;s a standard Rust library. This will compile to <code>librust_test.rlib</code> which is not the expected format for linking with a C program.
+To have a standard .so file, use <code>#![crate_type = &quot;dylib&quot;]</code></p>
+
+<p>Lets compile:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ rustc src/rust_test.rs</code></pre></div>
+<p><code>librust_test.rlib</code> is a simple <code>ar</code> archive:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ file librust_test.rlib
+librust_test.rlib: current ar archive</code></pre></div>
+<p>whereas when compiled with <code>crate_lib = &quot;dylib&quot;</code>, the <code>librust_test.so</code> is a traditional shared library:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ file librust_test.so
+librust_test.so: ELF <span style="color:#ae81ff">64</span>-bit LSB shared object, x86-64, version <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>SYSV<span style="color:#f92672">)</span>, dynamically linked, BuildID<span style="color:#f92672">[</span>sha1<span style="color:#f92672">]=</span>0xe257293ebac1993f4d09926d3b3f66bb19dd4377, not stripped</code></pre></div>
+<h2 id="the-c-program">The C program</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;lib_test.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+    <span style="color:#66d9ef">int</span> a, b;
+
+    a <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>;
+    b <span style="color:#f92672">=</span> <span style="color:#ae81ff">6</span>;
+
+    printf(<span style="color:#e6db74">&#34;%d + %d = %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, a, b, add(a, b));
+    printf(<span style="color:#e6db74">&#34;2 * %d = %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, a, mult2(a));
+
+    <span style="color:#66d9ef">return</span> (<span style="color:#ae81ff">0</span>);
+}</code></pre></div>
+<p>The library header:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#ifndef LIB_TEST_H_
+</span><span style="color:#75715e">#define LIB_TEST_H_
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">int</span>, <span style="color:#66d9ef">int</span>);
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">mult2</span>(<span style="color:#66d9ef">int</span>);
+
+<span style="color:#75715e">#endif </span><span style="color:#75715e">/* LIB_TEST_H_ */</span></code></pre></div>
+<p>The library code:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">int</span> a, <span style="color:#66d9ef">int</span> b) {
+    <span style="color:#66d9ef">return</span> (a <span style="color:#f92672">+</span> b);
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">mult2</span>(<span style="color:#66d9ef">int</span> a) {
+    <span style="color:#66d9ef">return</span> (<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> a);
+}</code></pre></div>
+<p>Simple test:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ gcc -shared c_test.c -o libc_test.so
+$ gcc -Wall -I. -L. -lc_test test.c -o test
+
+$ LD_LIBRARY_PATH<span style="color:#f92672">=</span>. ./test
+<span style="color:#ae81ff">4</span> + 6 <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+<span style="color:#ae81ff">2</span> * 4 <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span></code></pre></div>
+<h2 id="let-s-do-link-with-our-rust-library">Let&rsquo;s do link with our Rust library</h2>
+
+<p>First, some simple comparison between our two libraries.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ls -l *.so
+-rwxr-xr-x <span style="color:#ae81ff">1</span> klyr klyr    <span style="color:#ae81ff">6176</span> Dec <span style="color:#ae81ff">17</span> <span style="color:#ae81ff">14</span>:05 libc_test.so
+-rwxr-xr-x <span style="color:#ae81ff">1</span> klyr klyr <span style="color:#ae81ff">1333512</span> Dec <span style="color:#ae81ff">17</span> <span style="color:#ae81ff">14</span>:01 librust_test.so</code></pre></div>
+<p>The Rust library is bigger in size (even after being stripped) because it includes the Rust <a href="http://doc.rust-lang.org/0.12.0/guide-runtime.html">runtime</a> code.</p>
+
+<p>Now let&rsquo;s check for exported symbols:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ nm c_test.o
+<span style="color:#ae81ff">0000000000000000</span> T add
+<span style="color:#ae81ff">0000000000000014</span> T mult2
+
+$ nm -C librust_test.so|grep -E <span style="color:#e6db74">&#39;T add|T mult2&#39;</span>
+<span style="color:#ae81ff">0000000000071850</span> T add::hf274835eff4dd2c6eaa
+00000000000718a0 T mult2::h3931ba25cb6746acuaa</code></pre></div>
+<p>Now we want to replace our C library with the Rust one.</p>
+
+<p>Let&rsquo;s try to link with our Rust library:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ gcc -Wall -std<span style="color:#f92672">=</span>c99 -I. -L. -lrust_test  test.c -o test
+/tmp/ccbjLrt6.o: In <span style="color:#66d9ef">function</span> <span style="color:#e6db74">`</span>main<span style="color:#e6db74">&#39;:
+</span><span style="color:#e6db74">test.c:(.text+0x28): undefined reference to `add&#39;</span>
+test.c:<span style="color:#f92672">(</span>.text+0x4b<span style="color:#f92672">)</span>: undefined reference to <span style="color:#e6db74">`</span>mult2<span style="color:#960050;background-color:#1e0010">&#39;</span>
+collect2: error: ld returned <span style="color:#ae81ff">1</span> exit status</code></pre></div>
+<p>As Rust has its own way of doing name mangling the linker is not able to find the <code>add</code> and <code>mult2</code> functions. To fix this we need to tell the Rust compiler that we do not want to do name mangling on these to functions. Simply add the <code>#[no_mangle]</code> attribute to both functions.</p>
+
+<p>We end up with the following Rust library:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#![crate_type = </span><span style="color:#e6db74">&#34;lib&#34;</span><span style="color:#75715e">]</span>
+<span style="color:#75715e">#![crate_name = </span><span style="color:#e6db74">&#34;rust_test&#34;</span><span style="color:#75715e">]</span>
+
+<span style="color:#75715e">#[no_mangle]</span>
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">add</span>(a: <span style="color:#a6e22e">int</span>, b: <span style="color:#a6e22e">int</span>) -&gt; <span style="color:#a6e22e">int</span> {
+    a <span style="color:#f92672">+</span> b
+}
+
+<span style="color:#75715e">#[no_mangle]</span>
+<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">mult2</span>(a: <span style="color:#a6e22e">int</span>) -&gt; <span style="color:#a6e22e">int</span> {
+    a <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>
+}</code></pre></div>
+<p>Compile again:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ gcc -Wall -std<span style="color:#f92672">=</span>c99 -I. -L. -lrust_test  test.c -o test
+$ export LD_LIBRARY_PATH<span style="color:#f92672">=</span>.
+$ ldd ./test
+        linux-vdso.so.1 <span style="color:#f92672">(</span>0x00007fffd11fc000<span style="color:#f92672">)</span>
+        librust_test.so <span style="color:#f92672">=</span>&gt; ./librust_test.so <span style="color:#f92672">(</span>0x00007fd499328000<span style="color:#f92672">)</span>
+        libc.so.6 <span style="color:#f92672">=</span>&gt; /lib/x86_64-linux-gnu/libc.so.6 <span style="color:#f92672">(</span>0x00007fd498f5d000<span style="color:#f92672">)</span>
+        libpthread.so.0 <span style="color:#f92672">=</span>&gt; /lib/x86_64-linux-gnu/libpthread.so.0 <span style="color:#f92672">(</span>0x00007fd498d3f000<span style="color:#f92672">)</span>
+        libgcc_s.so.1 <span style="color:#f92672">=</span>&gt; /lib/x86_64-linux-gnu/libgcc_s.so.1 <span style="color:#f92672">(</span>0x00007fd498b29000<span style="color:#f92672">)</span>
+        /lib64/ld-linux-x86-64.so.2 <span style="color:#f92672">(</span>0x00007fd499676000<span style="color:#f92672">)</span>
+        libm.so.6 <span style="color:#f92672">=</span>&gt; /lib/x86_64-linux-gnu/libm.so.6 <span style="color:#f92672">(</span>0x00007fd498828000<span style="color:#f92672">)</span>
+$</code></pre></div>
+<p>We are well linked with our Rust library.</p>
+
+<p>Check if it works:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"> $ ./test
+ <span style="color:#ae81ff">4</span> + 6 <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+ <span style="color:#ae81ff">2</span> * 4 <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>
+ $</code></pre></div>
+<h2 id="last-words">Last words</h2>
+
+<p>Integrating Rust libraries with C code is quite straightforward:</p>
+
+<ul>
+<li>specify <code>dylib</code> as <code>create_type</code> attribute</li>
+<li>add <code>#[no_mangle]</code> attribute to functions to prevent name mangling</li>
+</ul>
+
+<p>On some blogs and documentations, people also add the <code>extern</code> keyword for function definition. It does not seem to be required in my tests.</p>
+
+<p>I&rsquo;m not sure if we can use Rust functions ins the standard library like <code>println</code> for example. This needs to be checked maybe in a later article.</p>
+
+<h2 id="one-more-thing-with-lua">One more thing with Lua</h2>
+
+<p>Just wanted to check how easy it can be to integrate with LuaJIT ffi.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ luajit
+LuaJIT <span style="color:#ae81ff">2</span>.0.3 -- Copyright <span style="color:#f92672">(</span>C<span style="color:#f92672">)</span> <span style="color:#ae81ff">2005</span>-2014 Mike Pall. http://luajit.org/
+JIT: ON CMOV SSE2 SSE3 SSE4.1 fold cse dce fwd dse narrow loop abc sink fuse
+&gt; ffi <span style="color:#f92672">=</span> require<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ffi&#34;</span><span style="color:#f92672">)</span>
+&gt; ffi.cdef<span style="color:#f92672">[[</span>
+&gt;&gt; int add<span style="color:#f92672">(</span>int, int<span style="color:#f92672">)</span>;
+&gt;&gt; int mult2<span style="color:#f92672">(</span>int<span style="color:#f92672">)</span>;
+&gt;&gt; <span style="color:#f92672">]]</span>
+&gt; rust_lib <span style="color:#f92672">=</span> ffi.load<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;./librust_test.so&#34;</span><span style="color:#f92672">)</span>
+&gt; sum <span style="color:#f92672">=</span> rust_lib.add<span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">)</span>
+&gt; mult <span style="color:#f92672">=</span> rust_lib.mult2<span style="color:#f92672">(</span><span style="color:#ae81ff">5</span><span style="color:#f92672">)</span>
+&gt; print<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Sum:&#34;</span>, sum<span style="color:#f92672">)</span>
+Sum:    <span style="color:#ae81ff">3</span>
+&gt; print<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Mult2:&#34;</span>, mult<span style="color:#f92672">)</span>
+Mult2:  <span style="color:#ae81ff">10</span></code></pre></div>
+<h2 id="links">Links</h2>
+
+<ul>
+<li><a href="http://harkablog.com/calling-rust-from-c-and-python.html">Calling Rust from C (and Python!)</a></li>
+<li><a href="http://luajit.org/ext_ffi_tutorial.html">Lua FFI tutorial</a></li>
+</ul>
+
+</article>
+
+</div>
+</div>
+<script src="http://klyr.quicheaters.org/blog//js/theme.min.js" type="text/javascript"></script>
+
+
+</body>
+</html>
+
