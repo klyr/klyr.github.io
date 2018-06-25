@@ -9,7 +9,7 @@
 <meta name="description" content="">
 
 <title>Linking Rust Library with C</title>
-<meta name="generator" content="Hugo 0.41" />
+<meta name="generator" content="Hugo 0.42.1" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
@@ -33,6 +33,8 @@
             <li><a href="/categories/c">c</a></li>
             
             <li><a href="/categories/network">network</a></li>
+            
+            <li><a href="/categories/programming">programming</a></li>
             
             <li><a href="/categories/python">python</a></li>
             
@@ -92,7 +94,8 @@
 
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">mult2</span>(a: <span style="color:#a6e22e">int</span>) -&gt; <span style="color:#a6e22e">int</span> {
     a <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>
-}</code></pre></div>
+}
+</code></pre></div>
 <p>The <code>create_type</code> is <code>rlib</code> which means it&rsquo;s a standard Rust library. This will compile to <code>librust_test.rlib</code> which is not the expected format for linking with a C program.
 To have a standard .so file, use <code>#![crate_type = &quot;dylib&quot;]</code></p>
 
@@ -181,7 +184,8 @@ collect2: error: ld returned <span style="color:#ae81ff">1</span> exit status</c
 <span style="color:#75715e">#[no_mangle]</span>
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">mult2</span>(a: <span style="color:#a6e22e">int</span>) -&gt; <span style="color:#a6e22e">int</span> {
     a <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>
-}</code></pre></div>
+}
+</code></pre></div>
 <p>Compile again:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ gcc -Wall -std<span style="color:#f92672">=</span>c99 -I. -L. -lrust_test  test.c -o test
 $ export LD_LIBRARY_PATH<span style="color:#f92672">=</span>.

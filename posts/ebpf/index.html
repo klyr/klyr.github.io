@@ -1,0 +1,733 @@
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="author" content="">
+
+<meta name="description" content="">
+
+<title>Playing with eBPF (extended BPF)</title>
+<meta name="generator" content="Hugo 0.42.1" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet" type="text/css">
+<link  href="https://klyr.github.io/css/theme.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<div class="page-container container-fluid">
+<div class="col-md-3 menu">
+    <nav class="col-md-3">
+    <h3 class="home-link"><a href="https://klyr.github.io">Root</a></h3>
+    
+    
+    <div id="categories" class="open">
+        <h3 data-open="categories">~klyr - Categories</h3>
+        <ul class="categories">
+            
+            
+            <li><a href="/categories/c">c</a></li>
+            
+            <li><a href="/categories/network">network</a></li>
+            
+            <li><a href="/categories/programming">programming</a></li>
+            
+            <li><a href="/categories/python">python</a></li>
+            
+            <li><a href="/categories/r">r</a></li>
+            
+            <li><a href="/categories/security">security</a></li>
+            
+            <li><a href="/categories/unix">unix</a></li>
+            
+            
+        </ul>
+    </div>
+</nav>
+
+</div>
+<div class="col-md-9 content">
+
+<h1>Playing with eBPF (extended BPF)</h1>
+<h4>Published 04-25-2018</h4>
+<article>
+    
+
+<h2 id="introduction">Introduction</h2>
+
+<p>eBPF stands for <code>extended Berkeley Packet Filter</code>, but can do more
+than just filter packets.</p>
+
+<p>The idea is the same as when you use the <code>tcpdump</code> command:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ tcpdump ip host helios and port <span style="color:#ae81ff">80</span></code></pre></div>
+<p>the <code>ip host helios and port 80</code> filter/program is compiled and run in a virtual machine.</p>
+
+<p>With eBPF, you program in C (a restricted version of it), you compile
+it to the target VM then load this code inside the kernel and run it
+inside the kernel. It also provides access to eBPF maps to store and
+share data across several eBPF programs.</p>
+
+<p>This is a efficient way to manipulate and trace what is happening in
+the kernel.</p>
+
+<p>Maps are data structure that you can access from the user-land. So
+it&rsquo;s a convenient way to get data from the kernel-land.</p>
+
+<p>eBPF programs are executed is triggered by events, meaning that it&rsquo;s
+executed only when, for example, a network packet is received or a
+specific kernel function is executed.</p>
+
+<h2 id="requirements">Requirements</h2>
+
+<ul>
+<li>A 4.X kernel with BPF support enabled:</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ grep _BPF /boot/config-4.16.0-1-amd64
+CONFIG_CGROUP_BPF<span style="color:#f92672">=</span>y
+CONFIG_BPF<span style="color:#f92672">=</span>y
+CONFIG_BPF_SYSCALL<span style="color:#f92672">=</span>y
+<span style="color:#75715e"># CONFIG_BPF_JIT_ALWAYS_ON is not set
+</span><span style="color:#75715e"></span>CONFIG_NETFILTER_XT_MATCH_BPF<span style="color:#f92672">=</span>m
+CONFIG_NET_CLS_BPF<span style="color:#f92672">=</span>m
+CONFIG_NET_ACT_BPF<span style="color:#f92672">=</span>m
+CONFIG_BPF_JIT<span style="color:#f92672">=</span>y
+<span style="color:#75715e"># CONFIG_BPF_STREAM_PARSER is not set
+</span><span style="color:#75715e"></span>CONFIG_LWTUNNEL_BPF<span style="color:#f92672">=</span>y
+CONFIG_BPF_EVENTS<span style="color:#f92672">=</span>y
+<span style="color:#75715e"># CONFIG_BPF_KPROBE_OVERRIDE is not set
+</span><span style="color:#75715e"></span>CONFIG_TEST_BPF<span style="color:#f92672">=</span>m</code></pre></div>
+<ul>
+<li><p>The Linux kernel source code, to test examples</p></li>
+
+<li><p>An eBPF compiler: LLVM have an eBPF backend</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ llc --version
+LLVM <span style="color:#f92672">(</span>http://llvm.org/<span style="color:#f92672">)</span>:
+  LLVM version <span style="color:#ae81ff">4</span>.0.1
+      
+  Optimized build.
+  Default target: x86_64-pc-linux-gnu
+  Host CPU: penryn
+      
+  Registered Targets:
+    aarch64    - AArch64 <span style="color:#f92672">(</span>little endian<span style="color:#f92672">)</span>
+    aarch64_be - AArch64 <span style="color:#f92672">(</span>big endian<span style="color:#f92672">)</span>
+    amdgcn     - AMD GCN GPUs
+    arm        - ARM
+    arm64      - ARM64 <span style="color:#f92672">(</span>little endian<span style="color:#f92672">)</span>
+    armeb      - ARM <span style="color:#f92672">(</span>big endian<span style="color:#f92672">)</span>
+    bpf        - BPF <span style="color:#f92672">(</span>host endian<span style="color:#f92672">)</span>
+    bpfeb      - BPF <span style="color:#f92672">(</span>big endian<span style="color:#f92672">)</span>
+    bpfel      - BPF <span style="color:#f92672">(</span>little endian<span style="color:#f92672">)</span>
+    hexagon    - Hexagon
+    <span style="color:#f92672">[</span> ... <span style="color:#f92672">]</span></code></pre></div></li>
+</ul>
+
+<h2 id="the-bpf-2-system-call">The bpf(2) system call</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-man" data-lang="man">NAME
+       bpf - perform a command on an extended BPF map or program
+
+SYNOPSIS
+       #include &lt;linux/bpf.h&gt;
+
+       int bpf(int cmd, union bpf_attr *attr, unsigned int size);</code></pre></div>
+<p>There is only one system call. <code>cmd</code> is the operation to perform and
+argument <code>attr</code> is a union of structures. for the corresponding
+command.</p>
+
+<p><code>BPF_MAP_CREATE</code>, <code>BPF_MAP_LOOKUP_ELEM</code>, <code>BPF_MAP_UPDATE_ELEM</code>, <code>BPF_MAP_DELETE_ELEM</code>, <code>BPF_MAP_GET_NEXT_KEY</code>: Commands to use maps.</p>
+
+<p><code>BPF_PROG_LOAD</code>: Verify and load an eBPF program</p>
+
+<p>Other commands exist but are not yet documented in the man page. Look
+at the <code>linux/bpf.h</code> header file if your are curious.</p>
+
+<p>At the time of writing this article, the union is:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">union</span> bpf_attr {
+        <span style="color:#66d9ef">struct</span> { <span style="color:#75715e">/* anonymous struct used by BPF_MAP_CREATE command */</span>
+                __u32   map_type;       <span style="color:#75715e">/* one of enum bpf_map_type */</span>
+                __u32   key_size;       <span style="color:#75715e">/* size of key in bytes */</span>
+                __u32   value_size;     <span style="color:#75715e">/* size of value in bytes */</span>
+                __u32   max_entries;    <span style="color:#75715e">/* max number of entries in a map */</span>
+                __u32   map_flags;      <span style="color:#75715e">/* BPF_MAP_CREATE related
+</span><span style="color:#75715e">                                         * flags defined above.
+</span><span style="color:#75715e">                                         */</span>
+                __u32   inner_map_fd;   <span style="color:#75715e">/* fd pointing to the inner map */</span>
+                __u32   numa_node;      <span style="color:#75715e">/* numa node (effective only if
+</span><span style="color:#75715e">                                         * BPF_F_NUMA_NODE is set).
+</span><span style="color:#75715e">                                         */</span>
+                <span style="color:#66d9ef">char</span>    map_name[BPF_OBJ_NAME_LEN];
+        };
+
+        <span style="color:#66d9ef">struct</span> { <span style="color:#75715e">/* anonymous struct used by BPF_MAP_*_ELEM commands */</span>
+                __u32           map_fd;
+                __aligned_u64   key;
+                <span style="color:#66d9ef">union</span> {
+                        __aligned_u64 value;
+                        __aligned_u64 next_key;
+                };
+                __u64           flags;
+        };
+        <span style="color:#66d9ef">struct</span> { <span style="color:#75715e">/* anonymous struct used by BPF_PROG_LOAD command */</span>
+                __u32           prog_type;      <span style="color:#75715e">/* one of enum bpf_prog_type */</span>
+                __u32           insn_cnt;
+                __aligned_u64   insns;
+                __aligned_u64   license;
+                __u32           log_level;      <span style="color:#75715e">/* verbosity level of verifier */</span>
+                __u32           log_size;       <span style="color:#75715e">/* size of user buffer */</span>
+                __aligned_u64   log_buf;        <span style="color:#75715e">/* user supplied buffer */</span>
+                __u32           kern_version;   <span style="color:#75715e">/* checked when prog_type=kprobe */</span>
+                __u32           prog_flags;
+                <span style="color:#66d9ef">char</span>            prog_name[BPF_OBJ_NAME_LEN];
+                __u32           prog_ifindex;   <span style="color:#75715e">/* ifindex of netdev to prep for */</span>
+        };
+
+        <span style="color:#66d9ef">struct</span> { <span style="color:#75715e">/* anonymous struct used by BPF_OBJ_* commands */</span>
+                __aligned_u64   pathname;
+                __u32           bpf_fd;
+                __u32           file_flags;
+        };
+
+        <span style="color:#66d9ef">struct</span> { <span style="color:#75715e">/* anonymous struct used by BPF_PROG_ATTACH/DETACH commands */</span>
+                __u32           target_fd;      <span style="color:#75715e">/* container object to attach to */</span>
+                __u32           attach_bpf_fd;  <span style="color:#75715e">/* eBPF program to attach */</span>
+                __u32           attach_type;
+                __u32           attach_flags;
+        };
+
+        <span style="color:#66d9ef">struct</span> { <span style="color:#75715e">/* anonymous struct used by BPF_PROG_TEST_RUN command */</span>
+                __u32           prog_fd;
+                __u32           retval;
+                __u32           data_size_in;
+                __u32           data_size_out;
+                __aligned_u64   data_in;
+                __aligned_u64   data_out;
+                __u32           repeat;
+                __u32           duration;
+        } test;
+
+        <span style="color:#66d9ef">struct</span> { <span style="color:#75715e">/* anonymous struct used by BPF_*_GET_*_ID */</span>
+                <span style="color:#66d9ef">union</span> {
+                        __u32           start_id;
+                        __u32           prog_id;
+                        __u32           map_id;
+                };
+                __u32           next_id;
+                __u32           open_flags;
+        };
+
+        <span style="color:#66d9ef">struct</span> { <span style="color:#75715e">/* anonymous struct used by BPF_OBJ_GET_INFO_BY_FD */</span>
+                __u32           bpf_fd;
+                __u32           info_len;
+                __aligned_u64   info;
+        } info;
+
+    <span style="color:#66d9ef">struct</span> { <span style="color:#75715e">/* anonymous struct used by BPF_PROG_QUERY command */</span>
+                __u32           target_fd;      <span style="color:#75715e">/* container object to query */</span>
+                __u32           attach_type;
+                __u32           query_flags;
+                __u32           attach_flags;
+                __aligned_u64   prog_ids;
+                __u32           prog_cnt;
+        } query;
+} __attribute__((aligned(<span style="color:#ae81ff">8</span>)));</code></pre></div>
+<h2 id="running-an-example">Running an example</h2>
+
+<p>First, let&rsquo;s create a simple eBPF program by just creating a maps,
+write a value in it, and read its content back, from a user-land program.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;errno.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;asm/unistd.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/bpf.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;inttypes.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#define min(x, y) ((x) &lt; (y) ? (x) : (y))
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">inline</span> __u64 <span style="color:#a6e22e">ptr_to_u64</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>ptr) {
+    <span style="color:#66d9ef">return</span> (__u64) (<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span>) ptr;
+}
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">sys_bpf</span>(<span style="color:#66d9ef">enum</span> bpf_cmd cmd,
+                          <span style="color:#66d9ef">union</span> bpf_attr <span style="color:#f92672">*</span>attr,
+                          <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> size) {
+        <span style="color:#66d9ef">return</span> syscall(__NR_bpf, cmd, attr, size);
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">bpf_create_map</span>(<span style="color:#66d9ef">enum</span> bpf_map_type map_type,
+               <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> key_size,
+               <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> value_size,
+               <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> max_entries) {
+    <span style="color:#66d9ef">union</span> bpf_attr attr <span style="color:#f92672">=</span> {
+        .map_type    <span style="color:#f92672">=</span> map_type,
+        .key_size    <span style="color:#f92672">=</span> key_size,
+        .value_size  <span style="color:#f92672">=</span> value_size,
+        .max_entries <span style="color:#f92672">=</span> max_entries
+    };
+
+    <span style="color:#66d9ef">return</span> sys_bpf(BPF_MAP_CREATE, <span style="color:#f92672">&amp;</span>attr, <span style="color:#66d9ef">sizeof</span>(attr));
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">bpf_lookup_elem</span>(<span style="color:#66d9ef">int</span> fd, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key, <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>value) {
+    <span style="color:#66d9ef">union</span> bpf_attr attr <span style="color:#f92672">=</span> {
+        .map_fd <span style="color:#f92672">=</span> fd,
+        .key    <span style="color:#f92672">=</span> ptr_to_u64(key),
+        .value  <span style="color:#f92672">=</span> ptr_to_u64(value),
+    };
+
+    <span style="color:#66d9ef">return</span> sys_bpf(BPF_MAP_LOOKUP_ELEM, <span style="color:#f92672">&amp;</span>attr, <span style="color:#66d9ef">sizeof</span>(attr));
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">bpf_update_elem</span>(<span style="color:#66d9ef">int</span> fd, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>value,
+                uint64_t flags) {
+    <span style="color:#66d9ef">union</span> bpf_attr attr <span style="color:#f92672">=</span> {
+        .map_fd <span style="color:#f92672">=</span> fd,
+        .key    <span style="color:#f92672">=</span> ptr_to_u64(key),
+        .value  <span style="color:#f92672">=</span> ptr_to_u64(value),
+        .flags  <span style="color:#f92672">=</span> flags,
+    };
+
+    <span style="color:#66d9ef">return</span> sys_bpf(BPF_MAP_UPDATE_ELEM, <span style="color:#f92672">&amp;</span>attr, <span style="color:#66d9ef">sizeof</span>(attr));
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">dump_map</span>(<span style="color:#66d9ef">int</span> fd) {
+    <span style="color:#66d9ef">int</span> rc;
+    <span style="color:#66d9ef">int</span> key, next_key;
+    uint64_t value;
+
+    key <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">while</span> ((rc <span style="color:#f92672">=</span> bpf_get_next_key(fd, <span style="color:#f92672">&amp;</span>key, <span style="color:#f92672">&amp;</span>next_key)) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+        bpf_lookup_elem(fd, <span style="color:#f92672">&amp;</span>next_key, <span style="color:#f92672">&amp;</span>value);
+        printf(<span style="color:#e6db74">&#34;Element: %d -&gt; %ld</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, next_key, value);
+        key <span style="color:#f92672">=</span> next_key;
+    }
+}</code></pre></div>
+<ul>
+<li><code>sys_bpf()</code>: this function is needed to call the <code>bpf</code> syscall</li>
+<li><code>bpf_create_map()</code>, <code>bpf_lookup_elem()</code>, <code>bpf_update_elem()</code>: helper functions, those function are take from the <a href="https://github.com/iovisor/bcc/">IOVisor</a> project</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>argv) {
+    <span style="color:#66d9ef">int</span> map_fd, key;
+    <span style="color:#66d9ef">int</span> max_entries <span style="color:#f92672">=</span> <span style="color:#ae81ff">1024</span>;
+    uint64_t value <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+
+    map_fd <span style="color:#f92672">=</span> bpf_create_map(BPF_MAP_TYPE_HASH, <span style="color:#66d9ef">sizeof</span>(key),
+                            <span style="color:#66d9ef">sizeof</span>(value), max_entries);
+    <span style="color:#66d9ef">if</span> (map_fd <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) {
+        printf(<span style="color:#e6db74">&#34;failed to create map &#39;%s&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, strerror(errno));
+        <span style="color:#75715e">/* likely not run as root */</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+    }
+
+    printf(<span style="color:#e6db74">&#34;We just created an eBPF map of %d entries</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, max_entries);
+
+    <span style="color:#66d9ef">if</span> (bpf_lookup_elem(map_fd, <span style="color:#e6db74">&#34;MY_KEY&#34;</span>, <span style="color:#f92672">&amp;</span>value) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {
+        printf(<span style="color:#e6db74">&#34;BEFORE: There is no element with key &#39;MY_KEY&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    } <span style="color:#66d9ef">else</span> {
+        printf(<span style="color:#e6db74">&#34;BEFORE: There is an element with with key &#39;MY_KEY&#39;: %ld</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, value);
+    }
+
+    value <span style="color:#f92672">=</span> <span style="color:#ae81ff">42</span>;
+    <span style="color:#66d9ef">if</span> (bpf_update_elem(map_fd, <span style="color:#e6db74">&#34;MY_KEY&#34;</span>, <span style="color:#f92672">&amp;</span>value, BPF_ANY) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+        printf(<span style="color:#e6db74">&#34;New element updated</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    } <span style="color:#66d9ef">else</span> {
+        printf(<span style="color:#e6db74">&#34;Error while updating the map: %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, strerror(errno));
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+    }
+
+    value <span style="color:#f92672">=</span> <span style="color:#ae81ff">51</span>;
+    <span style="color:#66d9ef">if</span> (bpf_lookup_elem(map_fd, <span style="color:#e6db74">&#34;MY_KEY&#34;</span>, <span style="color:#f92672">&amp;</span>value) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {
+        printf(<span style="color:#e6db74">&#34;AFTER: There is no element with key &#39;MY_KEY&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    } <span style="color:#66d9ef">else</span> {
+        printf(<span style="color:#e6db74">&#34;AFTER: There is an element with with key &#39;MY_KEY&#39;: %ld</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, value);
+    }
+
+    printf(<span style="color:#e6db74">&#34;### Dump of table ###</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    dump_map(map_fd);
+
+    <span style="color:#66d9ef">while</span>(<span style="color:#ae81ff">1</span>) {
+        sleep(<span style="color:#ae81ff">1</span>);
+    }
+
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}</code></pre></div>
+<p>Here we have a simple user-land program, which creates an in-kernel
+BPF map and add an element to it. As soon as the user-land program is
+terminated, the map is deleted.</p>
+
+<h3 id="user-land-program-to-load-the-ebpf-code">User-land program to load the eBPF code</h3>
+
+<p>Now that the map is created we can create and load a BPF program to
+update the map.</p>
+
+<p>We will attach our program to one kind of event: kprobe. Each time
+this event will be triggered, our BPF program will be executed. In our
+case, it will increment the value in the BPF map having key 100.</p>
+
+<p>Many type of eBPF program can be created:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">enum</span> bpf_prog_type {
+        BPF_PROG_TYPE_UNSPEC,
+        BPF_PROG_TYPE_SOCKET_FILTER,
+        BPF_PROG_TYPE_KPROBE,
+        BPF_PROG_TYPE_SCHED_CLS,
+        BPF_PROG_TYPE_SCHED_ACT,
+        BPF_PROG_TYPE_TRACEPOINT,
+        BPF_PROG_TYPE_XDP,
+        BPF_PROG_TYPE_PERF_EVENT,
+        BPF_PROG_TYPE_CGROUP_SKB,
+        BPF_PROG_TYPE_CGROUP_SOCK,
+        BPF_PROG_TYPE_LWT_IN,
+        BPF_PROG_TYPE_LWT_OUT,
+        BPF_PROG_TYPE_LWT_XMIT,
+        BPF_PROG_TYPE_SOCK_OPS,
+        BPF_PROG_TYPE_SK_SKB,
+        BPF_PROG_TYPE_CGROUP_DEVICE,
+};</code></pre></div>
+<p>Add a new helper function to load the BPF program into the kernel:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/version.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#define LOG_BUF_SIZE 1024
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">char</span> bpf_log_buf[LOG_BUF_SIZE];
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">bpf_prog_load</span>(<span style="color:#66d9ef">enum</span> bpf_prog_type type,
+              <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> bpf_insn <span style="color:#f92672">*</span>insns, <span style="color:#66d9ef">int</span> insn_cnt,
+              <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>license) {
+    <span style="color:#66d9ef">union</span> bpf_attr attr <span style="color:#f92672">=</span> {
+        .prog_type <span style="color:#f92672">=</span> type,
+        .insns     <span style="color:#f92672">=</span> ptr_to_u64(insns),
+        .insn_cnt  <span style="color:#f92672">=</span> insn_cnt,
+        .license   <span style="color:#f92672">=</span> ptr_to_u64(license),
+        .log_buf   <span style="color:#f92672">=</span> ptr_to_u64(bpf_log_buf),
+        .log_size  <span style="color:#f92672">=</span> LOG_BUF_SIZE,
+        .log_level <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>,
+		.kern_version <span style="color:#f92672">=</span> LINUX_VERSION_CODE
+    };
+
+    <span style="color:#66d9ef">return</span> sys_bpf(BPF_PROG_LOAD, <span style="color:#f92672">&amp;</span>attr, <span style="color:#66d9ef">sizeof</span>(attr));
+}</code></pre></div>
+<p>This helper function is using a global <code>bpf_log_buf</code> variable to
+eventually store the compilation errors messages.</p>
+
+<ul>
+<li>We will attach to a kprobe event, so, the type of the program is <code>BPF_PROG_TYPE_KPROBE</code>.</li>
+<li><code>insns</code>: the actual BPF code to execute</li>
+<li><code>insn_cnt</code>: number of instructions in the BPF program</li>
+</ul>
+
+<h3 id="the-ebpf-program-itself">The eBPF program itself</h3>
+
+<p>Each BPF instruction looks like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> bpf_insn {
+        __u8    code;           <span style="color:#75715e">/* opcode */</span>
+        __u8    dst_reg:<span style="color:#ae81ff">4</span>;      <span style="color:#75715e">/* dest register */</span>
+        __u8    src_reg:<span style="color:#ae81ff">4</span>;      <span style="color:#75715e">/* source register */</span>
+        __s16   off;            <span style="color:#75715e">/* signed offset */</span>
+        __s32   imm;            <span style="color:#75715e">/* signed immediate constant */</span>
+};</code></pre></div>
+<p>So, for example, the exit instruction will be like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">(<span style="color:#66d9ef">struct</span> bpf_insn) {
+            .code <span style="color:#f92672">=</span> BPF_JMP <span style="color:#f92672">|</span> BPF_EXIT,
+            .dst_reg <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+            .src_reg <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+            .off <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+            .imm <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>},</code></pre></div>
+<p>The <code>BPF_EXIT</code> instruction is of class <code>BPF_JMP</code>.</p>
+
+<p>But before doing an exit:</p>
+
+<pre><code>The eBPF program needs to store return value into register R0 before doing a BPF_EXIT.
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">(<span style="color:#66d9ef">struct</span> bpf_insn) {
+     .code <span style="color:#f92672">=</span> BPF_ALU64 <span style="color:#f92672">|</span> BPF_MOV <span style="color:#f92672">|</span> BPF_K,
+     .dst_reg <span style="color:#f92672">=</span> BPF_REG_0,
+     .src_reg <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+     .off <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+     .imm <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+ }</code></pre></div>
+<p>The <code>BPF_MOV</code> instruction is of class <code>BPF_ALU64</code>.
+<code>.imm</code> is the immediate value (0) to store into the <code>BPF_REF_0</code> register.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> bpf_insn prog[] <span style="color:#f92672">=</span> {
+(<span style="color:#66d9ef">struct</span> bpf_insn) {
+     .code <span style="color:#f92672">=</span> BPF_ALU64 <span style="color:#f92672">|</span> BPF_MOV <span style="color:#f92672">|</span> BPF_K,
+     .dst_reg <span style="color:#f92672">=</span> BPF_REG_0,
+     .src_reg <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+     .off <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+     .imm <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>},
+(<span style="color:#66d9ef">struct</span> bpf_insn) {
+     .code <span style="color:#f92672">=</span> BPF_JMP <span style="color:#f92672">|</span> BPF_EXIT,
+     .dst_reg <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+     .src_reg <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+     .off <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+     .imm <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>},
+
+}
+
+<span style="color:#66d9ef">if</span> ((prog_fd <span style="color:#f92672">=</span> bpf_prog_load(BPF_PROG_TYPE_KPROBE, prog, <span style="color:#ae81ff">2</span>, <span style="color:#e6db74">&#34;GPL&#34;</span>)) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) {
+    printf(<span style="color:#e6db74">&#34;failed to load BPF program: %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, strerror(errno));
+    printf(<span style="color:#e6db74">&#34;%s&#34;</span>, bpf_log_buf);
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+}
+printf(<span style="color:#e6db74">&#34;The eBPF program has been loaded</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);</code></pre></div>
+<p>Now it&rsquo;s time to attach this program to a kprobe event.</p>
+
+<h3 id="attach-the-program-to-a-kprobe">Attach the program to a kprobe</h3>
+
+<p>We will use <code>perf_event_open(2)</code> to create a performance monitoring
+probe, then use an <code>iotcl(2)</code> call with the <code>PERF_EVENT_IOC_SET_BPF</code>
+request argument on the eBPF program fd.</p>
+
+<p>The <code>/proc/kallsyms</code> file provides all of the symbols of the kernel
+where you can put probes on. Let&rsquo;s take <code>sys_listen</code> which correspond
+to the <code>listen()</code> syscall.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ echo <span style="color:#e6db74">&#34;p sys_listen&#34;</span> &gt;&gt; /sys/kernel/debug/tracing/kprobe_events
+$ cat /sys/kernel/debug/tracing/events/kprobes/p_sys_listen_0/id
+<span style="color:#ae81ff">1827</span></code></pre></div>
+<p>First, one helper function to call the <code>perf_event_open</code> syscall:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/perf_event.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/hw_breakpoint.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">perf_event_open</span>(<span style="color:#66d9ef">struct</span> perf_event_attr <span style="color:#f92672">*</span>hw_event, pid_t pid,
+                            <span style="color:#66d9ef">int</span> cpu, <span style="color:#66d9ef">int</span> group_fd, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> flags) {
+    <span style="color:#66d9ef">int</span> ret;
+
+    ret <span style="color:#f92672">=</span> syscall(__NR_perf_event_open, hw_event, pid, cpu,
+                   group_fd, flags);
+    <span style="color:#66d9ef">return</span> ret;
+}</code></pre></div>
+<p>Then create the event and attach the eBPF program to it:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> perf_event_attr attr <span style="color:#f92672">=</span> {
+    .type <span style="color:#f92672">=</span> PERF_TYPE_TRACEPOINT,
+    .config <span style="color:#f92672">=</span> <span style="color:#ae81ff">1827</span>
+};
+<span style="color:#66d9ef">int</span> event_fd <span style="color:#f92672">=</span> perf_event_open(<span style="color:#f92672">&amp;</span>attr, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>);
+<span style="color:#66d9ef">if</span> (event_fd <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {
+    printf(<span style="color:#e6db74">&#34;Error opening event: %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, strerror(errno));
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+}
+printf(<span style="color:#e6db74">&#34;Event file descriptor created</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+<span style="color:#66d9ef">if</span> (ioctl(event_fd, PERF_EVENT_IOC_SET_BPF, prog_fd) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) {
+    printf(<span style="color:#e6db74">&#34;Error while attaching BPF program: %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, strerror(errno));
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+}
+printf(<span style="color:#e6db74">&#34;eBPF program attached to event</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);</code></pre></div>
+<h3 id="update-the-ebpf-program">Update the eBPF program</h3>
+
+<p>Now, we need to update our BPF program which currently does nothing to
+something that increments an entry in the map each time this event is
+triggered, so each time the <code>listen()</code> syscall is called.</p>
+
+<p>High-level, the eBPF program needs to:</p>
+
+<ul>
+<li>take the previous map value for key 0</li>
+<li>increment it by one</li>
+<li>update the map value for key 0</li>
+</ul>
+
+<p>Instead of directly using <code>struct bpf_insn</code> structures to program,
+let&rsquo;s use helper headers in the kernel source
+code. <code>tools/include/linux/filter.h</code> provides usefull <code>#define</code>s.  Our
+previous simple exit eBFP program becomes:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> bpf_insn prog[] <span style="color:#f92672">=</span> {
+    BPF_MOV64_IMM(BPF_REG_0, <span style="color:#ae81ff">0</span>),
+    BPF_EXIT_INSN()
+};</code></pre></div>
+<p>Now let&rsquo;s use an example eBPF program which increments the map entry
+each time the <code>listen()</code> syscall is called:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> bpf_insn prog[] <span style="color:#f92672">=</span> {
+    <span style="color:#75715e">/* Put 1 (the map key) on the stack */</span>
+    BPF_ST_MEM(BPF_W, BPF_REG_10, <span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">1</span>),
+    <span style="color:#75715e">/* Put frame pointer into R2 */</span>
+    BPF_MOV64_REG(BPF_REG_2, BPF_REG_10),
+    <span style="color:#75715e">/* Decrement pointer by four */</span>
+    BPF_ALU64_IMM(BPF_ADD, BPF_REG_2, <span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>),
+    <span style="color:#75715e">/* Put map_fd into R1 */</span>
+    BPF_LD_MAP_FD(BPF_REG_1, map_fd),
+    <span style="color:#75715e">/* Load current count from map into R0 */</span>
+    BPF_RAW_INSN(BPF_JMP <span style="color:#f92672">|</span> BPF_CALL, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, BPF_FUNC_map_lookup_elem),
+    <span style="color:#75715e">/* If returned value NULL, skip two instructions and return */</span>
+    BPF_JMP_IMM(BPF_JEQ, BPF_REG_0, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>),
+    <span style="color:#75715e">/* Put 1 into R1 */</span>
+    BPF_MOV64_IMM(BPF_REG_1, <span style="color:#ae81ff">1</span>),
+    <span style="color:#75715e">/* Increment value by 1 */</span>
+    BPF_RAW_INSN(BPF_STX <span style="color:#f92672">|</span> BPF_XADD <span style="color:#f92672">|</span> BPF_DW, BPF_REG_0, BPF_REG_1, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>),
+                                   <span style="color:#75715e">/* lock *(u64 *) r0 += r1 */</span>
+    BPF_MOV64_IMM(BPF_REG_0, <span style="color:#ae81ff">0</span>),
+    <span style="color:#75715e">/* Return from program */</span>
+    BPF_EXIT_INSN()
+};</code></pre></div>
+<p>At the end of the user-land program we can update the loop to display the map at regular intervals:</p>
+
+<pre><code>while(1) {
+    printf(&quot;### Dump of table ###\n&quot;);
+    dump_map(map_fd);
+    sleep(1);
+}
+</code></pre>
+
+<h3 id="let-s-test-it">Let&rsquo;s test it !</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">gcc -Ipath/to/kernel/source eBPF.c -o eBPF
+sudo eBPF
+
+he eBPF program has been loaded
+Event file descriptor created
+eBPF program attached to event
+<span style="color:#75715e">### Dump of table ###
+</span><span style="color:#75715e"></span>Element: <span style="color:#ae81ff">1</span> -&gt; <span style="color:#ae81ff">0</span>
+<span style="color:#75715e">### Dump of table ###
+</span><span style="color:#75715e"></span>Element: <span style="color:#ae81ff">1</span> -&gt; <span style="color:#ae81ff">0</span>
+<span style="color:#75715e">### Dump of table ###
+</span><span style="color:#75715e"></span>Element: <span style="color:#ae81ff">1</span> -&gt; <span style="color:#ae81ff">0</span>
+<span style="color:#75715e">### Dump of table ###
+</span><span style="color:#75715e"></span>Element: <span style="color:#ae81ff">1</span> -&gt; <span style="color:#ae81ff">0</span>
+<span style="color:#f92672">[</span>...<span style="color:#f92672">]</span></code></pre></div>
+<p>And now, launch something that does a <code>listen()</code> call (<code>nc -l -p 8080</code>).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">### Dump of table ###
+</span><span style="color:#75715e"></span>Element: <span style="color:#ae81ff">1</span> -&gt; <span style="color:#ae81ff">1</span>
+<span style="color:#75715e">### Dump of table ###
+</span><span style="color:#75715e"></span>Element: <span style="color:#ae81ff">1</span> -&gt; <span style="color:#ae81ff">1</span>
+<span style="color:#75715e">### Dump of table ###
+</span><span style="color:#75715e"></span>Element: <span style="color:#ae81ff">1</span> -&gt; <span style="color:#ae81ff">1</span>
+<span style="color:#75715e">### Dump of table ###
+</span><span style="color:#75715e"></span>Element: <span style="color:#ae81ff">1</span> -&gt; <span style="color:#ae81ff">2</span>
+<span style="color:#75715e">### Dump of table ###
+</span><span style="color:#75715e"></span>Element: <span style="color:#ae81ff">1</span> -&gt; <span style="color:#ae81ff">2</span>
+### Dump of table ###</code></pre></div>
+<h3 id="summary">Summary</h3>
+
+<p>So, what we did until now is:</p>
+
+<ul>
+<li>load a eBPF program into the kernel, written in plain full assembly-like code</li>
+<li>attach this program to a kprobe event</li>
+<li>display the content of the updated eBPF map</li>
+<li>observe that the counter is incremented each time the eBPF program is executed</li>
+</ul>
+
+<p>Obviously, writing a full complex program with eBPF instruction is not
+very fun. Fortunatly, LLVM has a BPF backend and can compile a subset
+of a C source code into a BPF bytecode.</p>
+
+<h2 id="llvm-ebpf-backend">LLVM eBPF backend</h2>
+
+<p>Instead of writing the BPF program with BPF instructions, we will
+write a C program that will be compiled into BPF instructions. We will
+then load the object compiled file into the kernel with the same
+method.</p>
+
+<h3 id="test-llvm-compilation">Test LLVM compilation</h3>
+
+<h3 id="create-the-c-program">Create the C program</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/ptrace.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">bpf_prog1</span>(<span style="color:#66d9ef">struct</span> pt_regs <span style="color:#f92672">*</span>ctx)
+{
+    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;A&#39;</span>;
+}</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile">CLANG <span style="color:#f92672">=</span> clang
+LLC <span style="color:#f92672">=</span> llc
+KERNELSOURCE <span style="color:#f92672">=</span> ./linux-source-4.16
+KERNELBUILD <span style="color:#f92672">=</span> /lib/modules/4.16.0-1-amd64/build/
+ARCH <span style="color:#f92672">=</span> x86
+
+LINUXINCLUDE <span style="color:#f92672">+=</span> -I<span style="color:#66d9ef">$(</span>KERNELBUILD<span style="color:#66d9ef">)</span>/arch/<span style="color:#66d9ef">$(</span>ARCH<span style="color:#66d9ef">)</span>/include/generated
+LINUXINCLUDE <span style="color:#f92672">+=</span> -I<span style="color:#66d9ef">$(</span>KERNELBUILD<span style="color:#66d9ef">)</span>/arch/<span style="color:#66d9ef">$(</span>ARCH<span style="color:#66d9ef">)</span>/include/generated/uapi
+LINUXINCLUDE <span style="color:#f92672">+=</span> -I<span style="color:#66d9ef">$(</span>KERNELBUILD<span style="color:#66d9ef">)</span>/include
+
+<span style="color:#75715e">##LINUXINCLUDE += -I$(KERNELBUILD)/include/uapi
+</span><span style="color:#75715e">##LINUXINCLUDE += -I$(KERNELBUILD)/include/generated/uapi
+</span><span style="color:#75715e">##LINUXINCLUDE += -I$(KERNELBUILD)/arch/$(ARCH)/include
+</span><span style="color:#75715e">##LINUXINCLUDE += -I$(KERNELBUILD)/arch/$(ARCH)/include/uapi
+</span><span style="color:#75715e"></span>
+LINUXINCLUDE <span style="color:#f92672">+=</span> -I<span style="color:#66d9ef">$(</span>KERNELSOURCE<span style="color:#66d9ef">)</span>/arch/<span style="color:#66d9ef">$(</span>ARCH<span style="color:#66d9ef">)</span>/include
+LINUXINCLUDE <span style="color:#f92672">+=</span> -I<span style="color:#66d9ef">$(</span>KERNELSOURCE<span style="color:#66d9ef">)</span>/arch/<span style="color:#66d9ef">$(</span>ARCH<span style="color:#66d9ef">)</span>/include/uapi
+LINUXINCLUDE <span style="color:#f92672">+=</span> -I<span style="color:#66d9ef">$(</span>KERNELSOURCE<span style="color:#66d9ef">)</span>/include
+LINUXINCLUDE <span style="color:#f92672">+=</span> -I<span style="color:#66d9ef">$(</span>KERNELSOURCE<span style="color:#66d9ef">)</span>/include/uapi
+LINUXINCLUDE <span style="color:#f92672">+=</span> -include <span style="color:#66d9ef">$(</span>KERNELSOURCE<span style="color:#66d9ef">)</span>/include/linux/kconfig.h
+
+<span style="color:#75715e">##LINUXINCLUDE += -I$(KERNELSOURCE)/arch/$(ARCH)/include/generated/uapi
+</span><span style="color:#75715e">##LINUXINCLUDE += -I$(KERNELSOURCE)/arch/$(ARCH)/include/generated
+</span><span style="color:#75715e">##LINUXINCLUDE += -I$(KERNELSOURCE)/include/generated/uapi
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e"># LLVM_INCLUDES = -I/usr/lib/clang/4.0.1/include/
+</span><span style="color:#75715e"></span>LLVM_INCLUDES <span style="color:#f92672">=</span> -I/usr/lib/gcc/x86_64-linux-gnu/7/include
+
+<span style="color:#a6e22e">llvm_simple</span><span style="color:#f92672">:</span> llvm_simple.c
+	<span style="color:#66d9ef">$(</span>CLANG<span style="color:#66d9ef">)</span> -S -nostdinc <span style="color:#66d9ef">$(</span>LINUXINCLUDE<span style="color:#66d9ef">)</span> <span style="color:#66d9ef">$(</span>LLVM_INCLUDES<span style="color:#66d9ef">)</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>			-D__KERNEL__ -D__ASM_SYSREG_H -Wno-unused-value -Wno-pointer-sign <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>	    	-Wno-compare-distinct-pointer-types <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>	    	-Wno-gnu-variable-sized-type-not-at-end <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>	    	-Wno-tautological-compare <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>			-O2 -emit-llvm -c $&lt;
+
+	<span style="color:#66d9ef">$(</span>LLC<span style="color:#66d9ef">)</span> -march<span style="color:#f92672">=</span>bpf -filetype<span style="color:#f92672">=</span>obj -o $@ <span style="color:#66d9ef">$(</span>&lt;:.c<span style="color:#f92672">=</span>.ll<span style="color:#66d9ef">)</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">readelf -x .text llvm_simple
+
+Hex dump of section <span style="color:#e6db74">&#39;.text&#39;</span>:
+  0x00000000 b7000000 <span style="color:#ae81ff">41000000</span> <span style="color:#ae81ff">95000000</span> <span style="color:#ae81ff">00000000</span> ....A...........</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">objcopy -O binary -I elf32-little --only-section<span style="color:#f92672">=</span>.text llvm_simple llvm_simple.bin</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-hexdump" data-lang="hexdump">he<span style="color:#960050;background-color:#1e0010">x</span>d<span style="color:#960050;background-color:#1e0010">ump</span> <span style="color:#960050;background-color:#1e0010">-</span>C <span style="color:#960050;background-color:#1e0010">llvm_simpl</span>e<span style="color:#960050;background-color:#1e0010">.</span>b<span style="color:#960050;background-color:#1e0010">in</span>
+00000000  b7 00 00 00 41 00 00 00  95 00 00 00 00 00 00 00  |<span style="color:#e6db74">....A...........</span>|
+00000010</code></pre></div>
+<h3 id="load-the-compiled-bytecode-into-the-kernel">Load the compiled bytecode into the kernel</h3>
+
+<p>Now that we extracted the eBPF bytecode generated by LLVM, we can load it into the kernel the same way:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">char</span> buf[] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">0xb7</span>, <span style="color:#ae81ff">0x00</span>, <span style="color:#ae81ff">0x00</span>, <span style="color:#ae81ff">0x00</span>, <span style="color:#ae81ff">0x41</span>, <span style="color:#ae81ff">0x00</span>, <span style="color:#ae81ff">0x00</span>, <span style="color:#ae81ff">0x00</span>,  <span style="color:#ae81ff">0x95</span>, <span style="color:#ae81ff">0x00</span>, <span style="color:#ae81ff">0x00</span>, <span style="color:#ae81ff">0x00</span>, <span style="color:#ae81ff">0x00</span>, <span style="color:#ae81ff">0x00</span>, <span style="color:#ae81ff">0x00</span>, <span style="color:#ae81ff">0x00</span>};</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">    printf(<span style="color:#e6db74">&#34;There are %d instructions</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#66d9ef">sizeof</span>(buf) <span style="color:#f92672">/</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> bpf_insn));
+    <span style="color:#66d9ef">if</span> ((prog_fd <span style="color:#f92672">=</span> bpf_prog_load(BPF_PROG_TYPE_KPROBE, buf, <span style="color:#66d9ef">sizeof</span>(buf) <span style="color:#f92672">/</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> bpf_insn), <span style="color:#e6db74">&#34;GPL&#34;</span>)) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) {
+        printf(<span style="color:#e6db74">&#34;failed to load BPF program: %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, strerror(errno));
+        printf(<span style="color:#e6db74">&#34;%s&#34;</span>, bpf_log_buf);
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+    }</code></pre></div>
+<h3 id="a-more-complex-c-ebpf-code">A more complex C/eBPF code</h3>
+
+<h2 id="using-bcc">Using <code>bcc</code></h2>
+
+<h2 id="ply">ply</h2>
+
+<h3 id="read-latency">Read latency</h3>
+
+<pre><code>kprobe:SyS_read {
+        @start[tid()] = nsecs();
+}
+
+kretprobe:SyS_read /@start[tid()]/ {
+        delta = nsecs() - @start[tid()];
+        @ns.quantize(delta);
+        if (delta &gt; 10000) @longproc[comm()].count();
+        @start[tid()] = nil;
+}
+</code></pre>
+
+<h2 id="language-and-vm-description">Language and VM description</h2>
+
+<p>The VM has 11 register, <code>BPF_REG_0</code> to <code>BPF_REG_10</code></p>
+
+<p>Their role is (copied from <a href="https://www.kernel.org/doc/Documentation/networking/filter.txt">kernel source</a>):</p>
+
+<ul>
+<li>R0 - return value from in-kernel function, and exit value for eBPF program</li>
+<li>R1-R5 - arguments from eBPF program to in-kernel function</li>
+<li>R6-R9 - callee saved registers that in-kernel function will preserve</li>
+<li>R10 - read-only frame pointer to access stack</li>
+</ul>
+
+<h2 id="links">Links</h2>
+
+<ul>
+<li><a href="http://www.brendangregg.com/ebpf.html">Brendan Gregg page about eBPF</a></li>
+<li><a href="https://qmonnet.github.io/whirl-offload/2016/09/01/dive-into-bpf/">Lot of resources</a></li>
+<li><a href="https://github.com/zoidbergwill/awesome-ebpf">Awesome eBPF</a></li>
+<li><a href="https://github.com/facebookincubator/katran">Katran</a></li>
+</ul>
+
+</article>
+
+</div>
+</div>
+<script src="https://klyr.github.io/js/theme.min.js" type="text/javascript"></script>
+
+
+</body>
+</html>
+

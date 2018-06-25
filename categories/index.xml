@@ -6,7 +6,7 @@
     <description>Recent content in Categories on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 10 Dec 2012 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 25 Apr 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://klyr.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>C</title>
       <link>https://klyr.github.io/categories/c/</link>
-      <pubDate>Mon, 10 Dec 2012 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 25 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>https://klyr.github.io/categories/c/</guid>
       <description></description>
@@ -23,9 +23,18 @@
     <item>
       <title>Network</title>
       <link>https://klyr.github.io/categories/network/</link>
-      <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 25 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>https://klyr.github.io/categories/network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Programming</title>
+      <link>https://klyr.github.io/categories/programming/</link>
+      <pubDate>Wed, 25 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/categories/programming/</guid>
       <description></description>
     </item>
     
