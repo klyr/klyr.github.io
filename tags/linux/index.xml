@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Linux on ~klyr</title>
+    <title>linux on ~klyr</title>
     <link>https://klyr.github.io/tags/linux/</link>
-    <description>Recent content in Linux on ~klyr</description>
+    <description>Recent content in linux on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 25 Apr 2018 00:00:00 +0000</lastBuildDate>
@@ -17,10 +17,7 @@
       <pubDate>Wed, 25 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>https://klyr.github.io/posts/ebpf/</guid>
-      <description>Introduction eBPF stands for extended Berkeley Packet Filter, but can do more than just filter packets.
-The idea is the same as when you use the tcpdump command:
-$ tcpdump ip host helios and port 80 the ip host helios and port 80 filter/program is compiled and run in a virtual machine.
-With eBPF, you program in C (a restricted version of it), you compile it to the target VM then load this code inside the kernel and run it inside the kernel.</description>
+      <description>Let&amp;rsquo;s play with eBPF in order to find what is slowing down my computer</description>
     </item>
     
     <item>
@@ -29,9 +26,7 @@ With eBPF, you program in C (a restricted version of it), you compile it to the 
       <pubDate>Wed, 19 Dec 2012 00:00:00 +0000</pubDate>
       
       <guid>https://klyr.github.io/posts/playing_with_linux_framebuffer/</guid>
-      <description>What is framebuffer ? The Linux framebuffer is an abstraction layer, hardware independant, to display graphical elements in Linux console. Framebuffer is often used in embedded devices. Thanks to DirectFB, hadware acceleration can be used.
-How to program framebuffer ? Programming the Linux framebuffer is quite simple:
- ioctl commands and structs are located in /usr/include/linux/fb.h use open(2) to open /dev/fb0 use various ioctl(2) calls to get or set properties mmap(2) framebuffer device to memory write to the mmaped memory to display your graphics  Usefull structs are:</description>
+      <description>Playing with the framebuffer on Linux</description>
     </item>
     
     <item>
@@ -51,10 +46,7 @@ NAME ioctl - control device SYNOPSIS #include &amp;lt;sys/ioctl.h&amp;gt; int io
       <pubDate>Mon, 03 Dec 2012 00:00:00 +0000</pubDate>
       
       <guid>https://klyr.github.io/posts/gnu_backtrace_extension/</guid>
-      <description>Display backtrace when a program segfaults When an application crashes, with a segfault for example it can be usefull have debugging help like a stacktrace of function calls.
-This can be achieved by trapping the SIGSEGV unix signal and by using the backtrace(3) and backtrace_symbols(3) GNU extensions functions.
-Intercept SIGSEGV signal (and others) This is done via the traditional use of sigaction:
-#include &amp;lt;signal.h&amp;gt; struct sigaction handler; sigemptyset(&amp;amp;handler.sa_mask); handler.sa_flags = SA_NODEFER | SA_RESETHAND; handler.</description>
+      <description>When an application crashes, with a segfault for example it can be usefull have debugging help like a stacktrace of function calls</description>
     </item>
     
     <item>
@@ -75,7 +67,7 @@ $ trickle -v -s -d 40 wget &amp;#39;http://www.example.org/somefile&amp;#39; --2
       <pubDate>Fri, 06 Jul 2012 00:00:00 +0000</pubDate>
       
       <guid>https://klyr.github.io/posts/playing_with_systemtap/</guid>
-      <description>From official website  SystemTap is a tracing and probing tool that allows users to study and monitor the activities of the computer system (particularly, the kernel) in fine detail. It provides information similar to the output of tools like netstat, ps, top, and iostat; however, SystemTap is designed to provide more filtering and analysis options for collected information.  Install Simply install systemtap package and kernel debug packages for your currently running kernel.</description>
+      <description>Playing with systemtap</description>
     </item>
     
     <item>
@@ -84,9 +76,7 @@ $ trickle -v -s -d 40 wget &amp;#39;http://www.example.org/somefile&amp;#39; --2
       <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
       
       <guid>https://klyr.github.io/posts/ip_route_based_on_port/</guid>
-      <description>Ip routing based on destination port We have two connection providers P1 and P2 behind two IP 10.0.0.253 and 10.0.0.254. P1 has a high bandwidth but low latency, P2 is the oposite.
-We will use Netfilter and iproute2 to filter output packet to port 22 to provider P2. Everything else will go through provider P1.
-First we need to mark packets for TCP connections to port 22 with the iptables command:</description>
+      <description>Route packets based on destination port</description>
     </item>
     
   </channel>

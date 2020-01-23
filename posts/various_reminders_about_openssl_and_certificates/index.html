@@ -9,7 +9,7 @@
 <meta name="description" content="">
 
 <title>Various reminders about OpenSSL and Certificates</title>
-<meta name="generator" content="Hugo 0.42.1" />
+<meta name="generator" content="Hugo 0.59.1" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
@@ -22,13 +22,103 @@
 <div class="page-container container-fluid">
 <div class="col-md-3 menu">
     <nav class="col-md-3">
-    <h3 class="home-link"><a href="https://klyr.github.io">Root</a></h3>
     
+    <h3 class="home-link"><a href="https://klyr.github.io">Root</a></h3>
+    <div id="last-posts" class="open">
+        <h3 data-open="last-posts">~klyr - Most recent posts</h3>
+        <ul>
+            
+            <li><a href="https://klyr.github.io/posts/ebpf/">Playing with eBPF (extended BPF)</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_linc_switch/">Playing with the Erlang Linc Switch</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/linking_rust_lib_with_c/">Linking Rust Library with C</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_linux_framebuffer/">Playing with linux framebuffer</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/updating_ip_routes_in_c/">Updating IP routes programmatically</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/gnu_backtrace_extension/">Display backtrace when a program segfaults</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/trickle/">Trickle, lightweight userspace bandwidth shaper</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_systemtap/">Playing with systemtap</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/pipe_viewer/">Pipe Viewer</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/ip_route_based_on_port/">Ip routing based on destination port</a></li>
+            
+        </ul>
+    </div>
+    
+
+    
+    <div id="tags" class="open">
+        <h3 data-open="tags">Tags</h3>
+        <ul class="tags">
+            
+            <li><a href="/tags/c">c</a></li>
+            
+            <li><a href="/tags/cdn">cdn</a></li>
+            
+            <li><a href="/tags/certificate">certificate</a></li>
+            
+            <li><a href="/tags/debian">debian</a></li>
+            
+            <li><a href="/tags/emacs">emacs</a></li>
+            
+            <li><a href="/tags/erlang">erlang</a></li>
+            
+            <li><a href="/tags/framebuffer">framebuffer</a></li>
+            
+            <li><a href="/tags/gnu">gnu</a></li>
+            
+            <li><a href="/tags/iproute2">iproute2</a></li>
+            
+            <li><a href="/tags/iptable">iptable</a></li>
+            
+            <li><a href="/tags/linux">linux</a></li>
+            
+            <li><a href="/tags/lsof">lsof</a></li>
+            
+            <li><a href="/tags/netfilter">netfilter</a></li>
+            
+            <li><a href="/tags/network">network</a></li>
+            
+            <li><a href="/tags/openflow">openflow</a></li>
+            
+            <li><a href="/tags/openssl">openssl</a></li>
+            
+            <li><a href="/tags/packaging">packaging</a></li>
+            
+            <li><a href="/tags/performance">performance</a></li>
+            
+            <li><a href="/tags/pointer">pointer</a></li>
+            
+            <li><a href="/tags/python">python</a></li>
+            
+            <li><a href="/tags/r">r</a></li>
+            
+            <li><a href="/tags/rust">rust</a></li>
+            
+            <li><a href="/tags/sdn">sdn</a></li>
+            
+            <li><a href="/tags/tcpdump">tcpdump</a></li>
+            
+            <li><a href="/tags/unix">unix</a></li>
+            
+            <li><a href="/tags/vim">vim</a></li>
+            
+            <li><a href="/tags/virtualenv">virtualenv</a></li>
+            
+        </ul>
+    </div>
+    
+
     
     <div id="categories" class="open">
-        <h3 data-open="categories">~klyr - Categories</h3>
+        <h3 data-open="categories">Categories</h3>
         <ul class="categories">
-            
             
             <li><a href="/categories/c">c</a></li>
             
@@ -44,16 +134,16 @@
             
             <li><a href="/categories/unix">unix</a></li>
             
-            
         </ul>
     </div>
+    
 </nav>
 
 </div>
 <div class="col-md-9 content">
 
 <h1>Various reminders about OpenSSL and Certificates</h1>
-<h4>Published 07-29-2011</h4>
+<h4>Published 07-29-2011 00:00:00</h4>
 <article>
     
 
@@ -122,22 +212,36 @@ privateExponent:
 <p>give the same public key.</p>
 
 <h2 id="create-a-csr-and-the-private-key-at-the-same-time">Create a <code>csr</code> and the private key at the same time</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl req -new -newkey rsa:2048 -nodes -keyout private_key.pem -out csr.pem -subj <span style="color:#e6db74">&#34;/C=GB/ST=Yorks/L=York/O=MyCompany Ltd./OU=IT/CN=mysubdomain.mydomain.com&#34;</span></code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl req -new <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -newkey rsa:2048 -nodes -keyout private_key.pem <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -out csr.pem <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -subj <span style="color:#e6db74">&#34;/C=GB/ST=Yorks/L=York/O=MyCompany Ltd./OU=IT/CN=mysubdomain.mydomain.com&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -addext <span style="color:#e6db74">&#39;subjectAltName=DNS:blog.quicheaters.org&#39;</span></code></pre></div>
 <ul>
 <li>the private key is in <code>private_key.pem</code></li>
 <li>the private key is <em>NOT</em> encrypted (<code>nodes</code>)</li>
 <li>the private key is a 2048bits rsa key</li>
 <li>the <code>csr</code> is in <code>csr.pem</code></li>
 <li>the <code>csr</code> has the subject: <code>/C=GB/ST=Yorks/L=York/O=MyCompany Ltd./OU=IT/CN=mysubdomain.mydomain.com</code></li>
+<li>the <code>addext</code> allows to add extensions without having to update a configuration file</li>
 </ul>
 
 <h2 id="create-a-self-signed-certificate-generaly-for-root-ca">Create a self-signed certificate (generaly for Root-CA)</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl req -new -x509 -extensions v3_ca -days <span style="color:#ae81ff">365</span> -newkey rsa:2048 -keyout ca_private_key.pem -out root_ca.pem</code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl req -new -x509 <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -newkey rsa:2048 -keyout ca_private_key.pem <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -extensions v3_ca -days <span style="color:#ae81ff">365</span> -out root_ca.pem</code></pre></div>
 <ul>
 <li><code>-x509</code> parameter is to output a self signed certificate instead of a certificate request</li>
 <li><code>-extensions v3_ca</code> use v3_ca extension as specified in your openssl.conf file</li>
 <li><code>-days</code> specify the number of days the certificate will be valid (365 days)</li>
 </ul>
+
+<p>In my current configuration file the <code>v3_ca</code> extension is:</p>
+
+<pre><code>subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid:always,issuer
+basicConstraints = critical,CA:true
+</code></pre>
 
 <h2 id="display-certificate-extentions">Display certificate extentions</h2>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl x509 -purpose -in root_ca.pem
@@ -160,7 +264,36 @@ Any Purpose CA : Yes
 OCSP helper : Yes
 OCSP helper CA : Yes</code></pre></div>
 <h2 id="sign-a-certificate-request-with-the-self-signed-ca">Sign a certificate request with the self signed CA</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl x509 -req -in req.csr -extensions v3_usr -CA root_ca.pem -CAkey ca_private_key.pem -CAcreateserial</code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl x509 -req <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -in req.csr <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -extensions v3_usr <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -CA root_ca.pem -CAkey ca_private_key.pem <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -CAcreateserial</code></pre></div>
+<p>On my system, the content of the <code>v3_usr</code> extension is:</p>
+
+<pre><code>basicConstraints=CA:FALSE
+nsComment                       = &quot;OpenSSL Generated Certificate&quot;
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer
+</code></pre>
+
+<p>On important thing to note is that here, the extensions that have been
+set during the creation of the CSR are not applied to the final
+certificate when signed by the CA.</p>
+
+<p>If you want to also add the extension, you must specify them again
+during the signing phase. Either by updating the <code>v3_usr</code> section, or
+by specifiying then on the command line (in that case, the default
+configuration file is ignored):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl x509 -req <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -in req.csr <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -extensions v3_usr <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -CA root_ca.pem -CAkey ca_private_key.pem <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -CAcreateserial
+          -extfile &lt;<span style="color:#f92672">(</span>echo <span style="color:#e6db74">&#39;basicConstraints = CA:FALSE&#39;</span>;
+                     echo <span style="color:#e6db74">&#39;keyUsage = nonRepudiation, digitalSignature, keyEncipherment&#39;</span>;
+                     echo <span style="color:#e6db74">&#39;authorityKeyIdentifier=keyid,issuer&#39;</span>;
+                     echo <span style="color:#e6db74">&#39;subjectAltName=DNS:blog.quicheaters.org&#39;</span><span style="color:#f92672">)</span></code></pre></div>
 <h2 id="viewing-certificate-information">Viewing certificate information</h2>
 
 <p>This is done using the <code>x509</code> command:</p>
@@ -346,6 +479,16 @@ SSL-Session:
 <p>A certificate chain is just a file where multiple <code>PEM</code> files are concatened. <code>PEM</code> files must be ordered from the last certificate (for example server certificate or client certificate)
 to the top Root CA..</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cat server_crt.pem operational_ca.pem intermetiade_ca.pem root_ca.pem &gt; certificate_chain.pem</code></pre></div>
+<h2 id="converting-a-pem-certificate-to-pkcs12">Converting a .pem certificate to pkcs12</h2>
+
+<p>PKCS12 is a format to store a certficate AND it&rsquo;s private key. Because it contains the private key, it needs to by encrypted.
+Unlike .pem file, the pkcs12 format is binary. So you cannot include it in text configuration files; it need to be base64 if needed.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl pkcs12 -export <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -in <span style="color:#e6db74">&#34;blog.quicheaters.org.pem&#34;</span>
+          -inkey <span style="color:#e6db74">&#34;blog.quicheaters.org.key&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -out <span style="color:#e6db74">&#34;blog.quicheaters.org.p12&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -password <span style="color:#e6db74">&#39;pass:XXXxxxXXX&#39;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          -certfile <span style="color:#e6db74">&#34;CA/root-ca.pem&#34;</span></code></pre></div>
 <h2 id="links">Links</h2>
 
 <ul>

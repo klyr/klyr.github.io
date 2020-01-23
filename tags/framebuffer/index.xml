@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Framebuffer on ~klyr</title>
+    <title>framebuffer on ~klyr</title>
     <link>https://klyr.github.io/tags/framebuffer/</link>
-    <description>Recent content in Framebuffer on ~klyr</description>
+    <description>Recent content in framebuffer on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 19 Dec 2012 00:00:00 +0000</lastBuildDate>
@@ -17,9 +17,7 @@
       <pubDate>Wed, 19 Dec 2012 00:00:00 +0000</pubDate>
       
       <guid>https://klyr.github.io/posts/playing_with_linux_framebuffer/</guid>
-      <description>What is framebuffer ? The Linux framebuffer is an abstraction layer, hardware independant, to display graphical elements in Linux console. Framebuffer is often used in embedded devices. Thanks to DirectFB, hadware acceleration can be used.
-How to program framebuffer ? Programming the Linux framebuffer is quite simple:
- ioctl commands and structs are located in /usr/include/linux/fb.h use open(2) to open /dev/fb0 use various ioctl(2) calls to get or set properties mmap(2) framebuffer device to memory write to the mmaped memory to display your graphics  Usefull structs are:</description>
+      <description>Playing with the framebuffer on Linux</description>
     </item>
     
   </channel>

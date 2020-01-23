@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Unix on ~klyr</title>
@@ -17,9 +17,7 @@
       <pubDate>Wed, 19 Dec 2012 00:00:00 +0000</pubDate>
       
       <guid>https://klyr.github.io/posts/playing_with_linux_framebuffer/</guid>
-      <description>What is framebuffer ? The Linux framebuffer is an abstraction layer, hardware independant, to display graphical elements in Linux console. Framebuffer is often used in embedded devices. Thanks to DirectFB, hadware acceleration can be used.
-How to program framebuffer ? Programming the Linux framebuffer is quite simple:
- ioctl commands and structs are located in /usr/include/linux/fb.h use open(2) to open /dev/fb0 use various ioctl(2) calls to get or set properties mmap(2) framebuffer device to memory write to the mmaped memory to display your graphics  Usefull structs are:</description>
+      <description>Playing with the framebuffer on Linux</description>
     </item>
     
     <item>
@@ -40,7 +38,7 @@ $ trickle -v -s -d 40 wget &amp;#39;http://www.example.org/somefile&amp;#39; --2
       <pubDate>Fri, 06 Jul 2012 00:00:00 +0000</pubDate>
       
       <guid>https://klyr.github.io/posts/playing_with_systemtap/</guid>
-      <description>From official website  SystemTap is a tracing and probing tool that allows users to study and monitor the activities of the computer system (particularly, the kernel) in fine detail. It provides information similar to the output of tools like netstat, ps, top, and iostat; however, SystemTap is designed to provide more filtering and analysis options for collected information.  Install Simply install systemtap package and kernel debug packages for your currently running kernel.</description>
+      <description>Playing with systemtap</description>
     </item>
     
     <item>
@@ -60,9 +58,7 @@ $ cat bigfile.txt | gzip -9 &amp;gt; /tmp/test.gz $ ```shell $ cat bigfile.txt |
       <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
       
       <guid>https://klyr.github.io/posts/commands_and_keys_reminders/</guid>
-      <description>Commands &amp;amp; key bindings reminders Sysdig Record activity to file:
-$ sudo sysdig -w tracefile.scap Get top cpu usage from the trace file:
-$ sudo sysdig -r tracefile.scap -c topprocs_cpu Check open TCP port with bash and send data to TCP port $ man bash [ ... ] REDIRECTION [ ... ] Bash handles several filenames specially when they are used in redirections, as described in the following table: /dev/tcp/host/port If host is a valid hostname or Internet address, and port is an integer port number or service name, bash attempts to open a TCP connection to the corresponding socket.</description>
+      <description>Usefull command reminders</description>
     </item>
     
     <item>

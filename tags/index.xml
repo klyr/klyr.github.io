@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on ~klyr</title>
@@ -6,103 +6,13 @@
     <description>Recent content in Tags on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 17 Dec 2014 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 25 Apr 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://klyr.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>C</title>
-      <link>https://klyr.github.io/tags/c/</link>
-      <pubDate>Wed, 17 Dec 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/c/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Cdn</title>
-      <link>https://klyr.github.io/tags/cdn/</link>
-      <pubDate>Mon, 08 Aug 2011 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/cdn/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Certificate</title>
-      <link>https://klyr.github.io/tags/certificate/</link>
-      <pubDate>Fri, 29 Jul 2011 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/certificate/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Debian</title>
-      <link>https://klyr.github.io/tags/debian/</link>
-      <pubDate>Tue, 26 Jul 2011 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/debian/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Emacs</title>
-      <link>https://klyr.github.io/tags/emacs/</link>
-      <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/emacs/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Erlang</title>
-      <link>https://klyr.github.io/tags/erlang/</link>
-      <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/erlang/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Framebuffer</title>
-      <link>https://klyr.github.io/tags/framebuffer/</link>
-      <pubDate>Wed, 19 Dec 2012 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/framebuffer/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Gnu</title>
-      <link>https://klyr.github.io/tags/gnu/</link>
-      <pubDate>Mon, 03 Dec 2012 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/gnu/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Iproute2</title>
-      <link>https://klyr.github.io/tags/iproute2/</link>
-      <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/iproute2/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Iptable</title>
-      <link>https://klyr.github.io/tags/iptable/</link>
-      <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/iptable/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Linux</title>
+      <title>linux</title>
       <link>https://klyr.github.io/tags/linux/</link>
       <pubDate>Wed, 25 Apr 2018 00:00:00 +0000</pubDate>
       
@@ -111,61 +21,7 @@
     </item>
     
     <item>
-      <title>Lsof</title>
-      <link>https://klyr.github.io/tags/lsof/</link>
-      <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/lsof/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Netfilter</title>
-      <link>https://klyr.github.io/tags/netfilter/</link>
-      <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/netfilter/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Network</title>
-      <link>https://klyr.github.io/tags/network/</link>
-      <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/network/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Openflow</title>
-      <link>https://klyr.github.io/tags/openflow/</link>
-      <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/openflow/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Openssl</title>
-      <link>https://klyr.github.io/tags/openssl/</link>
-      <pubDate>Fri, 29 Jul 2011 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/openssl/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Packaging</title>
-      <link>https://klyr.github.io/tags/packaging/</link>
-      <pubDate>Tue, 16 Aug 2011 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/packaging/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Performance</title>
+      <title>performance</title>
       <link>https://klyr.github.io/tags/performance/</link>
       <pubDate>Wed, 25 Apr 2018 00:00:00 +0000</pubDate>
       
@@ -174,43 +30,34 @@
     </item>
     
     <item>
-      <title>Pointer</title>
-      <link>https://klyr.github.io/tags/pointer/</link>
-      <pubDate>Wed, 19 Oct 2011 00:00:00 +0000</pubDate>
+      <title>erlang</title>
+      <link>https://klyr.github.io/tags/erlang/</link>
+      <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://klyr.github.io/tags/pointer/</guid>
+      <guid>https://klyr.github.io/tags/erlang/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Python</title>
-      <link>https://klyr.github.io/tags/python/</link>
-      <pubDate>Tue, 16 Aug 2011 00:00:00 +0000</pubDate>
+      <title>network</title>
+      <link>https://klyr.github.io/tags/network/</link>
+      <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://klyr.github.io/tags/python/</guid>
+      <guid>https://klyr.github.io/tags/network/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>R</title>
-      <link>https://klyr.github.io/tags/r/</link>
-      <pubDate>Tue, 02 Aug 2011 00:00:00 +0000</pubDate>
+      <title>openflow</title>
+      <link>https://klyr.github.io/tags/openflow/</link>
+      <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://klyr.github.io/tags/r/</guid>
+      <guid>https://klyr.github.io/tags/openflow/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Rust</title>
-      <link>https://klyr.github.io/tags/rust/</link>
-      <pubDate>Wed, 17 Dec 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://klyr.github.io/tags/rust/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Sdn</title>
+      <title>SDN</title>
       <link>https://klyr.github.io/tags/sdn/</link>
       <pubDate>Fri, 19 Dec 2014 00:00:00 +0000</pubDate>
       
@@ -219,16 +66,43 @@
     </item>
     
     <item>
-      <title>Tcpdump</title>
-      <link>https://klyr.github.io/tags/tcpdump/</link>
-      <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
+      <title>c</title>
+      <link>https://klyr.github.io/tags/c/</link>
+      <pubDate>Wed, 17 Dec 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://klyr.github.io/tags/tcpdump/</guid>
+      <guid>https://klyr.github.io/tags/c/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Unix</title>
+      <title>rust</title>
+      <link>https://klyr.github.io/tags/rust/</link>
+      <pubDate>Wed, 17 Dec 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/rust/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>framebuffer</title>
+      <link>https://klyr.github.io/tags/framebuffer/</link>
+      <pubDate>Wed, 19 Dec 2012 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/framebuffer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gnu</title>
+      <link>https://klyr.github.io/tags/gnu/</link>
+      <pubDate>Mon, 03 Dec 2012 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/gnu/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>unix</title>
       <link>https://klyr.github.io/tags/unix/</link>
       <pubDate>Fri, 25 May 2012 00:00:00 +0000</pubDate>
       
@@ -237,7 +111,70 @@
     </item>
     
     <item>
-      <title>Vim</title>
+      <title>iproute2</title>
+      <link>https://klyr.github.io/tags/iproute2/</link>
+      <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/iproute2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>iptable</title>
+      <link>https://klyr.github.io/tags/iptable/</link>
+      <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/iptable/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>netfilter</title>
+      <link>https://klyr.github.io/tags/netfilter/</link>
+      <pubDate>Wed, 18 Apr 2012 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/netfilter/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pointer</title>
+      <link>https://klyr.github.io/tags/pointer/</link>
+      <pubDate>Wed, 19 Oct 2011 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/pointer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>emacs</title>
+      <link>https://klyr.github.io/tags/emacs/</link>
+      <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/emacs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lsof</title>
+      <link>https://klyr.github.io/tags/lsof/</link>
+      <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/lsof/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tcpdump</title>
+      <link>https://klyr.github.io/tags/tcpdump/</link>
+      <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/tcpdump/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vim</title>
       <link>https://klyr.github.io/tags/vim/</link>
       <pubDate>Wed, 28 Sep 2011 00:00:00 +0000</pubDate>
       
@@ -246,11 +183,74 @@
     </item>
     
     <item>
-      <title>Virtualenv</title>
+      <title>packaging</title>
+      <link>https://klyr.github.io/tags/packaging/</link>
+      <pubDate>Tue, 16 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/packaging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>https://klyr.github.io/tags/python/</link>
+      <pubDate>Tue, 16 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>virtualenv</title>
       <link>https://klyr.github.io/tags/virtualenv/</link>
       <pubDate>Tue, 16 Aug 2011 00:00:00 +0000</pubDate>
       
       <guid>https://klyr.github.io/tags/virtualenv/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cdn</title>
+      <link>https://klyr.github.io/tags/cdn/</link>
+      <pubDate>Mon, 08 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/cdn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>r</title>
+      <link>https://klyr.github.io/tags/r/</link>
+      <pubDate>Tue, 02 Aug 2011 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>certificate</title>
+      <link>https://klyr.github.io/tags/certificate/</link>
+      <pubDate>Fri, 29 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/certificate/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>openssl</title>
+      <link>https://klyr.github.io/tags/openssl/</link>
+      <pubDate>Fri, 29 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/openssl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>debian</title>
+      <link>https://klyr.github.io/tags/debian/</link>
+      <pubDate>Tue, 26 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/tags/debian/</guid>
       <description></description>
     </item>
     
