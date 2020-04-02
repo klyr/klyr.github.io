@@ -6,10 +6,53 @@
     <description>Recent content on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 25 Apr 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 02 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://klyr.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>OpenSSH related stuff</title>
+      <link>https://klyr.github.io/posts/openssh/</link>
+      <pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/posts/openssh/</guid>
+      <description>Create a ed25519 SSH key  ECC: Elliptic Curve Cryptography is a family of algorithms (ECDSA, ed25519) Curve25519: name of the elliptic curve Ed25519: Name of the signature algorithm  $ ssh-keygen -a 100 -t ed25519 -b 521 -f ~/.ssh/id_ed25519.barbot.org -C &amp;#34;julien@barbot.org&amp;#34; You can look at explainshell.com to understand each parameters.
+Use this key for specific hosts:
+$ cat .ssh/config Host github.com IdentityFile ~/.</description>
+    </item>
+    
+    <item>
+      <title>Playing with the P4 language</title>
+      <link>https://klyr.github.io/posts/playing_with_p4/</link>
+      <pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/posts/playing_with_p4/</guid>
+      <description>Introduction P4 is a domain-specific compiled programming language for network data forwarding. It does not know anything about already existing protocols: it doesn&amp;rsquo;t know IP, nor TCP.
+A P4 program is compiled to something that is understandable by the P4 aware device. Such device can be a really hardware switch, a software switch, a FPGA.
+In this article we will try to use a software switch. More precisely, the uBPF backend.</description>
+    </item>
+    
+    <item>
+      <title>Playing with uBPF</title>
+      <link>https://klyr.github.io/posts/playing_with_ubpf/</link>
+      <pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/posts/playing_with_ubpf/</guid>
+      <description>Introduction uBPF is a user-land implementation of the eBPF VM.
+Installation $ git clone https://github.com/iovisor/ubpf.git $ cd ubpf $ make -C vm This compiles the ubpf library (libubpf.a) and a test program to use this library.
+Run a simple eBPF program with uBPF static int idouble(int a) { return (a * 2); } int bpf_prog(void *ctx) { int a = 1; a = idouble(a); return (a); } Compile to bpf binary, which is executable by the kernel eBPF VM, or, in our specific case, the user-land uBFP VM.</description>
+    </item>
+    
+    <item>
+      <title>Installing Lineage OS to a Samsung Galaxy A3</title>
+      <link>https://klyr.github.io/posts/samsung_a3_lineage/</link>
+      <pubDate>Tue, 18 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/posts/samsung_a3_lineage/</guid>
+      <description>Introduction Heimdal Build Heimdal git clone https://gitlab.com/BenjaminDobell/Heimdall.git sudo dnf install libusb-devel.x86_64 cd Heimdall mkdir build; cd build cmake -DCMAKE_BUILD_TYPE=Release -DDISABLE_FRONTEND .. make Check installation Put your device in download mode, on the A3 it&amp;rsquo;s:
+ 1 Switch OFF device 2 Volume Down + Home button + Power button. 3 Choose Download mode: Volume Up  $ sudo ./heimdal detect Download PIT file $ sudo ./heimdall download-pit --output &amp;#39;a3-2020-02-20.pit&amp;#39; --verbose Heimdall v1.</description>
+    </item>
     
     <item>
       <title>Playing with eBPF (extended BPF)</title>

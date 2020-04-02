@@ -4,12 +4,12 @@
     <base href="/">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="author" content="">
+<meta name="author" content="Julien Barbot">
 
 <meta name="description" content="">
 
-<title>Tags</title>
-<meta name="generator" content="Hugo 0.41" />
+<title>android</title>
+<meta name="generator" content="Hugo 0.59.1" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
@@ -22,10 +22,21 @@
 <div class="page-container container-fluid">
 <div class="col-md-3 menu">
     <nav class="col-md-3">
+    
     <h3 class="home-link"><a href="https://klyr.github.io">Root</a></h3>
     <div id="last-posts" class="open">
         <h3 data-open="last-posts">~klyr - Most recent posts</h3>
         <ul>
+            
+            <li><a href="https://klyr.github.io/posts/openssh/">OpenSSH related stuff</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_p4/">Playing with the P4 language</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_ubpf/">Playing with uBPF</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/samsung_a3_lineage/">Installing Lineage OS to a Samsung Galaxy A3</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/ebpf/">Playing with eBPF (extended BPF)</a></li>
             
             <li><a href="https://klyr.github.io/posts/playing_with_linc_switch/">Playing with the Erlang Linc Switch</a></li>
             
@@ -64,26 +75,7 @@
         </ul>
     </div>
     
-    
-    <div id="categories" class="open">
-        <h3 data-open="categories">Categories</h3>
-        <ul class="categories">
-            
-            <li><a href="/categories/c">c</a></li>
-            
-            <li><a href="/categories/network">network</a></li>
-            
-            <li><a href="/categories/python">python</a></li>
-            
-            <li><a href="/categories/r">r</a></li>
-            
-            <li><a href="/categories/security">security</a></li>
-            
-            <li><a href="/categories/unix">unix</a></li>
-            
-        </ul>
-    </div>
-    
+
 </nav>
 
 </div>
@@ -93,96 +85,14 @@
 <div class="articles-list">
     
     <article>
-        <h3><a href="https://klyr.github.io/tags/rust/">Rust</a> - 2014-12-17 00:00:00</h3>
-        
-    </article>
-    
-    <article>
-        <h3><a href="https://klyr.github.io/tags/sdn/">Sdn</a> - 2014-12-19 00:00:00</h3>
-        
-    </article>
-    
-    <article>
-        <h3><a href="https://klyr.github.io/tags/tcpdump/">Tcpdump</a> - 2011-09-28 00:00:00</h3>
-        
-    </article>
-    
-    <article>
-        <h3><a href="https://klyr.github.io/tags/unix/">Unix</a> - 2012-05-25 00:00:00</h3>
-        
-    </article>
-    
-    <article>
-        <h3><a href="https://klyr.github.io/tags/vim/">Vim</a> - 2011-09-28 00:00:00</h3>
-        
-    </article>
-    
-    <article>
-        <h3><a href="https://klyr.github.io/tags/virtualenv/">Virtualenv</a> - 2011-08-16 00:00:00</h3>
-        
+        <h3><a href="https://klyr.github.io/posts/samsung_a3_lineage/">Installing Lineage OS to a Samsung Galaxy A3</a> - 2020-02-18 00:00:00</h3>
+        Introduction Heimdal Build Heimdal git clone https://gitlab.com/BenjaminDobell/Heimdall.git sudo dnf install libusb-devel.x86_64 cd Heimdall mkdir build; cd build cmake -DCMAKE_BUILD_TYPE=Release -DDISABLE_FRONTEND .. make Check installation Put your device in download mode, on the A3 it&rsquo;s:
+ 1 Switch OFF device 2 Volume Down + Home button + Power button. 3 Choose Download mode: Volume Up  $ sudo ./heimdal detect Download PIT file $ sudo ./heimdall download-pit --output &#39;a3-2020-02-20.pit&#39; --verbose Heimdall v1.
     </article>
     
 </div>
 
 
-<ul class="pagination">
-    
-    <li>
-        <a href="/tags/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-    </li>
-    
-    <li
-    >
-    <a href="/tags/page/2/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li
-    ><a href="/tags/">1</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li
-    ><a href="/tags/page/2/">2</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li
-    class="active"><a href="/tags/page/3/">3</a></li>
-    
-    
-    <li
-    class="disabled">
-    <a href="" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-    
-    <li>
-        <a href="/tags/page/3/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-    </li>
-    
-</ul>
 
 </div>
 </div>

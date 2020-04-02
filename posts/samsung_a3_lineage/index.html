@@ -1,0 +1,675 @@
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="author" content="Julien Barbot">
+
+<meta name="description" content="">
+
+<title>Installing Lineage OS to a Samsung Galaxy A3</title>
+<meta name="generator" content="Hugo 0.59.1" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet" type="text/css">
+<link  href="https://klyr.github.io/css/theme.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<div class="page-container container-fluid">
+<div class="col-md-3 menu">
+    <nav class="col-md-3">
+    
+    <h3 class="home-link"><a href="https://klyr.github.io">Root</a></h3>
+    <div id="last-posts" class="open">
+        <h3 data-open="last-posts">~klyr - Most recent posts</h3>
+        <ul>
+            
+            <li><a href="https://klyr.github.io/posts/openssh/">OpenSSH related stuff</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_p4/">Playing with the P4 language</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_ubpf/">Playing with uBPF</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/samsung_a3_lineage/">Installing Lineage OS to a Samsung Galaxy A3</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/ebpf/">Playing with eBPF (extended BPF)</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_linc_switch/">Playing with the Erlang Linc Switch</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/linking_rust_lib_with_c/">Linking Rust Library with C</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_linux_framebuffer/">Playing with linux framebuffer</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/updating_ip_routes_in_c/">Updating IP routes programmatically</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/gnu_backtrace_extension/">Display backtrace when a program segfaults</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/trickle/">Trickle, lightweight userspace bandwidth shaper</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_systemtap/">Playing with systemtap</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/pipe_viewer/">Pipe Viewer</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/ip_route_based_on_port/">Ip routing based on destination port</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/c_pointers_ksplice_challenge/">C pointers &amp; Ksplice challenge</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/commands_and_keys_reminders/">Commands &amp; key bindings reminders</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/standalone_python_project/">Standalone Python project/installation</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/using_a_free_cdn/">Using a free CDN, Cloudflare</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/manipulating_data_with_r/">Manipulating data with R</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/various_reminders_about_openssl_and_certificates/">Various reminders about OpenSSL and Certificates</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/colored_less_output/">Colored less output</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/preserving_buffer_cache/">Preserving Buffer Cache State</a></li>
+            
+        </ul>
+    </div>
+    
+
+</nav>
+
+</div>
+<div class="col-md-9 content">
+
+<h1>Installing Lineage OS to a Samsung Galaxy A3</h1>
+<h4>Published 02-18-2020 00:00:00</h4>
+<article>
+    
+
+<h2 id="introduction">Introduction</h2>
+
+<h2 id="heimdal">Heimdal</h2>
+
+<h3 id="build-heimdal">Build Heimdal</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">git clone https://gitlab.com/BenjaminDobell/Heimdall.git
+sudo dnf install libusb-devel.x86_64
+cd Heimdall
+mkdir build; cd build
+cmake -DCMAKE_BUILD_TYPE<span style="color:#f92672">=</span>Release -DDISABLE_FRONTEND ..
+make</code></pre></div>
+<h3 id="check-installation">Check installation</h3>
+
+<p>Put your device in download mode, on the A3 it&rsquo;s:</p>
+
+<ul>
+<li>1 Switch OFF device</li>
+<li>2 Volume Down + Home button + Power button.</li>
+<li>3 Choose Download mode: Volume Up</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo ./heimdal detect</code></pre></div>
+<h3 id="download-pit-file">Download PIT file</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo ./heimdall download-pit --output <span style="color:#e6db74">&#39;a3-2020-02-20.pit&#39;</span> --verbose 
+Heimdall v1.4.2
+
+Copyright <span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> 2010-2017 Benjamin Dobell, Glass Echidna
+http://www.glassechidna.com.au/
+
+This software is provided free of charge. Copying and redistribution is
+encouraged.
+
+If you appreciate this software and you would like to support future
+development please consider donating:
+http://www.glassechidna.com.au/donate/
+
+Initialising connection...
+Detecting device...
+      Manufacturer: <span style="color:#e6db74">&#34;SAMSUNG&#34;</span>
+           Product: <span style="color:#e6db74">&#34;Gadget Serial&#34;</span>
+
+            length: <span style="color:#ae81ff">18</span>
+      device class: <span style="color:#ae81ff">2</span>
+               S/N: <span style="color:#ae81ff">0</span>
+           VID:PID: 04E8:685D
+         bcdDevice: 021B
+   iMan:iProd:iSer: 1:2:0
+          nb confs: <span style="color:#ae81ff">1</span>
+
+interface<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>.altsetting<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>: num endpoints <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+   Class.SubClass.Protocol: 02.02.01
+       endpoint<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>.address: <span style="color:#ae81ff">83</span>
+           max packet size: <span style="color:#ae81ff">0010</span>
+          polling interval: <span style="color:#ae81ff">09</span>
+
+interface<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>.altsetting<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>: num endpoints <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+   Class.SubClass.Protocol: 0A.00.00
+       endpoint<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>.address: <span style="color:#ae81ff">81</span>
+           max packet size: <span style="color:#ae81ff">0200</span>
+          polling interval: <span style="color:#ae81ff">00</span>
+       endpoint<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>.address: <span style="color:#ae81ff">02</span>
+           max packet size: <span style="color:#ae81ff">0200</span>
+          polling interval: <span style="color:#ae81ff">00</span>
+Claiming interface...
+Setting up interface...
+
+Initialising protocol...
+Protocol initialisation successful.
+
+Beginning session...
+
+Some devices may take up to <span style="color:#ae81ff">2</span> minutes to respond.
+Please be patient!
+
+Session begun.
+
+Downloading device<span style="color:#960050;background-color:#1e0010">&#39;</span>s PIT file...
+WARNING: Empty bulk transfer after receiving packet failed. Continuing anyway...
+PIT file download successful.
+
+Ending session...
+Rebooting device...
+Releasing device interface...</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ file a3-2020-02-20.pit 
+a3-2020-02-20.pit: Partition Information Table <span style="color:#66d9ef">for</span> Samsung smartphone, <span style="color:#ae81ff">28</span> entries; <span style="color:#75715e">#1 BOOTLOADER+RW (0x50) &#34;sboot.bin&#34;; #2 CM+RW (0x5a) &#34;cm.bin&#34;; #3 PIT (0x46) &#34;-&#34;; #4 MD5HDR (0x47) &#34;md5.img&#34;; #5 BOTA0 (0x1) &#34;-&#34;; #6 BOTA1 (0x2) &#34;-&#34;; #7 EFS (0x3) &#34;efs.img&#34;; #8 CPEFS (0x4) &#34;cpefs.img&#34;; #9 m9kefs1 (0x5) &#34;m9kefs1.bin&#34;; #10 m9kefs2 (0x6) &#34;m9kefs2.bin&#34;; #11 m9kefs3 (0x7) &#34;m9kefs3.bin&#34;; #12 CARRIER (0x8) &#34;carrier.img&#34;; #13 PARAM (0x9) &#34;param.bin&#34;; #14 BOOT (0xa) &#34;boot.img&#34;; #15 RECOVERY (0xb) &#34;recovery.img&#34;; #16 OTA (0xc) &#34;-&#34;; #17 RADIO (0xd) &#34;modem.bin&#34;; #18 TOMBSTONES (0xe) &#34;tombstones.img&#34;</span></code></pre></div>
+<p>We can see that the recovery partition is named <code>RECOVERY</code> and is the #15.
+It&rsquo;s better viewed with the <code>print-pit</code> command (entry 14 because it begins at 0):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ./heimdall print-pit --file ./a3-2020-02-20.pit
+Heimdall v1.4.2
+
+Copyright <span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> 2010-2017 Benjamin Dobell, Glass Echidna
+http://www.glassechidna.com.au/
+
+This software is provided free of charge. Copying and redistribution is
+encouraged.
+
+If you appreciate this software and you would like to support future
+development please consider donating:
+http://www.glassechidna.com.au/donate/
+
+Entry Count: <span style="color:#ae81ff">28</span>
+Unknown 1: <span style="color:#ae81ff">1598902083</span>
+Unknown 2: <span style="color:#ae81ff">844251476</span>
+Unknown 3: <span style="color:#ae81ff">21324</span>
+Unknown 4: <span style="color:#ae81ff">14153</span>
+Unknown 5: <span style="color:#ae81ff">14392</span>
+Unknown 6: <span style="color:#ae81ff">48</span>
+Unknown 7: <span style="color:#ae81ff">0</span>
+Unknown 8: <span style="color:#ae81ff">0</span>
+
+
+--- Entry <span style="color:#75715e">#0 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">80</span>
+Attributes: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>STL Read-Only<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">0</span>
+Partition Block Count: <span style="color:#ae81ff">8192</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: BOOTLOADER
+Flash Filename: sboot.bin
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#1 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">90</span>
+Attributes: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>STL Read-Only<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">0</span>
+Partition Block Count: <span style="color:#ae81ff">8192</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: CM
+Flash Filename: cm.bin
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#2 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">70</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">34</span>
+Partition Block Count: <span style="color:#ae81ff">16</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: PIT
+Flash Filename: -
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#3 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">71</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">50</span>
+Partition Block Count: <span style="color:#ae81ff">2048</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: MD5HDR
+Flash Filename: md5.img
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#4 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">1</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">8192</span>
+Partition Block Count: <span style="color:#ae81ff">8192</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: BOTA0
+Flash Filename: -
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#5 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">2</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">16384</span>
+Partition Block Count: <span style="color:#ae81ff">8192</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: BOTA1
+Flash Filename: -
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#6 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">3</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">24576</span>
+Partition Block Count: <span style="color:#ae81ff">40960</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: EFS
+Flash Filename: efs.img
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#7 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">4</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">65536</span>
+Partition Block Count: <span style="color:#ae81ff">16384</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: CPEFS
+Flash Filename: cpefs.img
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#8 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">5</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">81920</span>
+Partition Block Count: <span style="color:#ae81ff">8192</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: m9kefs1
+Flash Filename: m9kefs1.bin
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#9 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">6</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">90112</span>
+Partition Block Count: <span style="color:#ae81ff">8192</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: m9kefs2
+Flash Filename: m9kefs2.bin
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#10 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">7</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">98304</span>
+Partition Block Count: <span style="color:#ae81ff">8192</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: m9kefs3
+Flash Filename: m9kefs3.bin
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#11 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">8</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">106496</span>
+Partition Block Count: <span style="color:#ae81ff">2048</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: CARRIER
+Flash Filename: carrier.img
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#12 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">9</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">108544</span>
+Partition Block Count: <span style="color:#ae81ff">16384</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: PARAM
+Flash Filename: param.bin
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#13 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">10</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">124928</span>
+Partition Block Count: <span style="color:#ae81ff">65536</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: BOOT
+Flash Filename: boot.img
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#14 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">11</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">190464</span>
+Partition Block Count: <span style="color:#ae81ff">77824</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: RECOVERY
+Flash Filename: recovery.img
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#15 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">12</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">268288</span>
+Partition Block Count: <span style="color:#ae81ff">16384</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: OTA
+Flash Filename: -
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#16 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">13</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">284672</span>
+Partition Block Count: <span style="color:#ae81ff">92160</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: RADIO
+Flash Filename: modem.bin
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#17 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">14</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">376832</span>
+Partition Block Count: <span style="color:#ae81ff">2048</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: TOMBSTONES
+Flash Filename: tombstones.img
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#18 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">15</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">378880</span>
+Partition Block Count: <span style="color:#ae81ff">2048</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: DNT
+Flash Filename: dnt.ssw
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#19 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">16</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">380928</span>
+Partition Block Count: <span style="color:#ae81ff">1024</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: PERSISTENT
+Flash Filename: 
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#20 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">17</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">381952</span>
+Partition Block Count: <span style="color:#ae81ff">2048</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: STEADY
+Flash Filename: steady.bin
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#21 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">18</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">384000</span>
+Partition Block Count: <span style="color:#ae81ff">9216</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: RESERVED2
+Flash Filename: -
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#22 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">19</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">393216</span>
+Partition Block Count: <span style="color:#ae81ff">8192000</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: SYSTEM
+Flash Filename: system.img
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#23 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">20</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">8585216</span>
+Partition Block Count: <span style="color:#ae81ff">409600</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: CACHE
+Flash Filename: cache.img
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#24 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">21</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">8994816</span>
+Partition Block Count: <span style="color:#ae81ff">122880</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: HIDDEN
+Flash Filename: hidden.img
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#25 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">22</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">9117696</span>
+Partition Block Count: <span style="color:#ae81ff">10240</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: CP_DEBUG
+Flash Filename: modem_debug.bin
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#26 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">23</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">9127936</span>
+Partition Block Count: <span style="color:#ae81ff">2048</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: NAD_REFER
+Flash Filename: nad_refer.bin
+FOTA Filename: 
+
+
+--- Entry <span style="color:#75715e">#27 ---</span>
+Binary Type: <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>AP<span style="color:#f92672">)</span>
+Device Type: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>MMC<span style="color:#f92672">)</span>
+Identifier: <span style="color:#ae81ff">24</span>
+Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>Read/Write<span style="color:#f92672">)</span>
+Update Attributes: <span style="color:#ae81ff">5</span> <span style="color:#f92672">(</span>FOTA<span style="color:#f92672">)</span>
+Partition Block Size/Offset: <span style="color:#ae81ff">9129984</span>
+Partition Block Count: <span style="color:#ae81ff">0</span>
+File Offset <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+File Size <span style="color:#f92672">(</span>Obsolete<span style="color:#f92672">)</span>: <span style="color:#ae81ff">0</span>
+Partition Name: USERDATA
+Flash Filename: userdata.img
+FOTA Filename: remained</code></pre></div>
+<h3 id="twrp">TWRP</h3>
+
+<p>Download TWRP at: <a href="https://eu.dl.twrp.me/a3y17lte/twrp-3.3.1-0-a3y17lte.img.html">https://eu.dl.twrp.me/a3y17lte/twrp-3.3.1-0-a3y17lte.img.html</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ file twrp-3.3.1-0-a3y17lte.img
+twrp-3.3.1-0-a3y17lte.img: Android bootimg, kernel <span style="color:#f92672">(</span>0x10008000<span style="color:#f92672">)</span>, ramdisk <span style="color:#f92672">(</span>0x11000000<span style="color:#f92672">)</span>, page size: 2048, cmdline <span style="color:#f92672">(</span>androidboot.selinux<span style="color:#f92672">=</span>permissive<span style="color:#f92672">)</span></code></pre></div>
+<h3 id="flashing-twrp-on-the-recovery-partition">Flashing TWRP on the recovery partition</h3>
+
+<p>Here we need to specify the <code>--no-reboot</code> parameter in order to let us time at the end to boot in recovery mode.
+If we don&rsquo;t do that, TWRP will be erased by the stock recovery image.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo ./heimdall flash --no-reboot --RECOVERY twrp-3.3.1-0-a3y17lte.img
+Heimdall v1.4.2
+
+Copyright <span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> 2010-2017 Benjamin Dobell, Glass Echidna
+http://www.glassechidna.com.au/
+
+This software is provided free of charge. Copying and redistribution is
+encouraged.
+
+If you appreciate this software and you would like to support future
+development please consider donating:
+http://www.glassechidna.com.au/donate/
+
+Initialising connection...
+Detecting device...
+Claiming interface...
+Setting up interface...
+
+Initialising protocol...
+Protocol initialisation successful.
+
+Beginning session...
+
+Some devices may take up to <span style="color:#ae81ff">2</span> minutes to respond.
+Please be patient!
+
+Session begun.
+
+Downloading device<span style="color:#960050;background-color:#1e0010">&#39;</span>s PIT file...
+PIT file download successful.
+
+Uploading RECOVERY
+100%
+RECOVERY upload successful
+
+Ending session...
+Releasing device interface...</code></pre></div>
+<p>Volume Up + Volume Down + Home Button + Power Button</p>
+
+<p>when it reboot, release the Volume Down Button</p>
+
+</article>
+
+</div>
+</div>
+<script src="https://klyr.github.io/js/theme.min.js" type="text/javascript"></script>
+
+
+</body>
+</html>
+

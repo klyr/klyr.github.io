@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>security on ~klyr</title>
+    <link>https://klyr.github.io/tags/security/</link>
+    <description>Recent content in security on ~klyr</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 02 Apr 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://klyr.github.io/tags/security/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>OpenSSH related stuff</title>
+      <link>https://klyr.github.io/posts/openssh/</link>
+      <pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/posts/openssh/</guid>
+      <description>Create a ed25519 SSH key  ECC: Elliptic Curve Cryptography is a family of algorithms (ECDSA, ed25519) Curve25519: name of the elliptic curve Ed25519: Name of the signature algorithm  $ ssh-keygen -a 100 -t ed25519 -b 521 -f ~/.ssh/id_ed25519.barbot.org -C &amp;#34;julien@barbot.org&amp;#34; You can look at explainshell.com to understand each parameters.
+Use this key for specific hosts:
+$ cat .ssh/config Host github.com IdentityFile ~/.</description>
+    </item>
+    
+  </channel>
+</rss>

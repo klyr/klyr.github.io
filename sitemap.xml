@@ -3,22 +3,82 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://klyr.github.io/categories/</loc>
+    <lastmod>2020-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://klyr.github.io/categories/linux/</loc>
+    <lastmod>2020-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://klyr.github.io/categories/network/</loc>
+    <lastmod>2020-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://klyr.github.io/posts/openssh/</loc>
+    <lastmod>2020-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://klyr.github.io/posts/playing_with_p4/</loc>
+    <lastmod>2020-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://klyr.github.io/posts/playing_with_ubpf/</loc>
+    <lastmod>2020-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://klyr.github.io/posts/</loc>
+    <lastmod>2020-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://klyr.github.io/tags/security/</loc>
+    <lastmod>2020-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://klyr.github.io/tags/</loc>
+    <lastmod>2020-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://klyr.github.io/tags/unix/</loc>
+    <lastmod>2020-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://klyr.github.io/</loc>
+    <lastmod>2020-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://klyr.github.io/tags/android/</loc>
+    <lastmod>2020-02-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://klyr.github.io/categories/hack/</loc>
+    <lastmod>2020-02-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://klyr.github.io/posts/samsung_a3_lineage/</loc>
+    <lastmod>2020-02-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://klyr.github.io/categories/c/</loc>
     <lastmod>2018-04-25T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://klyr.github.io/categories/</loc>
-    <lastmod>2018-04-25T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://klyr.github.io/tags/linux/</loc>
-    <lastmod>2018-04-25T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://klyr.github.io/categories/network/</loc>
     <lastmod>2018-04-25T00:00:00+00:00</lastmod>
   </url>
   
@@ -33,22 +93,7 @@
   </url>
   
   <url>
-    <loc>https://klyr.github.io/posts/</loc>
-    <lastmod>2018-04-25T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://klyr.github.io/categories/programming/</loc>
-    <lastmod>2018-04-25T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://klyr.github.io/tags/</loc>
-    <lastmod>2018-04-25T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://klyr.github.io/</loc>
     <lastmod>2018-04-25T00:00:00+00:00</lastmod>
   </url>
   
@@ -134,11 +179,6 @@
   
   <url>
     <loc>https://klyr.github.io/posts/pipe_viewer/</loc>
-    <lastmod>2012-05-25T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://klyr.github.io/tags/unix/</loc>
     <lastmod>2012-05-25T00:00:00+00:00</lastmod>
   </url>
   

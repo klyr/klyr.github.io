@@ -4,7 +4,7 @@
     <base href="/">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="author" content="">
+<meta name="author" content="Julien Barbot">
 
 <meta name="description" content="">
 
@@ -28,6 +28,14 @@
         <h3 data-open="last-posts">~klyr - Most recent posts</h3>
         <ul>
             
+            <li><a href="https://klyr.github.io/posts/openssh/">OpenSSH related stuff</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_p4/">Playing with the P4 language</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_ubpf/">Playing with uBPF</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/samsung_a3_lineage/">Installing Lineage OS to a Samsung Galaxy A3</a></li>
+            
             <li><a href="https://klyr.github.io/posts/ebpf/">Playing with eBPF (extended BPF)</a></li>
             
             <li><a href="https://klyr.github.io/posts/playing_with_linc_switch/">Playing with the Erlang Linc Switch</a></li>
@@ -48,95 +56,26 @@
             
             <li><a href="https://klyr.github.io/posts/ip_route_based_on_port/">Ip routing based on destination port</a></li>
             
-        </ul>
-    </div>
-    
-
-    
-    <div id="tags" class="open">
-        <h3 data-open="tags">Tags</h3>
-        <ul class="tags">
+            <li><a href="https://klyr.github.io/posts/c_pointers_ksplice_challenge/">C pointers &amp; Ksplice challenge</a></li>
             
-            <li><a href="/tags/c">c</a></li>
+            <li><a href="https://klyr.github.io/posts/commands_and_keys_reminders/">Commands &amp; key bindings reminders</a></li>
             
-            <li><a href="/tags/cdn">cdn</a></li>
+            <li><a href="https://klyr.github.io/posts/standalone_python_project/">Standalone Python project/installation</a></li>
             
-            <li><a href="/tags/certificate">certificate</a></li>
+            <li><a href="https://klyr.github.io/posts/using_a_free_cdn/">Using a free CDN, Cloudflare</a></li>
             
-            <li><a href="/tags/debian">debian</a></li>
+            <li><a href="https://klyr.github.io/posts/manipulating_data_with_r/">Manipulating data with R</a></li>
             
-            <li><a href="/tags/emacs">emacs</a></li>
+            <li><a href="https://klyr.github.io/posts/various_reminders_about_openssl_and_certificates/">Various reminders about OpenSSL and Certificates</a></li>
             
-            <li><a href="/tags/erlang">erlang</a></li>
+            <li><a href="https://klyr.github.io/posts/colored_less_output/">Colored less output</a></li>
             
-            <li><a href="/tags/framebuffer">framebuffer</a></li>
-            
-            <li><a href="/tags/gnu">gnu</a></li>
-            
-            <li><a href="/tags/iproute2">iproute2</a></li>
-            
-            <li><a href="/tags/iptable">iptable</a></li>
-            
-            <li><a href="/tags/linux">linux</a></li>
-            
-            <li><a href="/tags/lsof">lsof</a></li>
-            
-            <li><a href="/tags/netfilter">netfilter</a></li>
-            
-            <li><a href="/tags/network">network</a></li>
-            
-            <li><a href="/tags/openflow">openflow</a></li>
-            
-            <li><a href="/tags/openssl">openssl</a></li>
-            
-            <li><a href="/tags/packaging">packaging</a></li>
-            
-            <li><a href="/tags/performance">performance</a></li>
-            
-            <li><a href="/tags/pointer">pointer</a></li>
-            
-            <li><a href="/tags/python">python</a></li>
-            
-            <li><a href="/tags/r">r</a></li>
-            
-            <li><a href="/tags/rust">rust</a></li>
-            
-            <li><a href="/tags/sdn">sdn</a></li>
-            
-            <li><a href="/tags/tcpdump">tcpdump</a></li>
-            
-            <li><a href="/tags/unix">unix</a></li>
-            
-            <li><a href="/tags/vim">vim</a></li>
-            
-            <li><a href="/tags/virtualenv">virtualenv</a></li>
+            <li><a href="https://klyr.github.io/posts/preserving_buffer_cache/">Preserving Buffer Cache State</a></li>
             
         </ul>
     </div>
     
 
-    
-    <div id="categories" class="open">
-        <h3 data-open="categories">Categories</h3>
-        <ul class="categories">
-            
-            <li><a href="/categories/c">c</a></li>
-            
-            <li><a href="/categories/network">network</a></li>
-            
-            <li><a href="/categories/programming">programming</a></li>
-            
-            <li><a href="/categories/python">python</a></li>
-            
-            <li><a href="/categories/r">r</a></li>
-            
-            <li><a href="/categories/security">security</a></li>
-            
-            <li><a href="/categories/unix">unix</a></li>
-            
-        </ul>
-    </div>
-    
 </nav>
 
 </div>
@@ -161,13 +100,13 @@
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo apt-get install systemtap linux-image-<span style="color:#e6db74">`</span>uname -r<span style="color:#e6db74">`</span>-dbg linux-headers-<span style="color:#e6db74">`</span>uname -r<span style="color:#e6db74">`</span></code></pre></div>
 <p>To check installation:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo stap -v -e <span style="color:#e6db74">&#39;probe vfs.read {printf(&#34;read performed\n&#34;); exit()}&#39;</span>
-Pass <span style="color:#ae81ff">1</span>: parsed user script and <span style="color:#ae81ff">81</span> library script<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> using 78600virt/22436res/2512shr kb, in 100usr/0sys/125real ms.
-Pass <span style="color:#ae81ff">2</span>: analyzed script: <span style="color:#ae81ff">1</span> probe<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">function</span><span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">3</span> embed<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">0</span> global<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> using 276868virt/117456res/7792shr kb, in 1190usr/220sys/7225real ms.
-Pass <span style="color:#ae81ff">3</span>: translated to C into <span style="color:#e6db74">&#34;/tmp/stapQvI4gP/stap_347bddcb57970a4c3f9ee4e0705f0f68_1473_src.c&#34;</span> using 267024virt/112808res/5676shr kb, in 10usr/20sys/31real ms.
-Pass <span style="color:#ae81ff">4</span>: compiled C into <span style="color:#e6db74">&#34;stap_347bddcb57970a4c3f9ee4e0705f0f68_1473.ko&#34;</span> in 5410usr/840sys/12991real ms.
-Pass <span style="color:#ae81ff">5</span>: starting run.
+Pass 1: parsed user script and <span style="color:#ae81ff">81</span> library script<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> using 78600virt/22436res/2512shr kb, in 100usr/0sys/125real ms.
+Pass 2: analyzed script: <span style="color:#ae81ff">1</span> probe<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">function</span><span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">3</span> embed<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">0</span> global<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> using 276868virt/117456res/7792shr kb, in 1190usr/220sys/7225real ms.
+Pass 3: translated to C into <span style="color:#e6db74">&#34;/tmp/stapQvI4gP/stap_347bddcb57970a4c3f9ee4e0705f0f68_1473_src.c&#34;</span> using 267024virt/112808res/5676shr kb, in 10usr/20sys/31real ms.
+Pass 4: compiled C into <span style="color:#e6db74">&#34;stap_347bddcb57970a4c3f9ee4e0705f0f68_1473.ko&#34;</span> in 5410usr/840sys/12991real ms.
+Pass 5: starting run.
 read performed
-Pass <span style="color:#ae81ff">5</span>: run completed in 0usr/20sys/499real ms.</code></pre></div>
+Pass 5: run completed in 0usr/20sys/499real ms.</code></pre></div>
 <h2 id="how-it-works">How it works</h2>
 
 <ol>
@@ -203,14 +142,14 @@ probe syscall.mkdir {
 }</code></pre></div>
 <p>Run the script:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo stap -v mkdir_probe.stp
-Pass <span style="color:#ae81ff">1</span>: parsed user script and <span style="color:#ae81ff">81</span> library script<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> using 78596virt/22424res/2508shr kb, in 100usr/10sys/104real ms.
-Pass <span style="color:#ae81ff">2</span>: analyzed script: <span style="color:#ae81ff">1</span> probe<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">2</span> <span style="color:#66d9ef">function</span><span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">1</span> embed<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">0</span> global<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> using 205108virt/118440res/75184shr kb, in 310usr/50sys/399real ms.
-Pass <span style="color:#ae81ff">3</span>: translated to C into <span style="color:#e6db74">&#34;/tmp/stappLnq6v/stap_0de87453a9617d4db8e5f589bf21474f_1770_src.c&#34;</span> using 205108virt/118548res/75292shr kb, in 0usr/0sys/3real ms.
-Pass <span style="color:#ae81ff">4</span>: compiled C into <span style="color:#e6db74">&#34;stap_0de87453a9617d4db8e5f589bf21474f_1770.ko&#34;</span> in 1170usr/150sys/1407real ms.
-Pass <span style="color:#ae81ff">5</span>: starting run.</code></pre></div>
+Pass 1: parsed user script and <span style="color:#ae81ff">81</span> library script<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> using 78596virt/22424res/2508shr kb, in 100usr/10sys/104real ms.
+Pass 2: analyzed script: <span style="color:#ae81ff">1</span> probe<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">2</span> <span style="color:#66d9ef">function</span><span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">1</span> embed<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>, <span style="color:#ae81ff">0</span> global<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> using 205108virt/118440res/75184shr kb, in 310usr/50sys/399real ms.
+Pass 3: translated to C into <span style="color:#e6db74">&#34;/tmp/stappLnq6v/stap_0de87453a9617d4db8e5f589bf21474f_1770_src.c&#34;</span> using 205108virt/118548res/75292shr kb, in 0usr/0sys/3real ms.
+Pass 4: compiled C into <span style="color:#e6db74">&#34;stap_0de87453a9617d4db8e5f589bf21474f_1770.ko&#34;</span> in 1170usr/150sys/1407real ms.
+Pass 5: starting run.</code></pre></div>
 <p>Then issue an <code>mkdir</code> command to trigger the probe, the SystemTap script should end:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">**** mkdir syscall called ! ****
-Pass <span style="color:#ae81ff">5</span>: run completed in 10usr/20sys/14869real ms.</code></pre></div>
+Pass 5: run completed in 10usr/20sys/14869real ms.</code></pre></div>
 <p>Where does the pathname variable comes from ? SystemTap defines a set of
 predefined functions and probes typically in <code>/usr/share/systemtap/tapset/</code>. By looking at the
 <code>/usr/share/systemtap/tapset/syscalls.stp</code> file we can see the following mkdir section:</p>

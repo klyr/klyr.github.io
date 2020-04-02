@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+    <base href="/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="author" content="Julien Barbot">
+
+<meta name="description" content="">
+
+<title>OpenSSH related stuff</title>
+<meta name="generator" content="Hugo 0.59.1" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet" type="text/css">
+<link  href="https://klyr.github.io/css/theme.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<div class="page-container container-fluid">
+<div class="col-md-3 menu">
+    <nav class="col-md-3">
+    
+    <h3 class="home-link"><a href="https://klyr.github.io">Root</a></h3>
+    <div id="last-posts" class="open">
+        <h3 data-open="last-posts">~klyr - Most recent posts</h3>
+        <ul>
+            
+            <li><a href="https://klyr.github.io/posts/openssh/">OpenSSH related stuff</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_p4/">Playing with the P4 language</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_ubpf/">Playing with uBPF</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/samsung_a3_lineage/">Installing Lineage OS to a Samsung Galaxy A3</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/ebpf/">Playing with eBPF (extended BPF)</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_linc_switch/">Playing with the Erlang Linc Switch</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/linking_rust_lib_with_c/">Linking Rust Library with C</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_linux_framebuffer/">Playing with linux framebuffer</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/updating_ip_routes_in_c/">Updating IP routes programmatically</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/gnu_backtrace_extension/">Display backtrace when a program segfaults</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/trickle/">Trickle, lightweight userspace bandwidth shaper</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_systemtap/">Playing with systemtap</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/pipe_viewer/">Pipe Viewer</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/ip_route_based_on_port/">Ip routing based on destination port</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/c_pointers_ksplice_challenge/">C pointers &amp; Ksplice challenge</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/commands_and_keys_reminders/">Commands &amp; key bindings reminders</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/standalone_python_project/">Standalone Python project/installation</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/using_a_free_cdn/">Using a free CDN, Cloudflare</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/manipulating_data_with_r/">Manipulating data with R</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/various_reminders_about_openssl_and_certificates/">Various reminders about OpenSSL and Certificates</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/colored_less_output/">Colored less output</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/preserving_buffer_cache/">Preserving Buffer Cache State</a></li>
+            
+        </ul>
+    </div>
+    
+
+</nav>
+
+</div>
+<div class="col-md-9 content">
+
+<h1>OpenSSH related stuff</h1>
+<h4>Published 04-02-2020 00:00:00</h4>
+<article>
+    
+
+<h2 id="create-a-ed25519-ssh-key">Create a ed25519 SSH key</h2>
+
+<ul>
+<li>ECC: Elliptic Curve Cryptography is a family of algorithms (ECDSA, ed25519)</li>
+<li>Curve25519: name of the elliptic curve</li>
+<li>Ed25519: Name of the signature algorithm</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ssh-keygen -a <span style="color:#ae81ff">100</span> -t ed25519 -b <span style="color:#ae81ff">521</span> -f ~/.ssh/id_ed25519.barbot.org -C <span style="color:#e6db74">&#34;julien@barbot.org&#34;</span></code></pre></div>
+<p>You can look at
+<a href="https://explainshell.com/explain?cmd=ssh-keygen+-a+100+-t+ed25519+-b+521+-f+%7E%2F.ssh%2Fid_ed25519.barbot.org+-C+%22julien%40barbot.org%22">explainshell.com</a>
+to understand each parameters.</p>
+
+<p>Use this key for specific hosts:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cat .ssh/config
+Host github.com
+    IdentityFile ~/.ssh/id_ed25519.barbot.org</code></pre></div>
+</article>
+
+</div>
+</div>
+<script src="https://klyr.github.io/js/theme.min.js" type="text/javascript"></script>
+
+
+</body>
+</html>
+

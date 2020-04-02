@@ -4,12 +4,12 @@
     <base href="/">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="author" content="">
+<meta name="author" content="Julien Barbot">
 
 <meta name="description" content="">
 
-<title>Posts</title>
-<meta name="generator" content="Hugo 0.41" />
+<title>security</title>
+<meta name="generator" content="Hugo 0.59.1" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/pojoaque.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
@@ -22,10 +22,21 @@
 <div class="page-container container-fluid">
 <div class="col-md-3 menu">
     <nav class="col-md-3">
+    
     <h3 class="home-link"><a href="https://klyr.github.io">Root</a></h3>
     <div id="last-posts" class="open">
         <h3 data-open="last-posts">~klyr - Most recent posts</h3>
         <ul>
+            
+            <li><a href="https://klyr.github.io/posts/openssh/">OpenSSH related stuff</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_p4/">Playing with the P4 language</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/playing_with_ubpf/">Playing with uBPF</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/samsung_a3_lineage/">Installing Lineage OS to a Samsung Galaxy A3</a></li>
+            
+            <li><a href="https://klyr.github.io/posts/ebpf/">Playing with eBPF (extended BPF)</a></li>
             
             <li><a href="https://klyr.github.io/posts/playing_with_linc_switch/">Playing with the Erlang Linc Switch</a></li>
             
@@ -64,26 +75,7 @@
         </ul>
     </div>
     
-    
-    <div id="categories" class="open">
-        <h3 data-open="categories">Categories</h3>
-        <ul class="categories">
-            
-            <li><a href="/categories/c">c</a></li>
-            
-            <li><a href="/categories/network">network</a></li>
-            
-            <li><a href="/categories/python">python</a></li>
-            
-            <li><a href="/categories/r">r</a></li>
-            
-            <li><a href="/categories/security">security</a></li>
-            
-            <li><a href="/categories/unix">unix</a></li>
-            
-        </ul>
-    </div>
-    
+
 </nav>
 
 </div>
@@ -93,89 +85,15 @@
 <div class="articles-list">
     
     <article>
-        <h3><a href="https://klyr.github.io/posts/playing_with_systemtap/">Playing with systemtap</a> - 2012-07-06 00:00:00</h3>
-        
-    </article>
-    
-    <article>
-        <h3><a href="https://klyr.github.io/posts/trickle/">Trickle, lightweight userspace bandwidth shaper</a> - 2012-07-10 00:00:00</h3>
-        
-    </article>
-    
-    <article>
-        <h3><a href="https://klyr.github.io/posts/gnu_backtrace_extension/">Display backtrace when a program segfaults</a> - 2012-12-03 00:00:00</h3>
-        
-    </article>
-    
-    <article>
-        <h3><a href="https://klyr.github.io/posts/updating_ip_routes_in_c/">Updating IP routes programmatically</a> - 2012-12-10 00:00:00</h3>
-        
-    </article>
-    
-    <article>
-        <h3><a href="https://klyr.github.io/posts/playing_with_linux_framebuffer/">Playing with linux framebuffer</a> - 2012-12-19 00:00:00</h3>
-        
-    </article>
-    
-    <article>
-        <h3><a href="https://klyr.github.io/posts/linking_rust_lib_with_c/">Linking Rust Library with C</a> - 2014-12-17 00:00:00</h3>
-        How to link Rust libraries with C code
-    </article>
-    
-    <article>
-        <h3><a href="https://klyr.github.io/posts/playing_with_linc_switch/">Playing with the Erlang Linc Switch</a> - 2014-12-19 00:00:00</h3>
-        Let&#39;s play with the Erlang Linc Openflow switch
+        <h3><a href="https://klyr.github.io/posts/openssh/">OpenSSH related stuff</a> - 2020-04-02 00:00:00</h3>
+        Create a ed25519 SSH key  ECC: Elliptic Curve Cryptography is a family of algorithms (ECDSA, ed25519) Curve25519: name of the elliptic curve Ed25519: Name of the signature algorithm  $ ssh-keygen -a 100 -t ed25519 -b 521 -f ~/.ssh/id_ed25519.barbot.org -C &#34;julien@barbot.org&#34; You can look at explainshell.com to understand each parameters.
+Use this key for specific hosts:
+$ cat .ssh/config Host github.com IdentityFile ~/.
     </article>
     
 </div>
 
 
-<ul class="pagination">
-    
-    <li>
-        <a href="/posts/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-    </li>
-    
-    <li
-    >
-    <a href="/posts/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li
-    ><a href="/posts/">1</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li
-    class="active"><a href="/posts/page/2/">2</a></li>
-    
-    
-    <li
-    class="disabled">
-    <a href="" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-    
-    <li>
-        <a href="/posts/page/2/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-    </li>
-    
-</ul>
 
 </div>
 </div>

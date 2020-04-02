@@ -6,10 +6,32 @@
     <description>Recent content in Network on ~klyr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 25 Apr 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 02 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://klyr.github.io/categories/network/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Playing with the P4 language</title>
+      <link>https://klyr.github.io/posts/playing_with_p4/</link>
+      <pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/posts/playing_with_p4/</guid>
+      <description>Introduction P4 is a domain-specific compiled programming language for network data forwarding. It does not know anything about already existing protocols: it doesn&amp;rsquo;t know IP, nor TCP.
+A P4 program is compiled to something that is understandable by the P4 aware device. Such device can be a really hardware switch, a software switch, a FPGA.
+In this article we will try to use a software switch. More precisely, the uBPF backend.</description>
+    </item>
+    
+    <item>
+      <title>Playing with uBPF</title>
+      <link>https://klyr.github.io/posts/playing_with_ubpf/</link>
+      <pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/posts/playing_with_ubpf/</guid>
+      <description>Introduction uBPF is a user-land implementation of the eBPF VM.
+Installation $ git clone https://github.com/iovisor/ubpf.git $ cd ubpf $ make -C vm This compiles the ubpf library (libubpf.a) and a test program to use this library.
+Run a simple eBPF program with uBPF static int idouble(int a) { return (a * 2); } int bpf_prog(void *ctx) { int a = 1; a = idouble(a); return (a); } Compile to bpf binary, which is executable by the kernel eBPF VM, or, in our specific case, the user-land uBFP VM.</description>
+    </item>
     
     <item>
       <title>Playing with eBPF (extended BPF)</title>

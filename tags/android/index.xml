@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>android on ~klyr</title>
+    <link>https://klyr.github.io/tags/android/</link>
+    <description>Recent content in android on ~klyr</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 18 Feb 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://klyr.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Installing Lineage OS to a Samsung Galaxy A3</title>
+      <link>https://klyr.github.io/posts/samsung_a3_lineage/</link>
+      <pubDate>Tue, 18 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://klyr.github.io/posts/samsung_a3_lineage/</guid>
+      <description>Introduction Heimdal Build Heimdal git clone https://gitlab.com/BenjaminDobell/Heimdall.git sudo dnf install libusb-devel.x86_64 cd Heimdall mkdir build; cd build cmake -DCMAKE_BUILD_TYPE=Release -DDISABLE_FRONTEND .. make Check installation Put your device in download mode, on the A3 it&amp;rsquo;s:
+ 1 Switch OFF device 2 Volume Down + Home button + Power button. 3 Choose Download mode: Volume Up  $ sudo ./heimdal detect Download PIT file $ sudo ./heimdall download-pit --output &amp;#39;a3-2020-02-20.pit&amp;#39; --verbose Heimdall v1.</description>
+    </item>
+    
+  </channel>
+</rss>
