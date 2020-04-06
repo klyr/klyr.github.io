@@ -41,7 +41,7 @@ In this article we will try to use a software switch. More precisely, the uBPF b
       <guid>https://klyr.github.io/posts/playing_with_ubpf/</guid>
       <description>Introduction uBPF is a user-land implementation of the eBPF VM.
 Installation $ git clone https://github.com/iovisor/ubpf.git $ cd ubpf $ make -C vm This compiles the ubpf library (libubpf.a) and a test program to use this library.
-Run a simple eBPF program with uBPF static int idouble(int a) { return (a * 2); } int bpf_prog(void *ctx) { int a = 1; a = idouble(a); return (a); } Compile to bpf binary, which is executable by the kernel eBPF VM, or, in our specific case, the user-land uBFP VM.</description>
+Run a simple eBPF program with uBPF static int idouble(int a) { return (a * 2); } int bpf_prog(void *ctx) { int a = 1; a = idouble(a); return (a); } Compile to a BPF binary, which is executable by the kernel eBPF VM, or, in our specific case, the user-land uBFP VM.</description>
     </item>
     
     <item>

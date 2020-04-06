@@ -107,16 +107,96 @@ $ make -C vm</code></pre></div>
 
         <span style="color:#66d9ef">return</span> (a);
 }</code></pre></div>
-<p>Compile to bpf binary, which is executable by the kernel eBPF VM, or,
+<p>Compile to a BPF binary, which is executable by the kernel eBPF VM, or,
 in our specific case, the user-land uBFP VM.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ clang -O2 -target bpf -c hello.c -o hello.o</code></pre></div>
 <p>Execute our BPF code with the uBPF VM.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ vm/test hello.o
 0x2</code></pre></div>
+<h2 id="bpf-program-with-an-argument">BPF program with an argument</h2>
+
+<p>Let&rsquo;s use the <code>ctx</code> variable.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdint.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">static</span> uint32_t <span style="color:#a6e22e">idouble</span>(uint32_t a) {
+        <span style="color:#66d9ef">return</span> (a <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>);
+}
+
+uint32_t <span style="color:#a6e22e">bpf_prog</span>(int32_t <span style="color:#f92672">*</span>arg) {
+        uint32_t result <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+        result <span style="color:#f92672">=</span> idouble(<span style="color:#f92672">*</span>arg);
+
+        <span style="color:#66d9ef">return</span> result;
+}</code></pre></div>
+<p>and create a file which represent the memory which will be passed to
+the <code>bpf_prog</code> function:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ printf <span style="color:#e6db74">&#34;%b&#34;</span> <span style="color:#e6db74">&#39;\x03\x00\x00\x00&#39;</span> &gt; integer_3.mem</code></pre></div>
+<p>Execute our new program, giving the VM the memory file:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ vm/test hello.o --mem integer_3.mem
+0x6</code></pre></div>
+<p>In fact, a pointer to the memory buffer is passed to the <code>r1</code> register
+of the VM.</p>
+
+<h2 id="another-example">Another example</h2>
+
+<p>Let&rsquo;s now create a BPF program taking a IP datagram and returning 1 if
+the destination address is <code>1.1.1.1</code>.</p>
+
+<h3 id="create-the-ip-datagrams">Create the IP datagrams</h3>
+
+<p>We use <code>scapy</code> to do so.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">p <span style="color:#f92672">=</span> IP(src<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;127.0.0.1&#39;</span>, dst<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;1.1.1.1&#39;</span>)
+<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;ip_1_1_1_1.mem&#39;</span>, <span style="color:#e6db74">&#39;wb&#39;</span>) <span style="color:#66d9ef">as</span> f:
+    f<span style="color:#f92672">.</span>write(raw(p))
+p <span style="color:#f92672">=</span> IP(src<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;127.0.0.1&#39;</span>, dst<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;1.1.1.2&#39;</span>)
+<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;ip_1_1_1_2.mem&#39;</span>, <span style="color:#e6db74">&#39;wb&#39;</span>) <span style="color:#66d9ef">as</span> f:
+    f<span style="color:#f92672">.</span>write(raw(p))</code></pre></div>
+<h3 id="create-the-bpf-program">Create the BPF program</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;arpa/inet.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdint.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#define ONE_ONE_ONE_ONE 0x01010101
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">struct</span> ipv4_header {
+    uint8_t ver_ihl;
+    uint8_t tos;
+    uint16_t total_length;
+    uint16_t id;
+    uint16_t frag;
+    uint8_t ttl;
+    uint8_t proto;
+    uint16_t csum;
+    uint32_t src;
+    uint32_t dst;
+};
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">is_dst_one_one_one_one</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>opaque) {
+    <span style="color:#66d9ef">struct</span> ipv4_header <span style="color:#f92672">*</span>ipv4_header <span style="color:#f92672">=</span> (<span style="color:#66d9ef">struct</span> ipv4_header<span style="color:#f92672">*</span>)opaque;
+
+    <span style="color:#66d9ef">if</span> (ntohl(ipv4_header<span style="color:#f92672">-&gt;</span>dst) <span style="color:#f92672">==</span> ONE_ONE_ONE_ONE) {
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+    }
+
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}</code></pre></div>
+<p>The function is now called <code>is_dst_one_one_one_one</code>, in fact it can be
+called anything as long as it&rsquo;s the only non-static, exported
+function.</p>
+
+<p>Compile the BPF program:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ clang -O2 -target bpf -c ip_dst.c -o ip_dst.o</code></pre></div>
+<p>then execute it with our IP datagram:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ vm/test ip_dst.o --mem ip_1_1_1_1.mem
+0x1
+$ vm/test ip_dst.o --mem ip_1_1_1_2.mem
+0x0</code></pre></div>
+<p>Form there, we can imagine anything.</p>
+
 <h2 id="links">Links</h2>
 
 <ul>
 <li><a href="https://github.com/iovisor/ubpf">https://github.com/iovisor/ubpf</a></li>
+<li><a href="https://scapy.readthedocs.io/en/latest/index.html">https://scapy.readthedocs.io/en/latest/index.html</a></li>
 </ul>
 
 </article>
