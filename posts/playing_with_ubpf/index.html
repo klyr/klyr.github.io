@@ -192,6 +192,71 @@ $ vm/test ip_dst.o --mem ip_1_1_1_2.mem
 0x0</code></pre></div>
 <p>Form there, we can imagine anything.</p>
 
+<h2 id="let-s-dissect-the-compiled-object-file">Let&rsquo;s dissect the compiled object file</h2>
+
+<p>It&rsquo;s an ELF file:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ file ip_dst.o
+ip_dst.o: ELF 64-bit LSB relocatable, eBPF, version <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>SYSV<span style="color:#f92672">)</span>, not stripped</code></pre></div>
+<p>ELF sections:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ readelf -SW ip_dst.o
+There are <span style="color:#ae81ff">5</span> section headers, starting at offset 0x118:
+
+Section Headers:
+  <span style="color:#f92672">[</span>Nr<span style="color:#f92672">]</span> Name              Type            Address          Off    Size   ES Flg Lk Inf Al
+  <span style="color:#f92672">[</span> 0<span style="color:#f92672">]</span>                   NULL            <span style="color:#ae81ff">0000000000000000</span> <span style="color:#ae81ff">000000</span> <span style="color:#ae81ff">000000</span> <span style="color:#ae81ff">00</span>      <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>
+  <span style="color:#f92672">[</span> 1<span style="color:#f92672">]</span> .strtab           STRTAB          <span style="color:#ae81ff">0000000000000000</span> 0000c8 00004c <span style="color:#ae81ff">00</span>      <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">1</span>
+  <span style="color:#f92672">[</span> 2<span style="color:#f92672">]</span> .text             PROGBITS        <span style="color:#ae81ff">0000000000000000</span> <span style="color:#ae81ff">000040</span> <span style="color:#ae81ff">000028</span> <span style="color:#ae81ff">00</span>  AX  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">8</span>
+  <span style="color:#f92672">[</span> 3<span style="color:#f92672">]</span> .llvm_addrsig     LOOS+0xfff4c03  <span style="color:#ae81ff">0000000000000000</span> 0000c8 <span style="color:#ae81ff">000000</span> <span style="color:#ae81ff">00</span>   E  <span style="color:#ae81ff">4</span>   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">1</span>
+  <span style="color:#f92672">[</span> 4<span style="color:#f92672">]</span> .symtab           SYMTAB          <span style="color:#ae81ff">0000000000000000</span> <span style="color:#ae81ff">000068</span> <span style="color:#ae81ff">000060</span> <span style="color:#ae81ff">18</span>      <span style="color:#ae81ff">1</span>   <span style="color:#ae81ff">3</span>  <span style="color:#ae81ff">8</span>
+<span style="color:#f92672">[</span>...<span style="color:#f92672">]</span></code></pre></div>
+<p>The <code>.text</code> section contains our BPF code, with a size of 40 (0x28)
+bytes. The content of this section is:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ readelf -x .text ip_dst.o
+
+Hex dump of section <span style="color:#e6db74">&#39;.text&#39;</span>:
+  0x00000000 <span style="color:#ae81ff">61111000</span> <span style="color:#ae81ff">00000000</span> b7000000 <span style="color:#ae81ff">01000000</span> a...............
+  0x00000010 <span style="color:#ae81ff">15010100</span> <span style="color:#ae81ff">01010101</span> b7000000 <span style="color:#ae81ff">00000000</span> ................
+  0x00000020 <span style="color:#ae81ff">95000000</span> <span style="color:#ae81ff">00000000</span>                   ........</code></pre></div>
+<p>Use <code>llvm-objdump</code> to have more information on dissasembled code of
+the <code>.text</code> section.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ llvm-objdump -d -r --section .text -print-imm-hex  ip_dst.o
+
+ip_dst.o:	file format ELF64-BPF
+
+
+Disassembly of section .text:
+
+<span style="color:#ae81ff">0000000000000000</span> is_dst_one_one_one_one:
+       0:	<span style="color:#ae81ff">61</span> <span style="color:#ae81ff">11</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> 00	r1 <span style="color:#f92672">=</span> *<span style="color:#f92672">(</span>u32 *<span style="color:#f92672">)(</span>r1 + 0x10<span style="color:#f92672">)</span>
+       1:	b7 <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> 00	r0 <span style="color:#f92672">=</span> 0x1
+       2:	<span style="color:#ae81ff">15</span> <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">01</span> 01	<span style="color:#66d9ef">if</span> r1 <span style="color:#f92672">==</span> 0x1010101 goto +0x1 &lt;LBB0_2&gt;
+       3:	b7 <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> 00	r0 <span style="color:#f92672">=</span> 0x0
+
+<span style="color:#ae81ff">0000000000000020</span> LBB0_2:
+       4:	<span style="color:#ae81ff">95</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> 00	exit</code></pre></div>
+<p>We can extract it with:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ objcopy -O binary -I elf32-little --only-section<span style="color:#f92672">=</span>.text ip_dst.o ip_dst.ebpf</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ hexdump -C ip_dst.ebpf</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-hexdump" data-lang="hexdump">00000000  <span style="color:#ae81ff">61</span> <span style="color:#ae81ff">11</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span>  <span style="color:#ae81ff">b7</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span>  |<span style="color:#e6db74">a...............</span>|
+00000010  <span style="color:#ae81ff">15</span> <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">01</span>  <span style="color:#ae81ff">b7</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span>  |<span style="color:#e6db74">................</span>|
+00000020  <span style="color:#ae81ff">95</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span>                           |<span style="color:#e6db74">........</span>|
+00000028</code></pre></div>
+<p>This is the minimal set of data to execute this BPF program.</p>
+
+<h3 id="is-it-possible-to-modify-memory">Is it possible to modify memory ?</h3>
+
+<p>If in the previous <code>ip_dst.c</code> we try to modify the IP datagram, it&rsquo;s OK:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">if</span> (ntohl(ipv4_header<span style="color:#f92672">-&gt;</span>dst) <span style="color:#f92672">==</span> ONE_ONE_ONE_ONE) {
+    ipv4_header<span style="color:#f92672">-&gt;</span>dst <span style="color:#f92672">=</span> htonl(<span style="color:#ae81ff">0x01010142</span>);
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+}</code></pre></div>
+<p>BUT, if we try to modify a area of the memory which is outside, then the execution fails:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">if</span> (ntohl(ipv4_header<span style="color:#f92672">-&gt;</span>dst) <span style="color:#f92672">==</span> ONE_ONE_ONE_ONE) {
+    <span style="color:#f92672">*</span>((<span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>)opaque <span style="color:#f92672">+</span> <span style="color:#ae81ff">1024</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+}</code></pre></div>
+<p>The execution then fails with:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">uBPF error: out of bounds memory store at PC 4, addr 0x7ffef649cf50, size <span style="color:#ae81ff">4</span>
+mem 0x7ffef649bf50/20 stack 0x7ffef649be80/128
+0xffffffffffffffff</code></pre></div>
 <h2 id="links">Links</h2>
 
 <ul>
